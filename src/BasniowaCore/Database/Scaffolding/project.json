@@ -1,0 +1,38 @@
+{
+  "version": "1.0.0-*",
+  "buildOptions": {
+    "debugType": "portable",
+    "emitEntryPoint": true
+  },
+  "dependencies": {
+     "Microsoft.EntityFrameworkCore.Design": {
+       "type": "build",
+       "version": "1.0.1"
+     },
+	 "Microsoft.EntityFrameworkCore.SqlServer": {
+       "type": "build",
+       "version": "1.0.1"
+     },
+	 "Microsoft.EntityFrameworkCore.SqlServer.Design": {
+       "type": "build",
+       "version": "1.0.1"
+     }
+  },
+  "tools": {
+    "Microsoft.EntityFrameworkCore.Tools.DotNet": "1.0.0-preview3-final"
+  },
+  "tooling": {
+   "defaultNamespace": "DataAccess"
+  },
+  "frameworks": {
+    "netcoreapp1.0.1": {
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "type": "platform",
+          "version": "1.0.1"
+        }
+      },
+      "imports": "dnxcore50"
+    }
+  }
+}

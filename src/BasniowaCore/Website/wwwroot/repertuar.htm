@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Baśniowa Kawiarenka - teatr, kawiarnia - Łódź</title>
+    <meta name="description" content="Baśniowa Kawiarenka to kawiarnia, teatr i księgarnia dla dzieci prowadzona przez aktorów. Organizujemy imprezy dla szkół i przedszkoli. Zapraszamy!" />
+    <link href="styles/main.css" rel="stylesheet" type="text/css" />
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="script/ICanHaz.min.js"></script>
+</head>
+<body>
+    <script>
+        $(function () {
+            $.getJSON("repertoire.json", null, repertoireLoaded);
+        });
+
+        function repertoireLoaded(data) {
+            var html = ich.repertoireTemplate(data);
+            $("#repertoire").html(html);
+        }
+    </script>
+    <script id="repertoireTemplate" type="text/html">
+        {{#months}}
+            {{>monthTemplate}}
+        {{/months}}
+    </script>
+    <script id="monthTemplate" type="text/html">
+        <div class="header">{{name}}</div>
+        {{#headerText}}
+        <p>{{headerText}}</p>
+        {{/headerText}}
+        {{#days.length}}
+        <table>
+            {{#days}}
+            <tr>
+                <td>{{day}}</td>
+                <td>
+                    {{#shows}}
+                    {{.}}<br/>
+                    {{/shows}}
+                </td>
+            </tr>
+            {{/days}}
+        </table>
+        {{/days.length}}
+    </script>
+    <script id="dayTemplate" type="text/html">
+    </script>
+    <table align="left">
+        <tr>
+            <td style="width: 260px; vertical-align:top">
+                <img alt="Baśniowa Kawiarenka" src="images/logo.jpg" /><br />
+                <div class="menu">
+                    <div class="menuitem"><a href="/">Baśniowa Kawiarenka</a></div>
+                    <div class="menuitem"><a href="informacje.htm">Spotkania z książką</a></div>
+                    <div class="menuitem"><a href="o_kawiarni.htm">Teatr</a></div>
+                    <div class="menuitem"><a href="menu.htm">Menu</a></div>
+                    <div class="menuitem"><a href="repertuar.htm">Repertuar</a></div>
+                    <div class="menuitem"><a href="na_afiszu.htm">Przedstawienia</a></div>
+                    <div class="menuitem"><a href="prasa.htm">Artykuły</a></div>
+                    <div class="menuitem"><a href="kontakt.htm">Kontakt</a></div>
+                    <div style="background-color: White; width:250px"><div id="fb-root" style=""></div><script src="http://connect.facebook.net/pl_PL/all.js#xfbml=1"></script><fb:like-box href="http://www.facebook.com/pages/Ba%C5%9Bniowa-Kawiarenka/164115840323050" width="250" show_faces="false" border_color="" stream="false" header="true"></fb:like-box></div>
+                    <div class="menuitem"><img src="images/wanna.gif" /></div>
+                </div>
+            </td>
+            <td style="vertical-align:top; padding-left: 10px">
+                <img alt="Baśniowa Kawiarenka" src="titles/repertuar.gif" /><br />
+
+                <div id="repertoire">
+                    Poczekaj chwilkę - ładujemy repertuar...
+                </div>            
+                <br />
+            <i>Cena biletu na spektakl to <b>18 zł</b> (widzowie indywidualni)</i><br/>
+            <i>Szkoły i przedszkola – <b>16 zł</b> (spektakl zamówiony do końca września – 15zł)</i>
+            </td>
+        </tr>
+    </table>
+    <!--
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+try {
+var pageTracker = _gat._getTracker("UA-10778774-1");
+pageTracker._trackPageview();
+} catch(err) {}</script>-->
+</body>
+</html>

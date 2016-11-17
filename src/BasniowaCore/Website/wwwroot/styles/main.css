@@ -1,0 +1,204 @@
+﻿body
+{
+    background-color: #532700;
+    font-family: Verdana;
+    font-size: 10pt;
+    vertical-align: top;
+    color: #FED250
+}
+
+table {border-collapse: collapse;}
+td    {padding: 0px;}
+
+.menu
+{
+    text-align: center;
+    font-family: Arial;
+    font-size: 14pt;
+    text-align: center;
+    color: #FED250;
+}
+.menuitem
+{
+	margin: 10px 5px 10px 5px;
+}
+
+.slogan
+{
+	font-size: 12pt;
+	text-align: center;
+}
+
+.info
+{
+	font-size: 12pt;
+	text-align: center;
+	background-color: #530000;
+	width: 400px;
+	border: solid 1px #FED250;
+	padding: 5px;
+	margin-left: 150px
+}
+
+a,a:active,a:visited,a:link
+{
+	color: #FED250;
+	text-decoration: none;
+	border-style: none;
+	border: 0px;
+	margin: 0px;
+}
+
+img
+{
+	border-width: 0px;
+	border-style: none;
+	margin: 0px;
+}
+
+.emphasize
+{
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+.header
+{
+	font-size: 14pt;
+	font-weight: bold;
+	font-style: italic;
+    margin-top: 1em;
+}
+
+.item
+{
+	font-size: 12pt;
+}
+.subitem
+{
+	font-size: 8pt;
+}
+
+.list-item
+{
+	margin: 5px 0px 10px 0px;
+}
+.thumb
+{
+	margin: 0px 5px 0px 5px;
+}
+.thumb-item
+{
+	float: left;
+	width: 210px;
+	height: 210px;
+	text-align: center;
+	line-height: 210px;
+}
+.show-title
+{
+	font-family: Arial;
+	font-size: 20px;
+	font-weight: bold;
+	text-decoration: underline;
+}
+.show-author
+{
+	font-family: Arial;
+	font-size: 16px;
+	margin-bottom: 10px;
+}
+.show-item
+{
+	margin-bottom: 3px;
+}
+.show-field
+{
+	font-weight: bold;
+}
+.show-desc
+{
+	font-style: italic;
+}
+
+table.shows tr td
+{
+	vertical-align:top;
+}
+
+td.artThumb 
+{
+	width: 200px;
+	height: 200px;
+	vertical-align: top;
+	text-align: center;
+}
+td.artInfo
+{
+	vertical-align: top;
+}
+
+.artTitle 
+{
+	font-weight: bold;
+}
+td.artInfo p 
+{
+	margin: 5pt
+}
+td.artInfo p.artLink
+{
+	margin-top: 15pt;
+	
+}
+td.artInfo p.artLink a
+{
+	color: #66CCFF;
+}
+
+div.coop-logo
+{
+    margin: 10px;
+    width: 200px;
+    height: 200px;
+}
+
+.shows-editor 
+{
+    width: 50em;
+    height: 1em;
+    background-color: transparent;
+    border-width: 0;
+    resize: none;
+    font-family: Verdana;
+    font-size: 10pt;
+    color: #FED250;
+}
+
+.month-text-editor 
+{
+    width: 50em;
+    background-color: transparent;
+    border-width: 1px;
+    font-family: Verdana;
+    font-size: 10pt;
+    color: #FED250;
+    border-color:  #FED250;
+}
+
+table.month-editor thead tr 
+{
+    font-weight: bold;
+    background-color: #773700;
+}
+
+table.month-editor tbody tr:nth-child(even)
+{
+    background-color: #773700;
+}
+
+.month-name 
+{
+    font-size: larger;
+    font-weight: bold;
+}
