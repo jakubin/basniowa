@@ -42,7 +42,7 @@ namespace Common.Cqrs
                 {
                     await handler.Handle(@event);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // TODO log
                 }

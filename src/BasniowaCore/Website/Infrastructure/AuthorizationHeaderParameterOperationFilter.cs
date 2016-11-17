@@ -17,8 +17,7 @@ namespace Website.Infrastructure
         public void Apply(Operation operation, OperationFilterContext context)
         {
             var filterPipeline = context.ApiDescription.ActionDescriptor.FilterDescriptors;
-            var isAuthorized = filterPipeline.Select(filterInfo => filterInfo.Filter).OfType<AuthorizeFilter>()
-                .Any(x => x.AuthorizeData.Any());
+            var isAuthorized = filterPipeline.Select(filterInfo => filterInfo.Filter).OfType<AuthorizeFilter>().Any();
             var allowAnonymous = filterPipeline.Select(filterInfo => filterInfo.Filter).Any(filter => filter is IAllowAnonymousFilter);
 
             if (isAuthorized && !allowAnonymous)

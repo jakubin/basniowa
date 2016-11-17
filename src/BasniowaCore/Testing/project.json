@@ -1,11 +1,11 @@
 {
   "version": "1.0.0-*",
   "dependencies": {
-    "Microsoft.Extensions.DependencyModel": "1.0.0",
-    "Microsoft.Extensions.Logging.Abstractions": "1.0.0",
-    "NETStandard.Library": "1.6.0",
-    "System.Runtime": "4.1.0",
-    "xunit": "2.2.0-beta3-build3402"
+    "Microsoft.Extensions.DependencyModel": "1.1.0",
+    "Microsoft.Extensions.Logging.Abstractions": "1.1.0",
+    "NETStandard.Library": "1.6.1",
+    "System.Runtime": "4.3.0",
+    "xunit": "2.2.0-beta4-build3444"
   },
   "frameworks": {
     "netstandard1.6": {
