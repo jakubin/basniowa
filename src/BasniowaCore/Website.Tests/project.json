@@ -13,7 +13,8 @@
       "type": "platform",
       "version": "1.0.1"
     },
-    "FluentAssertions": "4.17.0"
+    "FluentAssertions": "4.17.0",
+"Microsoft.CodeCoverage": "1.0.2"
   },
 
   "frameworks": {

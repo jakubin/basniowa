@@ -13,7 +13,8 @@
     "Moq": "4.6.38-alpha",
     "Testing": "1.0.0-*",
     "Microsoft.Extensions.Logging": "1.0.0",
-    "FluentAssertions": "4.17.0"
+    "FluentAssertions": "4.17.0",
+    "Microsoft.CodeCoverage": "1.0.2"
   },
 
   "frameworks": {

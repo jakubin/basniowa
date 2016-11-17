@@ -12,7 +12,8 @@
     },
     "Microsoft.EntityFrameworkCore.InMemory": "1.0.1",
     "FluentAssertions": "4.17.0",
-    "Moq": "4.6.38-alpha"
+    "Moq": "4.6.38-alpha",
+    "Microsoft.CodeCoverage": "1.0.2"
   },
 
   "frameworks": {
