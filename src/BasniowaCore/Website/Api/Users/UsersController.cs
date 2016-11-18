@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Website.Infrastructure;
 using System.Net;
+using Microsoft.AspNetCore.Http;
 
 namespace Website.Api.Users
 {
@@ -22,13 +23,26 @@ namespace Website.Api.Users
         /// </summary>
         /// <param name="logon">The logon credentials.</param>
         /// <returns>Token</returns>
+        /// <response code="201">Returns logon result with JWT token.</response>
+        /// <response code="400">When request is invalid.</response>
         [Route("authenticate")]
         [HttpPost]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
-        public IActionResult Authenticate([FromBody]UserLogon logon)
+        [ProducesResponseType(typeof(LoggedOnModel), (int)HttpStatusCode.Created)]
+        public IActionResult Authenticate([FromBody]UserLogonModel logon)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var token = TokenProvider.CreateToken(logon.UserName);
-            return Content(token);
+            var model = new LoggedOnModel
+            {
+                UserName = logon.UserName,
+                Token = token
+            };
+
+            return new ObjectResult(model) { StatusCode = StatusCodes.Status201Created };
         }
     }
 }
