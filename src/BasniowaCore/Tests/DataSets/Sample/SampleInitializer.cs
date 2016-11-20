@@ -9,8 +9,6 @@ namespace Tests.DataSets.Sample
     /// <seealso cref="Tests.Helpers.IEnvironmentInitializer" />
     public class SampleInitializer : IEnvironmentInitializer
     {
-        private static readonly string BasePath = "DataSets/Sample";
-
         /// <inheritdoc/>
         public void Initialize(EnvironmentFixture environment)
         {
