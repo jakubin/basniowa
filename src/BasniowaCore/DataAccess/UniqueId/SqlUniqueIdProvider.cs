@@ -1,9 +1,9 @@
-﻿using Common;
-using System;
+﻿using System;
 using System.Data;
 using System.Data.Common;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
+using Common;
 
 namespace DataAccess.UniqueId
 {
@@ -41,6 +41,7 @@ namespace DataAccess.UniqueId
                 {
                     await connection.OpenAsync();
                 }
+
                 await command.ExecuteNonQueryAsync();
 
                 return (long)rangeFromParameter.Value;

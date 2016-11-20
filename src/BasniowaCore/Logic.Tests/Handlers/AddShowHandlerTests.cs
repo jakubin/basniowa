@@ -1,4 +1,8 @@
-﻿using Common.Cqrs;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Common.Cqrs;
 using DataAccess;
 using FluentAssertions;
 using Logic.Commands;
@@ -8,10 +12,6 @@ using Logic.Services;
 using Logic.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Logic.Tests.Handlers
@@ -26,7 +26,7 @@ namespace Logic.Tests.Handlers
 
         private IDbContextFactory DbContextFactory { get; set; }
 
-        private volatile string DbName;
+        private volatile string _dbName;
 
         public AddShowHandlerTests()
         {
@@ -42,7 +42,7 @@ namespace Logic.Tests.Handlers
 
         public void Dispose()
         {
-            if (DbName != null)
+            if (_dbName != null)
             {
                 var db = CreateInMemoryDb();
                 db.Database.EnsureDeleted();
@@ -51,13 +51,13 @@ namespace Logic.Tests.Handlers
 
         public TheaterDb CreateInMemoryDb()
         {
-            if (DbName == null)
+            if (_dbName == null)
             {
-                DbName = Guid.NewGuid().ToString();
+                _dbName = Guid.NewGuid().ToString();
             }
 
             var builder = new DbContextOptionsBuilder<TheaterDb>()
-                .UseInMemoryDatabase(DbName);
+                .UseInMemoryDatabase(_dbName);
 
             return new TheaterDb(builder.Options);
         }
@@ -94,7 +94,8 @@ namespace Logic.Tests.Handlers
             Mock.Get(EventPublisher)
                 .Setup(x => x.PublishEvent(It.IsAny<ShowCreated>()))
                 .Returns(Task.CompletedTask)
-                .Callback((ShowCreated @event) => {
+                .Callback((ShowCreated @event) => 
+                {
                     actualEvent = @event;
                 })
                 .Verifiable();

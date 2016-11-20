@@ -1,5 +1,5 @@
-﻿using FluentAssertions;
-using System;
+﻿using System;
+using FluentAssertions;
 using Xunit;
 
 namespace Common.Tests
@@ -16,9 +16,12 @@ namespace Common.Tests
         [Fact(DisplayName = nameof(Guard) + ": NotNull() should throw ArgumentNullException on null values.")]
         public void NotNullShouldThrowOnNull()
         {
-            var exception = Assert.Throws<ArgumentNullException>("someName", () => {
-                Guard.NotNull(null, "someName");
-            });
+            var exception = Assert.Throws<ArgumentNullException>(
+                "someName", 
+                () => 
+                {
+                    Guard.NotNull(null, "someName");
+                });
 
             exception.Message.Should().Contain("someName");
         }
@@ -35,9 +38,12 @@ namespace Common.Tests
         [Fact(DisplayName = nameof(Guard) + ": GreaterOrEqual() should throw ArgumentOutOfRangeException on invalid values.")]
         public void GreaterOrEqualShouldThrowOnInvalid()
         {
-            var exception = Assert.Throws<ArgumentOutOfRangeException>("someName", () => {
-                Guard.GreaterOrEqual(1, 2, "someName");
-            });
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(
+                "someName", 
+                () => 
+                {
+                    Guard.GreaterOrEqual(1, 2, "someName");
+                });
             exception.Message.Should().Contain("someName");
         }
     }

@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Website.Infrastructure;
-using System.Net;
+﻿using System.Net;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Website.Infrastructure;
 
 namespace Website.Api.Users
 {
@@ -22,7 +22,7 @@ namespace Website.Api.Users
         /// Validates provided credentials and generates a JWT Bearer token that can be user for authentication against other API services.
         /// </summary>
         /// <param name="logon">The logon credentials.</param>
-        /// <returns>Token</returns>
+        /// <returns>Object with token.</returns>
         /// <response code="201">Returns logon result with JWT token.</response>
         /// <response code="400">When request is invalid.</response>
         [Route("authenticate")]

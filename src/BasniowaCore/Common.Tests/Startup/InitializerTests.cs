@@ -1,6 +1,6 @@
-﻿using Common.Startup;
+﻿using System;
+using Common.Startup;
 using FluentAssertions;
-using System;
 using Xunit;
 
 namespace Common.Tests.Startup

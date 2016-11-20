@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyModel;
 namespace Common.Startup
 {
     /// <summary>
-    /// Runs initializing logic distributed throught the solution.
+    /// Runs initializing logic distributed through the solution.
     /// </summary>
     public static class Initializer
     {
@@ -16,7 +16,7 @@ namespace Common.Startup
         /// <typeparam name="T">Attribute used to indicate methods to run.</typeparam>
         /// <param name="arguments">The arguments to pass to methods.</param>
         public static void Init<T>(params object[] arguments)
-            where T: Attribute
+            where T : Attribute
         {
             var attributeType = typeof(T);
 

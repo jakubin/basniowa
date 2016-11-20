@@ -1,5 +1,5 @@
-﻿using Logic.Services;
-using System;
+﻿using System;
+using Logic.Services;
 
 namespace Logic.Tests.Helpers
 {

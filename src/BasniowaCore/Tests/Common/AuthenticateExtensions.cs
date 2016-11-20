@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using Newtonsoft.Json;
 using Tests.HttpAssert;
 
 namespace Tests.Common
@@ -19,7 +19,7 @@ namespace Tests.Common
         /// <returns>Bearer token returned from the service.</returns>
         public static string AuthenticateAsDefaultAdmin(this HttpClient client)
         {
-            return Authenticate(client, "admin", "");
+            return Authenticate(client, "admin", string.Empty);
         }
 
         /// <summary>

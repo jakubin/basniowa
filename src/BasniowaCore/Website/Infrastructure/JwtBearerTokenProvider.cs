@@ -1,21 +1,29 @@
-﻿using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Website.Infrastructure
 {
+    /// <summary>
+    /// Implementation of <see cref="IJwtBearerTokenProvider"/>.
+    /// </summary>
     public class JwtBearerTokenProvider : IJwtBearerTokenProvider
     {
         private JwtBearerAuthenticationOptions _options;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="JwtBearerTokenProvider"/> class.
+        /// </summary>
+        /// <param name="options">The options.</param>
         public JwtBearerTokenProvider(IOptions<JwtBearerAuthenticationOptions> options)
         {
             _options = options.Value;
         }
 
+        /// <inheritdoc/>
         public string CreateToken(string userName, params Claim[] additionalClaims)
         {
             var now = DateTimeOffset.UtcNow;

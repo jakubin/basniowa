@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace Website.Models
+﻿namespace Website.Models
 {
+    /// <summary>
+    /// Result with ID.
+    /// </summary>
     public class IdResult
     {
+        /// <summary>
+        /// The identifier.
+        /// </summary>
         public long Id { get; set; }
     }
 }

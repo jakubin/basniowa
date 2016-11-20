@@ -12,7 +12,7 @@ namespace Tests.Helpers
         /// Creates <see cref="DbContextOptions{TContext}"/> object for in-memory database.
         /// </summary>
         /// <typeparam name="TContext">Type of DB context.</typeparam>
-        /// <returns>Options.</returns>
+        /// <returns>DB context options.</returns>
         public static DbContextOptions<TContext> CreateOptions<TContext>() where TContext : DbContext
         {
             var serviceProvider = new ServiceCollection()

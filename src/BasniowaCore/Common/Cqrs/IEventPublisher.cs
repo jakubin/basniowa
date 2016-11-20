@@ -12,7 +12,7 @@ namespace Common.Cqrs
         /// </summary>
         /// <typeparam name="T">Type of event.</typeparam>
         /// <param name="event">The event to publish.</param>
-        /// <returns>Task representing the operation of event registration; not necesarilly event handling.</returns>
+        /// <returns>Task representing the operation of event registration; not necessarily event handling.</returns>
         /// <remarks>
         /// You should not assume that the event will be executed immediately.
         /// Any exceptions raised during event processing will not surface this API.

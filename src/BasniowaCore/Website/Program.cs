@@ -1,11 +1,18 @@
 ﻿using System.IO;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 
 namespace Website
 {
+    /// <summary>
+    /// Entry point to the application.
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// Entry point to the application.
+        /// </summary>
+        /// <param name="args">The arguments.</param>
         public static void Main(string[] args)
         {
             var host = new WebHostBuilder()

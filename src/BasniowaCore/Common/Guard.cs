@@ -32,7 +32,8 @@ namespace Common
         {
             if (value < minValue)
             {
-                throw new ArgumentOutOfRangeException(parameterName,
+                throw new ArgumentOutOfRangeException(
+                    parameterName,
                     $"Parameter {parameterName} must be greater or equal to {minValue}.");
             }
         }

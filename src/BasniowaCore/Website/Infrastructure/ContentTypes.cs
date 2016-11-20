@@ -6,7 +6,7 @@
     public static class ContentTypes
     {
         /// <summary>
-        /// The application/json content type.
+        /// The content type.
         /// </summary>
         public const string ApplicationJson = "application/json";
     }

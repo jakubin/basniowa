@@ -1,12 +1,12 @@
-﻿using Common.Cqrs;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Common.Cqrs;
 
 namespace Logic.Commands
 {
     /// <summary>
     /// Command to add a new show.
     /// </summary>
-    public class AddShowCommand: ICommand
+    public class AddShowCommand : ICommand
     {
         /// <summary>
         /// Gets or sets the new show ID.
@@ -31,7 +31,7 @@ namespace Logic.Commands
         /// <summary>
         /// Gets or sets the properties.
         /// </summary>
-        public Dictionary<string,string> Properties { get; set; }
+        public Dictionary<string, string> Properties { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the user executing this command.

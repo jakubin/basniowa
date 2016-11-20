@@ -2,7 +2,6 @@
 
 namespace Logic.Services
 {
-
     /// <summary>
     /// Database context factory.
     /// </summary>

@@ -1,8 +1,8 @@
-﻿using DataAccess.UniqueId;
+﻿using System.Threading.Tasks;
+using DataAccess.UniqueId;
 using FluentAssertions;
 using Logic.Services;
 using Moq;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Logic.Tests.Services
@@ -17,7 +17,8 @@ namespace Logic.Tests.Services
             long tmp = 100;
             Mock.Get(UniqueIdProvider)
                 .Setup(x => x.GetNextIds(It.IsAny<long>()))
-                .Returns((long count) => {
+                .Returns((long count) => 
+                {
                     var task = Task.FromResult(tmp);
                     tmp += count;
                     return task;
@@ -70,7 +71,8 @@ namespace Logic.Tests.Services
             var service = Create(1);
 
             // act
-            var actualIds = new[] {
+            var actualIds = new[] 
+            {
                 await service.GenerateId(),
                 await service.GenerateId(),
                 await service.GenerateId(),

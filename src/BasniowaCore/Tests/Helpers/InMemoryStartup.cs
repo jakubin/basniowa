@@ -1,8 +1,7 @@
-﻿using Website;
-using Microsoft.Extensions.DependencyInjection;
-using DataAccess;
-using Microsoft.EntityFrameworkCore;
+﻿using DataAccess;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Website;
 
 namespace Tests.Helpers
 {

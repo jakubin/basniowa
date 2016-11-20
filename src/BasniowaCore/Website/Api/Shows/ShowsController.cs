@@ -1,17 +1,17 @@
 ﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using System.Threading.Tasks;
+using AutoMapper;
+using Common.Cqrs;
+using Common.Startup;
 using Logic;
 using Logic.Commands;
-using Website.Models;
 using Logic.Common;
-using Microsoft.AspNetCore.Authorization;
-using AutoMapper;
-using System.Net;
-using Common.Startup;
-using Website.Infrastructure;
 using Logic.Services;
-using Common.Cqrs;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Website.Infrastructure;
+using Website.Models;
 
 namespace Website.Api.Shows
 {
@@ -29,9 +29,15 @@ namespace Website.Api.Shows
         [InjectService]
         public IShowsProvider ShowsProvider { get; set; }
 
+        /// <summary>
+        /// Gets or sets the identifier service.
+        /// </summary>
         [InjectService]
         public IUniqueIdService IdService { get; set; }
 
+        /// <summary>
+        /// Gets or sets the command publisher.
+        /// </summary>
         [InjectService]
         public ICommandPublisher CommandPublisher { get; set; }
 
@@ -49,8 +55,17 @@ namespace Website.Api.Shows
             return new ObjectResult(result);
         }
 
+        /// <summary>
+        /// Gets the show by identifier.
+        /// </summary>
+        /// <param name="showId">The show identifier.</param>
+        /// <returns>Show with specific details</returns>
+        /// <response code="200">Returns show details.</response>
+        /// <response code="404">When show of specified ID doesn't exist.</response>
         [HttpGet]
         [Route("{showId}")]
+        [ProducesResponseType(typeof(ShowWithDetailsModel), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public IActionResult GetById(long showId)
         {
             try
@@ -64,11 +79,24 @@ namespace Website.Api.Shows
             }
         }
 
+        /// <summary>
+        /// Creates a new show.
+        /// </summary>
+        /// <param name="commandModel">Contains information about the show to create.</param>
+        /// <returns>ID of created show.</returns>
+        /// <response code="201">Returns show details.</response>
+        /// <response code="400">When the provided information are invalid.</response>
         [HttpPost]
         [Route("create")]
-        [Authorize()]
+        [Authorize]
+        [ProducesResponseType(typeof(IdResult), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> Post([FromBody]AddShowModel commandModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var command = new AddShowCommand();
             Mapper.Map(commandModel, command);
 
@@ -82,7 +110,7 @@ namespace Website.Api.Shows
                 Id = command.Id
             };
             
-            return new ObjectResult(result);
+            return new ObjectResult(result) { StatusCode = (int)HttpStatusCode.Created };
         }
 
         /// <summary>

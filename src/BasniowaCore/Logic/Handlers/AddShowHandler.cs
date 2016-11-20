@@ -1,12 +1,11 @@
-﻿using DataAccess;
-using Logic.Commands;
-using Common.Cqrs;
-using Logic.Events;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Cqrs;
 using DataAccess.Shows;
+using Logic.Commands;
+using Logic.Events;
 using Logic.Services;
-using System.Collections.Generic;
 
 namespace Logic.Handlers
 {
@@ -33,7 +32,6 @@ namespace Logic.Handlers
         /// <summary>
         /// Gets or sets the unique identifier service.
         /// </summary>
-        /// </value>
         public IUniqueIdService IdService { get; set; }
 
         /// <inheritdoc/>
@@ -55,7 +53,8 @@ namespace Logic.Handlers
 
             var propertyIds = new Queue<long>(await IdService.GenerateIds(message.Properties.Count));
             var properties = message.Properties
-                .Select(x => new ShowProperty {
+                .Select(x => new ShowProperty
+                {
                     Id = propertyIds.Dequeue(),
                     Name = x.Key,
                     Value = x.Value,

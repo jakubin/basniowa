@@ -1,8 +1,8 @@
-﻿using Swashbuckle.SwaggerGen.Generator;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Swashbuckle.Swagger.Model;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Swashbuckle.Swagger.Model;
+using Swashbuckle.SwaggerGen.Generator;
 
 namespace Website.Infrastructure
 {
@@ -23,7 +23,9 @@ namespace Website.Infrastructure
             if (isAuthorized && !allowAnonymous)
             {
                 if (operation.Parameters == null)
+                {
                     operation.Parameters = new List<IParameter>();
+                }
 
                 operation.Parameters.Add(new NonBodyParameter
                 {

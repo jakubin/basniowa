@@ -1,7 +1,7 @@
-﻿using Common;
+﻿using System;
+using Common;
 using DataAccess;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace Logic.Services
 {

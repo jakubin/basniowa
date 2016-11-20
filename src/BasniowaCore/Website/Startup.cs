@@ -1,32 +1,38 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using System;
+using System.IO;
+using System.Reflection;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Autofac.Features.ResolveAnything;
+using AutoMapper;
+using Common.Cqrs;
+using Common.Startup;
+using DataAccess;
+using DataAccess.UniqueId;
+using Logic;
+using Logic.Services;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-using Logic;
-using DataAccess;
-using Microsoft.IdentityModel.Tokens;
 using Website.Infrastructure;
-using AutoMapper;
-using System.IO;
-using System.Reflection;
-using Common.Startup;
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
-using System;
-using Autofac.Features.ResolveAnything;
-using Common.Cqrs;
-using Logic.Services;
-using Microsoft.Extensions.Caching.Memory;
-using DataAccess.UniqueId;
 
 namespace Website
 {
+    /// <summary>
+    /// Startup class.
+    /// </summary>
     public class Startup
     {
-        public static readonly string TheaterDbConnectionStringKey = "TheaterDb";
+        private static readonly string TheaterDbConnectionStringKey = "TheaterDb";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Startup"/> class.
+        /// </summary>
+        /// <param name="env">The env.</param>
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -38,10 +44,16 @@ namespace Website
             Configuration = builder.Build();
         }
 
-        public static SymmetricSecurityKey SigningKey;
-
+        /// <summary>
+        /// Gets the configuration.
+        /// </summary>
         public IConfigurationRoot Configuration { get; }
 
+        /// <summary>
+        /// Configures the services.
+        /// </summary>
+        /// <param name="services">The services.</param>
+        /// <returns>Service provider.</returns>
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
@@ -110,12 +122,20 @@ namespace Website
             Initializer.Init<MapperStartupAttribute>(cfg);
         }
 
+        /// <summary>
+        /// Configures the database options.
+        /// </summary>
+        /// <param name="options">The options.</param>
         protected virtual void ConfigureDbOptions(DbContextOptionsBuilder<TheaterDb> options)
         {
             var connectionString = Configuration.GetConnectionString(TheaterDbConnectionStringKey);
             options.UseSqlServer(connectionString);
         }
 
+        /// <summary>
+        /// Registers the unique identifier provider.
+        /// </summary>
+        /// <param name="builder">The builder.</param>
         protected virtual void RegisterUniqueIdProvider(ContainerBuilder builder)
         {
             var connectionString = Configuration.GetConnectionString(TheaterDbConnectionStringKey);
@@ -125,6 +145,12 @@ namespace Website
                 .SingleInstance();
         }
 
+        /// <summary>
+        /// Configures the application.
+        /// </summary>
+        /// <param name="app">The application.</param>
+        /// <param name="env">The env.</param>
+        /// <param name="loggerFactory">The logger factory.</param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));

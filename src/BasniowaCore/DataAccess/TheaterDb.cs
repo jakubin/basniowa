@@ -3,13 +3,22 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DataAccess
 {
+    /// <summary>
+    /// DB context for database.
+    /// </summary>
+    /// <seealso cref="Microsoft.EntityFrameworkCore.DbContext" />
     public partial class TheaterDb : DbContext
     {
-        public TheaterDb(DbContextOptions<TheaterDb> options):
-            base(options)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TheaterDb"/> class.
+        /// </summary>
+        /// <param name="options">The options.</param>
+        public TheaterDb(DbContextOptions<TheaterDb> options)
+            : base(options)
         {
         }
 
+        /// <inheritdoc/>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Shows.Show>(entity =>
@@ -54,11 +63,16 @@ namespace DataAccess
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("FK_ShowProperties_Shows");
             });
-
         }
 
+        /// <summary>
+        /// Gets or sets the shows.
+        /// </summary>
         public virtual DbSet<Shows.Show> Shows { get; set; }
 
+        /// <summary>
+        /// Gets or sets the show properties.
+        /// </summary>
         public virtual DbSet<Shows.ShowProperty> ShowProperties { get; set; }
     }
 }

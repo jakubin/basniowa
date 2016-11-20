@@ -1,9 +1,9 @@
-﻿using DataAccess;
+﻿using System;
+using System.IO;
+using DataAccess;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-using System;
 using Microsoft.Extensions.DependencyInjection;
-using System.IO;
 
 namespace Tests.Helpers
 {

@@ -1,23 +1,30 @@
-﻿using DataAccess;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Logic.Common;
+using DataAccess;
 using DataAccess.Shows;
+using Logic.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace Logic
 {
-    public class ShowsProvider: IShowsProvider
+    /// <summary>
+    /// Implementation of <see cref="IShowsProvider"/>.
+    /// </summary>
+    /// <seealso cref="Logic.IShowsProvider" />
+    public class ShowsProvider : IShowsProvider
     {
         private TheaterDb _db;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ShowsProvider"/> class.
+        /// </summary>
+        /// <param name="db">The database.</param>
         public ShowsProvider(TheaterDb db)
         {
             _db = db;
         }
 
+        /// <inheritdoc/>
         public IList<ShowWithDetails> GetAllShows()
         {
             var shows = _db.Shows.Include(x => x.ShowProperties)
@@ -34,33 +41,16 @@ namespace Logic
             .ToList();
         }
 
-        public long AddShow(ShowWithDetails showWithDetails)
-        {
-            var show = new Show()
-            {
-                Title = showWithDetails.Title,
-                Subtitle = showWithDetails.Subtitle,
-                Description = showWithDetails.Description
-            };
-
-            var properties = showWithDetails.Properties
-                .Select(x => new ShowProperty { Name = x.Key, Value = x.Value, Show = show })
-                .ToList();
-
-            _db.Add(show);
-            _db.AddRange(properties);
-
-            _db.SaveChanges();
-
-            return show.Id;
-        }
-
+        /// <inheritdoc/>
         public ShowWithDetails GetShowById(long showId)
         {
-            var show = _db.Shows.Include(x=>x.ShowProperties)
+            var show = _db.Shows.Include(x => x.ShowProperties)
                 .FirstOrDefault(x => x.Id == showId);
+
             if (show == null)
+            {
                 throw new EntityNotFoundException<ShowWithDetails>($"Id={showId}");
+            }
 
             return new ShowWithDetails
             {

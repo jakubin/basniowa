@@ -1,8 +1,8 @@
-﻿using Common.Cqrs;
+﻿using System;
+using System.Collections.Generic;
+using Common.Cqrs;
 using FluentAssertions;
 using Moq;
-using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace Common.Tests.Cqrs

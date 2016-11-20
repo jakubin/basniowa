@@ -1,11 +1,11 @@
-﻿using FluentAssertions;
+﻿using System.Collections.Generic;
+using FluentAssertions;
 using Logic;
 using Logic.Common;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Collections.Generic;
-using Xunit;
 using Website.Api.Shows;
+using Xunit;
 
 namespace Tests.Controllers
 {
@@ -34,8 +34,8 @@ namespace Tests.Controllers
                 Description = "C",
                 Properties = new Dictionary<string, string>
                 {
-                    {"Prop1", "Val1" },
-                    {"Prop2", "Val2" }
+                    { "Prop1", "Val1" },
+                    { "Prop2", "Val2" }
                 }
             };
 
