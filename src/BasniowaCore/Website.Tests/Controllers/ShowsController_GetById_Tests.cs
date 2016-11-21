@@ -2,6 +2,7 @@
 using FluentAssertions;
 using Logic;
 using Logic.Common;
+using Logic.Shows;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Website.Api.Shows;
@@ -13,13 +14,13 @@ namespace Tests.Controllers
     {
         public ShowsController Controller { get; set; }
 
-        public Mock<IShowsProvider> ShowsProviderMock { get; set; }
+        public Mock<IShowsReader> ShowsProviderMock { get; set; }
 
         public ShowsController_GetById_Tests()
         {
-            ShowsProviderMock = new Mock<IShowsProvider>(MockBehavior.Strict);
+            ShowsProviderMock = new Mock<IShowsReader>(MockBehavior.Strict);
             Controller = new ShowsController();
-            Controller.ShowsProvider = ShowsProviderMock.Object;
+            Controller.ShowsReader = ShowsProviderMock.Object;
         }
 
         [Fact]

@@ -4,10 +4,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Common.Cqrs;
 using Common.Startup;
-using Logic;
-using Logic.Commands;
 using Logic.Common;
 using Logic.Services;
+using Logic.Shows;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Infrastructure;
@@ -24,10 +23,10 @@ namespace Website.Api.Shows
     public class ShowsController : Controller
     {
         /// <summary>
-        /// Gets or sets the shows provider.
+        /// Gets or sets the shows reader.
         /// </summary>
         [InjectService]
-        public IShowsProvider ShowsProvider { get; set; }
+        public IShowsReader ShowsReader { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier service.
@@ -50,8 +49,8 @@ namespace Website.Api.Shows
         [ProducesResponseType(typeof(ShowHeaderModel[]), (int)HttpStatusCode.OK)]
         public IActionResult GetAll()
         {
-            var details = ShowsProvider.GetAllShows();
-            var result = details.Select(Mapper.Map<ShowWithDetailsModel>).ToArray();
+            var details = ShowsReader.GetAllShows();
+            var result = details.Select(Mapper.Map<ShowHeader>).ToArray();
             return new ObjectResult(result);
         }
 
@@ -70,7 +69,7 @@ namespace Website.Api.Shows
         {
             try
             {
-                var show = ShowsProvider.GetShowById(showId);
+                var show = ShowsReader.GetShowById(showId);
                 return new ObjectResult(show);
             }
             catch (EntityNotFoundException<ShowWithDetails>)
@@ -121,6 +120,7 @@ namespace Website.Api.Shows
         public static void ConfigureMapper(IMapperConfigurationExpression cfg)
         {
             cfg.CreateMap<ShowWithDetails, ShowWithDetailsModel>();
+            cfg.CreateMap<ShowHeader, ShowHeaderModel>();
 
             cfg.CreateMap<AddShowModel, AddShowCommand>();
         }

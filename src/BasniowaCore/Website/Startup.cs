@@ -9,8 +9,8 @@ using Common.Cqrs;
 using Common.Startup;
 using DataAccess;
 using DataAccess.UniqueId;
-using Logic;
 using Logic.Services;
+using Logic.Shows;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -96,7 +96,7 @@ namespace Website
                 .As<IUniqueIdService>()
                 .SingleInstance();
             builder.RegisterType<DateTimeService>().As<IDateTimeService>().SingleInstance();
-            builder.RegisterType<ShowsProvider>().As<IShowsProvider>().InstancePerDependency();
+            builder.RegisterType<ShowsReader>().As<IShowsReader>().InstancePerDependency();
 
             builder.RegisterAssemblyTypes(Assembly.Load(new AssemblyName("Logic")))
                 .AsClosedTypesOf(typeof(IHandler<>))
