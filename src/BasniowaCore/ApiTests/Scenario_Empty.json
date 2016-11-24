@@ -1,0 +1,80 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Responses on clean environment",
+		"_postman_id": "c2bc28e8-fe97-56c6-f8c6-0db8dd68927a",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Empty list of all shows",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var jsonData = JSON.parse(responseBody);",
+							"tests[\"Result is an empty array\"] = (jsonData instanceof Array) && (jsonData.length === 0 );",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{URL}}/api/Shows",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Get a non-existing show",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 404\"] = responseCode.code === 404;",
+							"",
+							"tests[\"Body is empty\"] = responseBody === \"\";"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "{{URL}}/api/Shows/1",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
