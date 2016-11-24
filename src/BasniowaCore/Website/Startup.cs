@@ -160,8 +160,12 @@ namespace Website
             app.UseMvc();
             app.UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new[] { "index.htm" } });
             app.UseStaticFiles();
-            app.UseSwagger();
-            app.UseSwaggerUi();
+            
+            if (env.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUi();
+            }
 
             Mapper.Initialize(ConfigureMapper);
         }
