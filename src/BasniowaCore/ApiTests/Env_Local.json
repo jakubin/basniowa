@@ -1,0 +1,14 @@
+{
+	"id": "6eee51a3-17ad-3cef-b8d8-178de2ca78b5",
+	"name": "Basniowa (local)",
+	"team": null,
+	"timestamp": 1480021346106,
+	"values": [
+		{
+			"enabled": true,
+			"key": "URL",
+			"type": "text",
+			"value": "http://localhost:5000"
+		}
+	]
+}
