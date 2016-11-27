@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Common;
+using Common.CodeAnalysis;
 
 namespace DataAccess.UniqueId
 {
@@ -11,6 +12,7 @@ namespace DataAccess.UniqueId
     /// Implementation of <see cref="IUniqueIdProvider"/> using SQL stored procedure.
     /// </summary>
     /// <seealso cref="DataAccess.UniqueId.IUniqueIdProvider" />
+    [ExcludeFromCodeCoverage]
     public class SqlUniqueIdProvider : IUniqueIdProvider
     {
         private readonly string _connectionString;
