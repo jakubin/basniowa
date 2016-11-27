@@ -31,6 +31,21 @@ namespace Logic.Tests.Services
             return new BufferingUniqueIdService(UniqueIdProvider, prefetchCount);
         }
 
+        [Fact(DisplayName = nameof(BufferingUniqueIdService) + ": GenerateIds(0) should return empty list and do not pre-fetch.")]
+        public async Task ZeroIdsGeneration()
+        {
+            // arrange
+            using (var service = Create(1))
+            {
+                // act
+                var actualIds = await service.GenerateIds(0);
+
+                // assert
+                actualIds.Should().BeEmpty();
+                Mock.Get(UniqueIdProvider).Verify(x => x.GetNextIds(It.IsAny<int>()), Times.Never);
+            }
+        }
+
         [Fact(DisplayName = nameof(BufferingUniqueIdService) + ": GenerateId() should provide ID from source when pre-fetching is off.")]
         public async Task SingleIdGenerationWithoutPrefetch()
         {
