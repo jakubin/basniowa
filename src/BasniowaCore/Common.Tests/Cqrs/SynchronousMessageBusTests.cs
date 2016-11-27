@@ -33,7 +33,7 @@ namespace Common.Tests.Cqrs
             Assert.Throws<ArgumentNullException>("handlerResolver", () => CreateBus());
         }
 
-        [Fact(DisplayName = nameof(SynchronousMessageBus) + ": PublishCommand should fail when no command handlers are available.")]
+        [Fact(DisplayName = nameof(SynchronousMessageBus) + ": Send should fail when no command handlers are available.")]
         public async Task Publish_Command_No_Handlers()
         {
             // arrange
@@ -43,10 +43,10 @@ namespace Common.Tests.Cqrs
 
             // act & assert
             await Assert.ThrowsAsync<InvalidOperationException>(
-                async () => { await bus.PublishCommand(command); });
+                async () => { await bus.Send(command); });
         }
 
-        [Fact(DisplayName = nameof(SynchronousMessageBus) + ": PublishCommand should fail when multiple command handlers are available.")]
+        [Fact(DisplayName = nameof(SynchronousMessageBus) + ": Send should fail when multiple command handlers are available.")]
         public async Task Publish_Command_Multiple_Handlers()
         {
             // arrange
@@ -58,10 +58,10 @@ namespace Common.Tests.Cqrs
 
             // act & assert
             await Assert.ThrowsAsync<InvalidOperationException>(
-                async () => { await bus.PublishCommand(command); });
+                async () => { await bus.Send(command); });
         }
 
-        [Fact(DisplayName = nameof(SynchronousMessageBus) + ": PublishCommand should call single handler's Handle method.")]
+        [Fact(DisplayName = nameof(SynchronousMessageBus) + ": Send should call single handler's Handle method.")]
         public async Task Publish_Command_Single_Handler()
         {
             // arrange
@@ -77,7 +77,7 @@ namespace Common.Tests.Cqrs
             var bus = CreateBus();
 
             // act
-            await bus.PublishCommand(command);
+            await bus.Send(command);
 
             // assert
             handlerMock.Verify();
@@ -100,7 +100,7 @@ namespace Common.Tests.Cqrs
             var bus = CreateBus();
 
             // act 1
-            var publishTask = bus.PublishCommand(command);
+            var publishTask = bus.Send(command);
             // assert 1
             handlerMock.Verify();
             publishTask.IsCompleted.Should().Be(false);
@@ -111,7 +111,7 @@ namespace Common.Tests.Cqrs
             await publishTask;
         }
 
-        [Fact(DisplayName = nameof(SynchronousMessageBus) + ": PublishEvent should silently continue when no event handlers are available.")]
+        [Fact(DisplayName = nameof(SynchronousMessageBus) + ": Publish should silently continue when no event handlers are available.")]
         public async Task Publish_Event_No_Handlers()
         {
             // arrange
@@ -120,10 +120,10 @@ namespace Common.Tests.Cqrs
             var bus = CreateBus();
 
             // act & assert
-            await bus.PublishEvent(@event);
+            await bus.Publish(@event);
         }
 
-        [Fact(DisplayName = nameof(SynchronousMessageBus) + ": PublishEvent should call all event handlers.")]
+        [Fact(DisplayName = nameof(SynchronousMessageBus) + ": Publish should call all event handlers.")]
         public async Task Publish_Event_Multiple_Handlers()
         {
             // arrange
@@ -141,7 +141,7 @@ namespace Common.Tests.Cqrs
             var bus = CreateBus();
 
             // act
-            await bus.PublishEvent(@event);
+            await bus.Publish(@event);
 
             // assert
             handler1.Verify();
@@ -162,7 +162,7 @@ namespace Common.Tests.Cqrs
             var bus = CreateBus();
 
             // act
-            await bus.PublishEvent(@event); // should not throw
+            await bus.Publish(@event); // should not throw
 
             // assert
             handler.Verify();
@@ -185,7 +185,7 @@ namespace Common.Tests.Cqrs
             var bus = CreateBus();
 
             // act 1
-            var publishTask = bus.PublishEvent(@event);
+            var publishTask = bus.Publish(@event);
             // assert 1
             handlerMock.Verify();
             publishTask.IsCompleted.Should().Be(false);

@@ -18,6 +18,6 @@ namespace Common.Cqrs
         /// Any exceptions raised during event processing will not surface this API.
         /// Events should be published only within command and event handlers.
         /// </remarks>
-        Task PublishEvent<T>(T @event) where T : IEvent;
+        Task Publish<T>(T @event) where T : IEvent;
     }
 }

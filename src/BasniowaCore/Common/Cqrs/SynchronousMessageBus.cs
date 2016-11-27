@@ -5,13 +5,18 @@ using System.Threading.Tasks;
 namespace Common.Cqrs
 {
     /// <summary>
-    /// Command publisher implementation that executes the command handler and then
-    /// synchronously executes handlers for all raised events.
+    /// Synchronous, in-process implementation of a message bus.
     /// </summary>
-    /// <seealso cref="ICommandPublisher" />
-    public class SynchronousMessageBus : ICommandPublisher, IEventPublisher
+    /// <seealso cref="IMessageBus" />
+    public class SynchronousMessageBus : IMessageBus
     {
         private IHandlerResolver _handlerResolver;
+
+        private MessageProcessingChain _commandHandlerChain = new MessageProcessingChain();
+
+        private MessageProcessingChain _eventPublicationChain = new MessageProcessingChain();
+
+        private MessageProcessingChain _eventHandlerChain = new MessageProcessingChain();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SynchronousMessageBus"/> class.
@@ -24,29 +29,14 @@ namespace Common.Cqrs
             _handlerResolver = handlerResolver;
         }
 
+        #region Sending commands
+
         /// <inheritdoc/>
-        public async Task PublishCommand<T>(T command) where T : ICommand
+        public async Task Send<T>(T command) where T : ICommand
         {
             var handler = ResolveCommandHandler<T>();
-            await handler.Handle(command);
-        }
-
-        /// <inheritdoc/>
-        public async Task PublishEvent<T>(T @event) where T : IEvent
-        {
-            var handlers = _handlerResolver.Resolve<T>();
-
-            foreach (var handler in handlers)
-            {
-                try
-                {
-                    await handler.Handle(@event);
-                }
-                catch (Exception)
-                {
-                    // TODO log
-                }
-            }
+            var context = MessageProcessingContext.Create(command, handler);
+            await _commandHandlerChain.Process(context);
         }
 
         private IHandler<T> ResolveCommandHandler<T>() where T : ICommand
@@ -67,5 +57,59 @@ namespace Common.Cqrs
             var handler = handlers.Single();
             return handler;
         }
+
+        #endregion
+
+        #region Publishing events
+
+        /// <inheritdoc/>
+        public async Task Publish<T>(T @event) where T : IEvent
+        {
+            var context = MessageProcessingContext.Create(
+                @event,
+                () => PublishToHandlers(@event));
+            await _eventPublicationChain.Process(context);
+        }
+
+        private async Task PublishToHandlers<T>(T @event) where T : IEvent
+        {
+            var handlers = _handlerResolver.Resolve<T>();
+            foreach (var handler in handlers)
+            {
+                try
+                {
+                    var context = MessageProcessingContext.Create(@event, handler);
+                    await _eventHandlerChain.Process(context);
+                }
+                catch 
+                {
+                    // ignoring exceptions in handlers by design
+                }
+            }
+        }
+
+        #endregion
+
+        #region Message handling chain
+
+        /// <inheritdoc/>
+        public void AddCommandHandlerProcessor(IMessageProcessor processor)
+        {
+            _commandHandlerChain.AddProcessor(processor);
+        }
+
+        /// <inheritdoc/>
+        public void AddEventPublicationProcessor(IMessageProcessor processor)
+        {
+            _eventPublicationChain.AddProcessor(processor);
+        }
+
+        /// <inheritdoc/>
+        public void AddEventHandlerProcessor(IMessageProcessor processor)
+        {
+            _eventHandlerChain.AddProcessor(processor);
+        }
+
+        #endregion
     }
 }

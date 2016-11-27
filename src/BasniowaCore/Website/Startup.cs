@@ -87,7 +87,7 @@ namespace Website
 
             builder.RegisterType<ServiceProviderHandlerResolver>().As<IHandlerResolver>().SingleInstance();
             builder.RegisterType<SynchronousMessageBus>()
-                .As<ICommandPublisher>()
+                .As<ICommandSender>()
                 .As<IEventPublisher>()
                 .SingleInstance();
 

@@ -90,7 +90,7 @@ namespace Logic.Tests.Shows
             };
             ShowCreated actualEvent = null;
             Mock.Get(EventPublisher)
-                .Setup(x => x.PublishEvent(It.IsAny<ShowCreated>()))
+                .Setup(x => x.Publish(It.IsAny<ShowCreated>()))
                 .Returns(Task.CompletedTask)
                 .Callback((ShowCreated @event) => 
                 {

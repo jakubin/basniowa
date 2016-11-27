@@ -35,10 +35,10 @@ namespace Website.Api.Shows
         public IUniqueIdService IdService { get; set; }
 
         /// <summary>
-        /// Gets or sets the command publisher.
+        /// Gets or sets the command sender.
         /// </summary>
         [InjectService]
-        public ICommandPublisher CommandPublisher { get; set; }
+        public ICommandSender CommandSender { get; set; }
 
         /// <summary>
         /// Gets all shows.
@@ -102,7 +102,7 @@ namespace Website.Api.Shows
             command.Id = await IdService.GenerateId();
             command.UserName = User.Identity.Name;
 
-            await CommandPublisher.PublishCommand(command);
+            await CommandSender.Send(command);
 
             var result = new IdResult
             {
