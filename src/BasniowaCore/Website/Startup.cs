@@ -18,6 +18,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Serilog;
 using Website.Infrastructure;
 
 namespace Website
@@ -156,10 +157,12 @@ namespace Website
         /// <param name="loggerFactory">The logger factory.</param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            var loggerConfiguration = new LoggerConfiguration()
+                .ReadFrom.Configuration(Configuration)
+                .WriteTo.LiterateConsole();
+            loggerFactory.AddSerilog(loggerConfiguration.CreateLogger());
 
-            app.UseCqrsCommandLogging();
+            app.UseCqrsLogging();
             app.ConfigureJwtBearerAuthentication();
             app.UseMvc();
             app.UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new[] { "index.htm" } });
