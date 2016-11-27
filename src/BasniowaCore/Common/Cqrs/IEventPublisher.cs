@@ -15,7 +15,9 @@ namespace Common.Cqrs
         /// <returns>Task representing the operation of event registration; not necessarily event handling.</returns>
         /// <remarks>
         /// You should not assume that the event will be executed immediately.
-        /// Any exceptions raised during event processing will not surface this API.
+        /// Exceptions raised while publishing the event (but before it's dispatched to handlers)
+        /// will surface this API.
+        /// Any exceptions raised during event handling will not surface this API.
         /// Events should be published only within command and event handlers.
         /// </remarks>
         Task Publish<T>(T @event) where T : IEvent;

@@ -89,6 +89,9 @@ namespace Website
             builder.RegisterType<SynchronousMessageBus>()
                 .As<ICommandSender>()
                 .As<IEventPublisher>()
+                .As<IMessageBus>()
+                .As<ICommandBus>()
+                .As<IEventBus>()
                 .SingleInstance();
 
             builder
@@ -156,6 +159,7 @@ namespace Website
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            app.UseCqrsCommandLogging();
             app.ConfigureJwtBearerAuthentication();
             app.UseMvc();
             app.UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new[] { "index.htm" } });
