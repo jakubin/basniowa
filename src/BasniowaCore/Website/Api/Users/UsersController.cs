@@ -1,7 +1,8 @@
-﻿using System.Net;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Website.Infrastructure;
+using Website.Infrastructure.Helpers;
+using Website.Infrastructure.Jwt;
 
 namespace Website.Api.Users
 {
@@ -10,6 +11,7 @@ namespace Website.Api.Users
     /// </summary>
     /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
     [Route("api/[controller]")]
+    [Produces(ContentTypes.ApplicationJson)]
     public class UsersController : Controller
     {
         /// <summary>
@@ -23,18 +25,15 @@ namespace Website.Api.Users
         /// </summary>
         /// <param name="logon">The logon credentials.</param>
         /// <returns>Object with token.</returns>
-        /// <response code="201">Returns logon result with JWT token.</response>
+        /// <response code="200">When authentication succeeds, returns logon result with JWT token.</response>
         /// <response code="400">When request is invalid.</response>
         [Route("authenticate")]
         [HttpPost]
-        [ProducesResponseType(typeof(LoggedOnModel), (int)HttpStatusCode.Created)]
-        public IActionResult Authenticate([FromBody]UserLogonModel logon)
+        public Task<LoggedOnModel> Authenticate([FromBody]UserLogonModel logon)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            ModelState.ThrowIfNotValid();
 
+            // TODO: provide real authentication
             var token = TokenProvider.CreateToken(logon.UserName);
             var model = new LoggedOnModel
             {
@@ -42,7 +41,7 @@ namespace Website.Api.Users
                 Token = token
             };
 
-            return new ObjectResult(model) { StatusCode = StatusCodes.Status201Created };
+            return Task.FromResult(model);
         }
     }
 }

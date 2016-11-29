@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Common.CodeAnalysis;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 
@@ -7,6 +8,7 @@ namespace Website
     /// <summary>
     /// Entry point to the application.
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class Program
     {
         /// <summary>

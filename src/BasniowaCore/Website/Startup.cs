@@ -20,6 +20,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Website.Infrastructure;
+using Website.Infrastructure.ErrorHandling;
+using Website.Infrastructure.Jwt;
+using Website.Infrastructure.Swagger;
 
 namespace Website
 {
@@ -60,7 +63,10 @@ namespace Website
             // Add framework services.
             services.AddDataProtection();
             services.AddOptions();
-            services.AddMvc();
+            services.AddMvc(options =>
+            {
+                options.Filters.Add(typeof(HttpErrorFilter));
+            });
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(options =>
             {
