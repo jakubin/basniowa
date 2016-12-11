@@ -32,14 +32,14 @@ namespace Logic.Common.Logging
             {
                 _logger.LogInformation(
                     LoggingEvents.EventPublishing,
-                    "Event {MessageType} is being published",
+                    "Event {MessageType} is being published.",
                     context.Message.GetType().Name);
 
                 await next(context);
 
                 _logger.LogDebug(
                     LoggingEvents.EventPublished,
-                    "Event {MessageType} was published successfully",
+                    "Event {MessageType} was published successfully.",
                     context.Message.GetType().Name);
             }
             catch (Exception ex)
@@ -47,7 +47,7 @@ namespace Logic.Common.Logging
                 _logger.LogError(
                     LoggingEvents.EventPublishingException,
                     ex,
-                    "Publication of event {MessageType} resulted with an exception",
+                    "Publication of event {MessageType} resulted with an exception.",
                     context.Message.GetType().Name);
                 throw;
             }

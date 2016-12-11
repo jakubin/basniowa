@@ -32,7 +32,7 @@ namespace Logic.Common.Logging
             {
                 _logger.LogInformation(
                     LoggingEvents.EventHandling,
-                    "Event {MessageType} will be handled by {HandlerType}",
+                    "Event {MessageType} will be handled by {HandlerType}.",
                     context.Message.GetType().Name,
                     context.Handler?.GetType().Name);
 
@@ -40,7 +40,7 @@ namespace Logic.Common.Logging
 
                 _logger.LogInformation(
                     LoggingEvents.EventHandled,
-                    "Event {MessageType} was successfully handled by {HandlerType}",
+                    "Event {MessageType} was successfully handled by {HandlerType}.",
                     context.Message.GetType().Name,
                     context.Handler?.GetType().Name);
             }
@@ -49,7 +49,7 @@ namespace Logic.Common.Logging
                 _logger.LogError(
                     LoggingEvents.EventHandlingException,
                     ex,
-                    "Processing of event {MessageType} resulted with an exception",
+                    "Processing of event {MessageType} resulted with an exception.",
                     context.Message.GetType().Name);
                 throw;
             }

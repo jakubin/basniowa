@@ -13,7 +13,7 @@
                 <ModulePath>.*\\website\.dll$</ModulePath>
               </Include>
               <Exclude>
-                <ModulePath>.*\.tests.dll</ModulePath>
+                <ModulePath>.*\.tests\.dll$</ModulePath>
               </Exclude>
             </ModulePaths>
             <Attributes>

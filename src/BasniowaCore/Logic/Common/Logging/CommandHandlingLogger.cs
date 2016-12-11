@@ -32,25 +32,26 @@ namespace Logic.Common.Logging
             {
                 _logger.LogInformation(
                     LoggingEvents.CommandHandling,
-                    "Command {MessageType} will be handled by {HandlerType}",
+                    "Command {MessageType} will be handled by {HandlerType}.",
                     context.Message.GetType().Name,
-                    context.Handler?.GetType().Name);
+                    context.Handler.GetType().Name);
 
                 await next(context);
 
                 _logger.LogInformation(
                     LoggingEvents.CommandHandled,
-                    "Command {MessageType} will was successfully handled by {HandlerType}",
+                    "Command {MessageType} was successfully handled by {HandlerType}.",
                     context.Message.GetType().Name,
-                    context.Handler?.GetType().Name);
+                    context.Handler.GetType().Name);
             }
             catch (Exception ex)
             {
                 _logger.LogInformation(
                     LoggingEvents.CommandHandlingException,
                     ex,
-                    "Processing of command {MessageType} resulted with an exception",
-                    context.Message.GetType().Name);
+                    "Processing of command {MessageType} by handler {HandlerType} resulted with an exception.",
+                    context.Message.GetType().Name,
+                    context.Handler.GetType().Name);
                 throw;
             }
         }
