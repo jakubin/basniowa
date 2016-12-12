@@ -10,6 +10,7 @@ using Logic.Shows;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Infrastructure;
+using Website.Infrastructure.ErrorHandling;
 using Website.Models;
 
 namespace Website.Api.Shows
@@ -41,17 +42,22 @@ namespace Website.Api.Shows
         public ICommandSender CommandSender { get; set; }
 
         /// <summary>
+        /// Gets or sets the mapper.
+        /// </summary>
+        [InjectService]
+        public IMapper Mapper { get; set; }
+
+        /// <summary>
         /// Gets all shows.
         /// </summary>
         /// <returns>List of all shows with details.</returns>
         /// <response code="200">Returns all shows main information.</response>
         [HttpGet]
-        [ProducesResponseType(typeof(ShowHeaderModel[]), (int)HttpStatusCode.OK)]
-        public IActionResult GetAll()
+        public ShowHeaderModel[] GetAll()
         {
             var details = ShowsReader.GetAllShows();
-            var result = details.Select(Mapper.Map<ShowHeader>).ToArray();
-            return new ObjectResult(result);
+            var result = details.Select(Mapper.Map<ShowHeaderModel>).ToArray();
+            return result;
         }
 
         /// <summary>
@@ -63,18 +69,17 @@ namespace Website.Api.Shows
         /// <response code="404">When show of specified ID doesn't exist.</response>
         [HttpGet]
         [Route("{showId}")]
-        [ProducesResponseType(typeof(ShowWithDetailsModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        public IActionResult GetById(long showId)
+        public ShowWithDetailsModel GetById(long showId)
         {
             try
             {
                 var show = ShowsReader.GetShowById(showId);
-                return new ObjectResult(show);
+                return Mapper.Map<ShowWithDetailsModel>(show);
             }
             catch (EntityNotFoundException<ShowWithDetails>)
             {
-                return NotFound();
+                throw new HttpErrorException(NotFound());
             }
         }
 

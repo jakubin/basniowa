@@ -88,6 +88,12 @@ namespace Website
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
+
+            var mapperConfig = new MapperConfiguration(ConfigureMapper);
+            builder
+                .Register(c => new Mapper(mapperConfig))
+                .As<IMapper>()
+                .SingleInstance();
             
             builder.RegisterType<DbContextFactory>().As<IDbContextFactory>().SingleInstance();
             RegisterUniqueIdProvider(builder);
@@ -179,8 +185,6 @@ namespace Website
                 app.UseSwagger();
                 app.UseSwaggerUi();
             }
-
-            Mapper.Initialize(ConfigureMapper);
         }
     }
 }

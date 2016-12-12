@@ -8,7 +8,7 @@ using Website.Infrastructure.ErrorHandling;
 using Website.Infrastructure.Jwt;
 using Xunit;
 
-namespace Tests.Api.Shows
+namespace Tests.Api.Users
 {
     public class UsersControllerTests
     {
