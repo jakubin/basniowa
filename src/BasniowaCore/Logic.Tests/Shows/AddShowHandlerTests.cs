@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Common.Cqrs;
-using DataAccess;
 using FluentAssertions;
 using Logic.Services;
 using Logic.Shows;
 using Logic.Tests.Helpers;
 using Microsoft.EntityFrameworkCore;
-using Moq;
 using Xunit;
 
 namespace Logic.Tests.Shows
@@ -18,46 +15,29 @@ namespace Logic.Tests.Shows
     {
         private IUniqueIdService IdService { get; set; }
 
-        private IEventPublisher EventPublisher { get; set; }
+        private TestEventPublisher EventPublisher { get; set; }
 
         private IDateTimeService DateTimeService { get; set; }
 
         private IDbContextFactory DbContextFactory { get; set; }
 
-        private volatile string _dbName;
+        private InMemoryDb InMemoryDb { get; set; }
 
         public AddShowHandlerTests()
         {
             IdService = new TestUniqueIdService();
 
-            EventPublisher = Mock.Of<IEventPublisher>();
+            EventPublisher = new TestEventPublisher();
 
             DateTimeService = new TestDateTimeService();
 
-            DbContextFactory = Mock.Of<IDbContextFactory>();
-            Mock.Get(DbContextFactory).Setup(x => x.Create()).Returns(CreateInMemoryDb);
+            InMemoryDb = new InMemoryDb();
+            DbContextFactory = InMemoryDb;
         }
 
         public void Dispose()
         {
-            if (_dbName != null)
-            {
-                var db = CreateInMemoryDb();
-                db.Database.EnsureDeleted();
-            }
-        }
-
-        public TheaterDb CreateInMemoryDb()
-        {
-            if (_dbName == null)
-            {
-                _dbName = Guid.NewGuid().ToString();
-            }
-
-            var builder = new DbContextOptionsBuilder<TheaterDb>()
-                .UseInMemoryDatabase(_dbName);
-
-            return new TheaterDb(builder.Options);
+            InMemoryDb.Dispose();
         }
 
         public AddShowHandler CreateHandler()
@@ -88,22 +68,13 @@ namespace Logic.Tests.Shows
                     ["Prop2"] = "Val2",
                 }
             };
-            ShowCreated actualEvent = null;
-            Mock.Get(EventPublisher)
-                .Setup(x => x.Publish(It.IsAny<ShowCreated>()))
-                .Returns(Task.CompletedTask)
-                .Callback((ShowCreated @event) => 
-                {
-                    actualEvent = @event;
-                })
-                .Verifiable();
             var handler = CreateHandler();
 
             // act
             await handler.Handle(command);
 
             // assert
-            var db = CreateInMemoryDb();
+            var db = InMemoryDb.Create();
             var actualShow = await db.Shows.SingleAsync();
             var actualProperties = await db.ShowProperties.ToListAsync();
 
@@ -126,7 +97,7 @@ namespace Logic.Tests.Shows
                 .Should().HaveSameCount(actualProperties, "Show property IDs should be unique.")
                 .And.Should().NotBe(command.Id);
 
-            actualEvent.Should().NotBeNull();
+            var actualEvent = EventPublisher.PublishedEvents.Cast<ShowCreated>().Single();
             actualEvent.Id.Should().Be(command.Id);
         }
     }

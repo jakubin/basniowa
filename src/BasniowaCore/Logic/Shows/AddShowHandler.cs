@@ -36,7 +36,7 @@ namespace Logic.Shows
         public async Task Handle(AddShowCommand message)
         {
             var utcNow = DateTimeService.UtcNow;
-            var show = new Show()
+            var show = new Show
             {
                 Id = message.Id,
                 Title = message.Title,
