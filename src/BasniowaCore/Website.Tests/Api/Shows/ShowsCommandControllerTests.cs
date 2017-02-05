@@ -1,4 +1,5 @@
-﻿using System.Security.Principal;
+﻿using System.Collections.Generic;
+using System.Security.Principal;
 using System.Threading.Tasks;
 using AutoMapper;
 using Common.Cqrs;
@@ -107,6 +108,84 @@ namespace Tests.Api.Shows
             actualException.ActionResult.Should().BeOfType<NotFoundResult>();
         }
 
+
+        #endregion
+
+        #region Update tests
+
+        [Fact]
+        public async Task Update_Successful()
+        {
+            var model = new UpdateShowModel
+            {
+                ShowId = 10,
+                Title = "1",
+                Subtitle = "2",
+                Description = "3",
+                Properties = new Dictionary<string, string>
+                {
+                    ["P1"] = "V1"
+                }
+            };
+            var controller = Create();
+            UpdateShowCommand command = null;
+            Mock.Get(CommandSender)
+                .Setup(x => x.Send(It.IsAny<UpdateShowCommand>()))
+                .Callback<UpdateShowCommand>(c => { command = c; })
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            await controller.Update(model);
+
+            Mock.Get(CommandSender).Verify();
+            command.Should().NotBeNull();
+            command.ShowId.Should().Be(10L);
+            command.UserName.Should().Be(UserName);
+            command.Title.Should().Be(model.Title);
+            command.Subtitle.Should().Be(model.Subtitle);
+            command.Description.Should().Be(model.Description);
+            command.Properties.ShouldBeEquivalentTo(model.Properties);
+        }
+
+        [Fact]
+        public async Task Update_BadModel()
+        {
+            var model = new UpdateShowModel();
+            var controller = Create();
+            controller.ModelState.AddModelError("key", "error");
+
+            var exception = await Assert.ThrowsAsync<HttpErrorException>(
+                () => controller.Update(model));
+
+            exception.ActionResult.Should().BeOfType<BadRequestObjectResult>();
+        }
+
+        [Fact]
+        public async Task Update_NotFound()
+        {
+            var model = new UpdateShowModel
+            {
+                ShowId = 10,
+                Title = "1",
+                Subtitle = "2",
+                Description = "3",
+                Properties = new Dictionary<string, string>
+                {
+                    ["P1"] = "V1"
+                }
+            };
+            var controller = Create();
+            var exception = new EntityNotFoundException<Show>("10");
+            Mock.Get(CommandSender)
+                .Setup(x => x.Send(It.IsAny<UpdateShowCommand>()))
+                .Returns(Task.FromException(exception));
+
+            var actualException =
+                await Assert.ThrowsAsync<HttpErrorException>(
+                    () => controller.Update(model));
+
+            actualException.ActionResult.Should().BeOfType<NotFoundResult>();
+        }
 
         #endregion
     }

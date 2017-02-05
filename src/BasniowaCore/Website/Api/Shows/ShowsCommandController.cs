@@ -62,26 +62,58 @@ namespace Website.Api.Shows
             var command = new AddShowCommand();
             Mapper.Map(commandModel, command);
 
-            command.Id = await IdService.GenerateId();
+            command.ShowId = await IdService.GenerateId();
             command.UserName = User.Identity.Name;
 
             await CommandSender.Send(command);
 
             var result = new ShowAddedModel
             {
-                ShowId = command.Id
+                ShowId = command.ShowId
             };
 
             return result;
         }
 
         /// <summary>
+        /// Updates an existing show.
+        /// </summary>
+        /// <param name="commandModel">Contains information about the show to update.</param>
+        /// <response code="200">Show has been updated.</response>
+        /// <response code="400">Request is invalid or doesn't pass validation.</response>
+        /// <response code="404">Show of provided ID doesn't exist or has been deleted.</response>
+        [HttpPost]
+        [Route("commands/update")]
+        [Authorize]
+        [ApiExplorerSettings(GroupName = GroupName)]
+        public async Task Update([FromBody]UpdateShowModel commandModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                throw new HttpErrorException(BadRequest(ModelState));
+            }
+
+            var command = new UpdateShowCommand();
+            Mapper.Map(commandModel, command);
+            command.UserName = User.Identity.Name;
+
+            try
+            {
+                await CommandSender.Send(command);
+            }
+            catch (EntityNotFoundException<DataAccess.Shows.Show>)
+            {
+                throw new HttpErrorException(NotFound());
+            }
+        }
+
+        /// <summary>
         /// Marks an existing show as deleted.
         /// </summary>
         /// <param name="commandModel">Contains information about the show to delete.</param>
-        /// <response code="200">Show has been removed.</response>
-        /// <response code="400">When the request is invalid or doesn't pass validation.</response>
-        /// <response code="404">When show of provided ID doesn't exist.</response>
+        /// <response code="200">Show has been deleted.</response>
+        /// <response code="400">Request is invalid or doesn't pass validation.</response>
+        /// <response code="404">Show of provided ID doesn't exist.</response>
         [HttpPost]
         [Route("commands/delete")]
         [Authorize]
@@ -116,6 +148,7 @@ namespace Website.Api.Shows
         public static void ConfigureMapper(IMapperConfigurationExpression cfg)
         {
             cfg.CreateMap<AddShowModel, AddShowCommand>();
+            cfg.CreateMap<UpdateShowModel, UpdateShowCommand>();
             cfg.CreateMap<DeleteShowModel, DeleteShowCommand>();
         }
     }

@@ -4,9 +4,9 @@ using Common.Cqrs;
 namespace Logic.Shows
 {
     /// <summary>
-    /// Command to add a new show.
+    /// Command to update an existing show.
     /// </summary>
-    public class AddShowCommand : ICommand
+    public class UpdateShowCommand : ICommand
     {
         /// <summary>
         /// Gets or sets the new show ID.

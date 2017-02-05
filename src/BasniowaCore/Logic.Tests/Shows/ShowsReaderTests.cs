@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using DataAccess;
 using DataAccess.Shows;
@@ -55,23 +54,10 @@ namespace Logic.Tests.Shows
         [Fact]
         public void GetAllShows_ReturnsShows()
         {
+            var show = TestData.CreateShow(10);
             using (var db = GetDbContext())
             {
-                db.Shows.Add(new Show
-                {
-                    Id = 1,
-                    Title = "Show",
-                    Description = "Description1",
-                    Subtitle = "Subtitle"
-                });
-                db.ShowProperties.Add(new ShowProperty
-                {
-                    Id = 100,
-                    ShowId = 1,
-                    Name = "Prop1",
-                    Value = "Value1"
-                });
-
+                db.Shows.Add(show);
                 db.SaveChanges();
             }
 
@@ -79,31 +65,18 @@ namespace Logic.Tests.Shows
 
             var all = reader.GetAllShows();
             all.Should().HaveCount(1);
-            all.Select(x => new { x.Id, x.Title, x.Subtitle })
-                .Should().BeEquivalentTo(new { Id = 1L, Title = "Show", Subtitle = "Subtitle" });
+            all.Select(x => new {x.Id, x.Title, x.Subtitle})
+                .Should().BeEquivalentTo(new {show.Id, show.Title, show.Subtitle});
         }
 
         [Fact]
         public void GetAllShows_SkipsDeleted()
         {
+            var show = TestData.CreateShow(10);
+            show.IsDeleted = true;
             using (var db = GetDbContext())
             {
-                db.Shows.Add(new Show
-                {
-                    Id = 1,
-                    Title = "Show",
-                    Description = "Description1",
-                    Subtitle = "Subtitle",
-                    IsDeleted = true
-                });
-                db.ShowProperties.Add(new ShowProperty
-                {
-                    Id = 100,
-                    ShowId = 1,
-                    Name = "Prop1",
-                    Value = "Value1"
-                });
-
+                db.Shows.Add(show);
                 db.SaveChanges();
             }
 
@@ -122,80 +95,66 @@ namespace Logic.Tests.Shows
         {
             using (var db = GetDbContext())
             {
-                db.Shows.Add(new Show
-                {
-                    Id = 1,
-                    Title = "Show",
-                    Description = "Description1",
-                    Subtitle = "Subtitle"
-                });
-                db.ShowProperties.Add(new ShowProperty
-                {
-                    Id = 100,
-                    ShowId = 1,
-                    Name = "Prop1",
-                    Value = "Value1"
-                });
+                db.Shows.Add(TestData.CreateShow(10L));
 
                 db.SaveChanges();
             }
 
             var reader = Create();
 
-            var ex = Assert.Throws<EntityNotFoundException<ShowWithDetails>>(() =>
+            var ex = Assert.Throws<EntityNotFoundException<Show>>(() =>
             {
                 reader.GetShowById(2);
             });
 
-            ex.EntityKey.Should().Be("Id=2");
+            ex.EntityKey.Should().Be("2");
         }
 
         [Fact]
         public void GetShowById_Existing()
         {
+            var show1 = TestData.CreateShow(10);
+            var show2 = TestData.CreateShow(20);
             using (var db = GetDbContext())
             {
-                db.Shows.Add(new Show
-                {
-                    Id = 1,
-                    Title = "Show1",
-                    Description = "Description1",
-                    Subtitle = "Subtitle1"
-                });
-                db.ShowProperties.Add(new ShowProperty
-                {
-                    Id = 100,
-                    ShowId = 1,
-                    Name = "Prop1",
-                    Value = "Value1"
-                });
-
-                db.Shows.Add(new Show
-                {
-                    Id = 2,
-                    Title = "Show2",
-                    Description = "Description2",
-                    Subtitle = "Subtitle2"
-                });
-                db.ShowProperties.Add(new ShowProperty
-                {
-                    Id = 200,
-                    ShowId = 2,
-                    Name = "Prop2",
-                    Value = "Value2"
-                });
-
+                db.Shows.AddRange(show1, show2);
                 db.SaveChanges();
             }
 
             var reader = Create();
 
-            var actual = reader.GetShowById(1);
+            var actual = reader.GetShowById(10);
 
-            new { actual.Id, actual.Title, actual.Subtitle, actual.Description }.Should()
-                .Be(new { Id = 1L, Title = "Show1", Subtitle = "Subtitle1", Description = "Description1" });
+            actual.Id.Should().Be(show1.Id);
+            actual.Title.Should().Be(show1.Title);
+            actual.Subtitle.Should().Be(show1.Subtitle);
+            actual.Description.Should().Be(show1.Description);
 
-            actual.Properties.ShouldBeEquivalentTo(new Dictionary<string, string> { ["Prop1"] = "Value1" });
+            actual.Properties.ShouldBeEquivalentTo(show1.ShowProperties.ToDictionary(x => x.Name, x => x.Value));
+        }
+
+        [Fact]
+        public void GetShowById_ExistingWithDeletedProperties()
+        {
+            var show1 = TestData.CreateShow(10);
+            show1.ShowProperties.First().IsDeleted = true;
+            using (var db = GetDbContext())
+            {
+                db.Shows.Add(show1);
+                db.SaveChanges();
+            }
+
+            var reader = Create();
+
+            var actual = reader.GetShowById(10);
+
+            actual.Id.Should().Be(show1.Id);
+            actual.Title.Should().Be(show1.Title);
+            actual.Subtitle.Should().Be(show1.Subtitle);
+            actual.Description.Should().Be(show1.Description);
+
+            actual.Properties.ShouldBeEquivalentTo(
+                show1.ShowProperties.Where(x => !x.IsDeleted).ToDictionary(x => x.Name, x => x.Value));
         }
 
         [Fact]
@@ -217,12 +176,12 @@ namespace Logic.Tests.Shows
 
             var reader = Create();
 
-            var ex = Assert.Throws<EntityNotFoundException<ShowWithDetails>>(() =>
+            var ex = Assert.Throws<EntityNotFoundException<Show>>(() =>
             {
                 reader.GetShowById(2);
             });
 
-            ex.EntityKey.Should().Be("Id=2");
+            ex.EntityKey.Should().Be("2");
         }
 
         #endregion

@@ -57,7 +57,7 @@ namespace Logic.Tests.Shows
             // arrange
             var command = new AddShowCommand
             {
-                Id = await IdService.GenerateId(),
+                ShowId = await IdService.GenerateId(),
                 Title = "Title",
                 Description = "Description",
                 Subtitle = "Subtitle",
@@ -78,7 +78,7 @@ namespace Logic.Tests.Shows
             var actualShow = await db.Shows.SingleAsync();
             var actualProperties = await db.ShowProperties.ToListAsync();
 
-            actualShow.Id.Should().Be(command.Id);
+            actualShow.Id.Should().Be(command.ShowId);
             actualShow.Title.Should().Be(command.Title);
             actualShow.Description.Should().Be(command.Description);
             actualShow.Subtitle.Should().Be(command.Subtitle);
@@ -95,10 +95,10 @@ namespace Logic.Tests.Shows
                 .Should().BeEquivalentTo(expectedProperties);
             actualProperties.Select(x => x.Id).Distinct()
                 .Should().HaveSameCount(actualProperties, "Show property IDs should be unique.")
-                .And.Should().NotBe(command.Id);
+                .And.Should().NotBe(command.ShowId);
 
-            var actualEvent = EventPublisher.PublishedEvents.Cast<ShowCreated>().Single();
-            actualEvent.Id.Should().Be(command.Id);
+            var actualEvent = EventPublisher.PublishedEvents.Cast<ShowAdded>().Single();
+            actualEvent.ShowId.Should().Be(command.ShowId);
         }
     }
 }

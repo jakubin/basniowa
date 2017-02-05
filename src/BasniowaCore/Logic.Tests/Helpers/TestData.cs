@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using DataAccess.Shows;
 
 namespace Logic.Tests.Helpers
 {
     public static class TestData
     {
-        public static Show CreateShow(long id = 1)
+        public static Show CreateShow(long id = 1, long[] propertyIds = null)
         {
+            propertyIds = propertyIds ?? new[] {id + 1, id + 2};
             return new Show
             {
                 Id = id,
@@ -19,11 +21,9 @@ namespace Logic.Tests.Helpers
                 ModifiedBy = "test",
                 ModifiedUtc = new DateTimeOffset(2016, 1, 1, 15, 23, 23, TimeSpan.Zero),
                 IsDeleted = false,
-                ShowProperties = new List<ShowProperty>
-                {
-                    new ShowProperty { Id = id + 1, Name = "Name1", Value = "Value1", IsDeleted = false },
-                    new ShowProperty { Id = id + 2, Name = "Name2", Value = "Value2", IsDeleted = false },
-                }
+                ShowProperties = propertyIds
+                    .Select(x => new ShowProperty {Id = x, Name = $"Name{x}", Value = $"Value{x}", IsDeleted = false})
+                    .ToList()
             };
         }
     }

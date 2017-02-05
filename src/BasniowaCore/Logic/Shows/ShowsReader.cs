@@ -47,14 +47,15 @@ namespace Logic.Shows
         {
             using (var db = CreateContext())
             {
-                var show = db.Shows.Include(x => x.ShowProperties)
-                .Where(x => !x.IsDeleted)
-                .FirstOrDefault(x => x.Id == showId);
+                var show = db.Shows
+                    .Where(x => !x.IsDeleted)
+                    .FirstOrDefault(x => x.Id == showId);
+                show.ThrowIfNull(showId.ToString());
 
-                if (show == null)
-                {
-                    throw new EntityNotFoundException<ShowWithDetails>($"Id={showId}");
-                }
+                var properties = db.ShowProperties
+                    .Where(x => x.ShowId == showId)
+                    .Where(x => !x.IsDeleted)
+                    .ToDictionary(x => x.Name, x => x.Value);
 
                 return new ShowWithDetails
                 {
@@ -62,7 +63,7 @@ namespace Logic.Shows
                     Title = show.Title,
                     Description = show.Description,
                     Subtitle = show.Subtitle,
-                    Properties = show.ShowProperties.ToDictionary(p => p.Name, p => p.Value)
+                    Properties = properties
                 };
             }
         }

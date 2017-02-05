@@ -38,7 +38,7 @@ namespace Logic.Shows
             var utcNow = DateTimeService.UtcNow;
             var show = new Show
             {
-                Id = message.Id,
+                Id = message.ShowId,
                 Title = message.Title,
                 Subtitle = message.Subtitle,
                 Description = message.Description,
@@ -68,7 +68,7 @@ namespace Logic.Shows
                 await db.SaveChangesAsync();
             }
 
-            await EventPublisher.Publish(new ShowCreated { Id = show.Id });
+            await EventPublisher.Publish(new ShowAdded { ShowId = show.Id });
         }
     }
 }

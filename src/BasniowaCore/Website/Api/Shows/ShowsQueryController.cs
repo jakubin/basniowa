@@ -65,7 +65,7 @@ namespace Website.Api.Shows
                 var show = ShowsReader.GetShowById(showId);
                 return Mapper.Map<ShowWithDetailsModel>(show);
             }
-            catch (EntityNotFoundException<ShowWithDetails>)
+            catch (EntityNotFoundException<DataAccess.Shows.Show>)
             {
                 throw new HttpErrorException(NotFound());
             }
