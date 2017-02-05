@@ -20,7 +20,7 @@ namespace Tests.Api.Shows
 
         public ShowsQueryControllerTests()
         {
-            var config = new MapperConfiguration(ShowsCommandController.ConfigureMapper);
+            var config = new MapperConfiguration(ShowsQueryController.ConfigureMapper);
             Mapper = new Mapper(config);
 
             ShowsReader = Mock.Of<IShowsReader>();
@@ -35,7 +35,7 @@ namespace Tests.Api.Shows
             };
         }
 
-        [Fact(DisplayName = nameof(ShowsCommandController) + ": GetAllShows should return correct list of shows.")]
+        [Fact(DisplayName = nameof(ShowsCommandControllerTests) + ": GetAllShows should return correct list of shows.")]
         public void GetAllShowsSuccessful()
         {
             // arrange
@@ -55,7 +55,7 @@ namespace Tests.Api.Shows
                 shows.Select(x => new { x.Id, x.Title, x.Subtitle }));
         }
 
-        [Fact(DisplayName = nameof(ShowsCommandController) + ": GetById should return an existing show.")]
+        [Fact(DisplayName = nameof(ShowsCommandControllerTests) + ": GetById should return an existing show.")]
         public void GetByIdExisting()
         {
             // arrange
@@ -85,7 +85,7 @@ namespace Tests.Api.Shows
             actual.Properties.ShouldBeEquivalentTo(show.Properties);
         }
 
-        [Fact(DisplayName = nameof(ShowsCommandController) + ": GetById should throw when the show doesn't exist.")]
+        [Fact(DisplayName = nameof(ShowsCommandControllerTests) + ": GetById should throw when the show doesn't exist.")]
         public void GetByIdNonExisting()
         {
             // arrange

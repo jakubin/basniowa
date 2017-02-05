@@ -1,7 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using Common.Cqrs;
 using Common.Startup;
+using Logic.Common;
 using Logic.Services;
 using Logic.Shows;
 using Microsoft.AspNetCore.Authorization;
@@ -79,6 +81,7 @@ namespace Website.Api.Shows
         /// <param name="commandModel">Contains information about the show to delete.</param>
         /// <response code="200">Show has been removed.</response>
         /// <response code="400">When the request is invalid or doesn't pass validation.</response>
+        /// <response code="404">When show of provided ID doesn't exist.</response>
         [HttpPost]
         [Route("commands/delete")]
         [Authorize]
@@ -95,7 +98,14 @@ namespace Website.Api.Shows
 
             command.UserName = User.Identity.Name;
 
-            await CommandSender.Send(command);
+            try
+            {
+                await CommandSender.Send(command);
+            }
+            catch (EntityNotFoundException<DataAccess.Shows.Show>)
+            {
+                throw new HttpErrorException(NotFound());
+            }
         }
 
         /// <summary>

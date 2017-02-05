@@ -78,8 +78,8 @@ namespace Website.Api.Shows
         [MapperStartup]
         public static void ConfigureMapper(IMapperConfigurationExpression cfg)
         {
-            cfg.CreateMap<AddShowModel, AddShowCommand>();
-            cfg.CreateMap<DeleteShowModel, DeleteShowCommand>();
+            cfg.CreateMap<ShowHeader, ShowHeaderModel>();
+            cfg.CreateMap<ShowWithDetails, ShowWithDetailsModel>();
         }
     }
 }
