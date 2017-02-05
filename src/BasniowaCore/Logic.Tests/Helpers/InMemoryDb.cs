@@ -35,14 +35,17 @@ namespace Logic.Tests.Helpers
         }
 
         /// <inheritdoc/>
-        public TheaterDb Create()
+        public TheaterDb Create(bool trackEntities = true)
         {
             _wasCreated = true;
 
             var builder = new DbContextOptionsBuilder<TheaterDb>()
                 .UseInMemoryDatabase(DbName);
 
-            return new TheaterDb(builder.Options);
+            var context = new TheaterDb(builder.Options);
+            context.ChangeTracker.QueryTrackingBehavior =
+                trackEntities ? QueryTrackingBehavior.TrackAll : QueryTrackingBehavior.NoTracking;
+            return context;
         }
 
         /// <summary>

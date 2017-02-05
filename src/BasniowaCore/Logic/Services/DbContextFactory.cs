@@ -1,6 +1,7 @@
 ﻿using System;
 using Common;
 using DataAccess;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Logic.Services
@@ -11,7 +12,7 @@ namespace Logic.Services
     /// </summary>
     public class DbContextFactory : IDbContextFactory
     {
-        private IServiceProvider _serviceProvider;
+        private readonly IServiceProvider _serviceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbContextFactory" /> class.
@@ -25,9 +26,12 @@ namespace Logic.Services
         }
 
         /// <inheritdoc/>
-        public TheaterDb Create()
+        public TheaterDb Create(bool trackEntities = true)
         {
-            return _serviceProvider.GetService<TheaterDb>();
+            var context = _serviceProvider.GetService<TheaterDb>();
+            context.ChangeTracker.QueryTrackingBehavior =
+                trackEntities ? QueryTrackingBehavior.TrackAll : QueryTrackingBehavior.NoTracking;
+            return context;
         }
     }
 }

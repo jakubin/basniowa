@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using DataAccess;
 using Logic.Common;
 using Logic.Services;
 using Microsoft.EntityFrameworkCore;
@@ -16,12 +17,18 @@ namespace Logic.Shows
         /// </summary>
         public IDbContextFactory DbFactory { get; set; }
 
+        private TheaterDb CreateContext()
+        {
+            return DbFactory.Create(trackEntities: false);
+        }
+
         /// <inheritdoc/>
         public IList<ShowHeader> GetAllShows()
         {
-            using (var db = DbFactory.Create())
+            using (var db = CreateContext())
             {
                 var shows = db.Shows
+                    .AsNoTracking()
                     .Where(x => !x.IsDeleted)
                     .Select(x => new ShowHeader
                     {
@@ -38,7 +45,7 @@ namespace Logic.Shows
         /// <inheritdoc/>
         public ShowWithDetails GetShowById(long showId)
         {
-            using (var db = DbFactory.Create())
+            using (var db = CreateContext())
             {
                 var show = db.Shows.Include(x => x.ShowProperties)
                 .Where(x => !x.IsDeleted)
