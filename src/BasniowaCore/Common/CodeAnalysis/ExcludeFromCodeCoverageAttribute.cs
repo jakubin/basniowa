@@ -10,11 +10,5 @@ namespace Common.CodeAnalysis
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event, Inherited = false, AllowMultiple = false)]
     public sealed class ExcludeFromCodeCoverageAttribute : Attribute
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ExcludeFromCodeCoverageAttribute"/> class.
-        /// </summary>
-        public ExcludeFromCodeCoverageAttribute()
-        {
-        }
     }
 }

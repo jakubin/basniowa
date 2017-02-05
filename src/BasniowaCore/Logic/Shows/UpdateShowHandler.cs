@@ -49,11 +49,6 @@ namespace Logic.Shows
 
                 show.ThrowIfNull(message.ShowId.ToString());
 
-                if (show.IsDeleted)
-                {
-                    throw new EntityNotFoundException<Show>(message.ShowId.ToString());
-                }
-
                 show.Title = message.Title;
                 show.Subtitle = message.Subtitle;
                 show.Description = message.Description;
