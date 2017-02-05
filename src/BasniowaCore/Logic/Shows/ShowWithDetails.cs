@@ -10,7 +10,7 @@ namespace Logic.Shows
         /// <summary>
         /// Gets or sets the identifier.
         /// </summary>
-        public long Id { get; set; }
+        public long ShowId { get; set; }
 
         /// <summary>
         /// Gets or sets the title.

@@ -56,7 +56,6 @@ namespace Website.Api.Shows
         /// <response code="404">When show of specified ID doesn't exist.</response>
         [HttpGet]
         [Route("{showId}")]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         [ApiExplorerSettings(GroupName = GroupName)]
         public ShowWithDetailsModel GetById(long showId)
         {

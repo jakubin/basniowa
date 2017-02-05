@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using DataAccess.Shows;
 using FluentAssertions;
 using Logic.Common;
 using Logic.Shows;
@@ -41,8 +42,8 @@ namespace Tests.Api.Shows
             // arrange
             var shows = new List<ShowHeader>
             {
-                new ShowHeader { Id = 1, Title = "T1", Subtitle = "S1" },
-                new ShowHeader { Id = 2, Title = "T2", Subtitle = "S2" },
+                new ShowHeader { ShowId = 1, Title = "T1", Subtitle = "S1" },
+                new ShowHeader { ShowId = 2, Title = "T2", Subtitle = "S2" },
             };
             Mock.Get(ShowsReader).Setup(x => x.GetAllShows()).Returns(shows);
             var controller = Create();
@@ -50,9 +51,9 @@ namespace Tests.Api.Shows
             // act
             var actual = controller.GetAll();
 
-            actual.Select(x => new { x.Id, x.Title, x.Subtitle })
+            actual.Select(x => new { Id = x.ShowId, x.Title, x.Subtitle })
                 .Should().BeEquivalentTo(
-                shows.Select(x => new { x.Id, x.Title, x.Subtitle }));
+                shows.Select(x => new { Id = x.ShowId, x.Title, x.Subtitle }));
         }
 
         [Fact(DisplayName = nameof(ShowsCommandControllerTests) + ": GetById should return an existing show.")]
@@ -62,7 +63,7 @@ namespace Tests.Api.Shows
             long id = 123;
             var show = new ShowWithDetails
             {
-                Id = id,
+                ShowId = id,
                 Title = "T",
                 Subtitle = "S",
                 Description = "D",
@@ -78,7 +79,7 @@ namespace Tests.Api.Shows
             // act
             var actual = controller.GetById(id);
 
-            actual.Id.Should().Be(show.Id);
+            actual.ShowId.Should().Be(show.ShowId);
             actual.Title.Should().Be(show.Title);
             actual.Subtitle.Should().Be(show.Subtitle);
             actual.Description.Should().Be(show.Description);
@@ -90,7 +91,7 @@ namespace Tests.Api.Shows
         {
             // arrange
             long id = 123;
-            Mock.Get(ShowsReader).Setup(x => x.GetShowById(id)).Throws(new EntityNotFoundException<ShowWithDetails>($"Id={id}"));
+            Mock.Get(ShowsReader).Setup(x => x.GetShowById(id)).Throws(new EntityNotFoundException<Show>(id.ToString()));
             var controller = Create();
 
             // act

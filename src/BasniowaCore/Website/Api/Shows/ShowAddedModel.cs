@@ -1,4 +1,6 @@
-﻿namespace Website.Api.Shows
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Website.Api.Shows
 {
     /// <summary>
     /// Contains details about added show.
@@ -6,8 +8,9 @@
     public class ShowAddedModel
     {
         /// <summary>
-        /// Gets or sets the identifier of added show.
+        /// Identifier of added show
         /// </summary>
+        [Required]
         public long ShowId { get; set; }  
     }
 }

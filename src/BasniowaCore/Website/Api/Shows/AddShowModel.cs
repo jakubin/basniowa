@@ -9,26 +9,26 @@ namespace Website.Api.Shows
     public class AddShowModel
     {
         /// <summary>
-        /// Gets or sets the title.
+        /// Show's title
         /// </summary>
         [Required]
         [MaxLength(200)]
         public string Title { get; set; }
 
         /// <summary>
-        /// Gets or sets the subtitle.
+        /// Show's subtitle (usually author or inspiration)
         /// </summary>
         [MaxLength(500)]
         public string Subtitle { get; set; }
 
         /// <summary>
-        /// Gets or sets the description.
+        /// Show's description
         /// </summary>
         [Required]
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the properties.
+        /// Show's properties (director, actors, etc.)
         /// </summary>
         public Dictionary<string, string> Properties { get; set; }
     }

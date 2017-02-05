@@ -65,7 +65,7 @@ namespace Logic.Tests.Shows
 
             var all = reader.GetAllShows();
             all.Should().HaveCount(1);
-            all.Select(x => new {x.Id, x.Title, x.Subtitle})
+            all.Select(x => new {Id = x.ShowId, x.Title, x.Subtitle})
                 .Should().BeEquivalentTo(new {show.Id, show.Title, show.Subtitle});
         }
 
@@ -125,7 +125,7 @@ namespace Logic.Tests.Shows
 
             var actual = reader.GetShowById(10);
 
-            actual.Id.Should().Be(show1.Id);
+            actual.ShowId.Should().Be(show1.Id);
             actual.Title.Should().Be(show1.Title);
             actual.Subtitle.Should().Be(show1.Subtitle);
             actual.Description.Should().Be(show1.Description);
@@ -148,7 +148,7 @@ namespace Logic.Tests.Shows
 
             var actual = reader.GetShowById(10);
 
-            actual.Id.Should().Be(show1.Id);
+            actual.ShowId.Should().Be(show1.Id);
             actual.Title.Should().Be(show1.Title);
             actual.Subtitle.Should().Be(show1.Subtitle);
             actual.Description.Should().Be(show1.Description);

@@ -32,7 +32,7 @@ namespace Logic.Shows
                     .Where(x => !x.IsDeleted)
                     .Select(x => new ShowHeader
                     {
-                        Id = x.Id,
+                        ShowId = x.Id,
                         Title = x.Title,
                         Subtitle = x.Subtitle
                     })
@@ -59,7 +59,7 @@ namespace Logic.Shows
 
                 return new ShowWithDetails
                 {
-                    Id = show.Id,
+                    ShowId = show.Id,
                     Title = show.Title,
                     Description = show.Description,
                     Subtitle = show.Subtitle,

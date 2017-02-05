@@ -10,11 +10,13 @@ namespace Website.Api.Shows
         /// <summary>
         /// Unique ID of the show.
         /// </summary>
-        public long Id { get; set; }
+        [Required]
+        public long ShowId { get; set; }
 
         /// <summary>
         /// Show title.
         /// </summary>
+        [Required]
         public string Title { get; set; }
 
         /// <summary>

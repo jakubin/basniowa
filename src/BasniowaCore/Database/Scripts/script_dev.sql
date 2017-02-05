@@ -92,7 +92,7 @@ CREATE TABLE [shows].[ShowProperties](
 	[IsDeleted] [bit] NOT NULL,
 	CONSTRAINT [PK_ShowProperties] PRIMARY KEY CLUSTERED ([Id] ASC),
 	CONSTRAINT [FK_ShowProperties_Shows] FOREIGN KEY([ShowId]) REFERENCES [shows].[Shows] ([Id]),
-	CONSTRAINT [IX_ShowProperties_Name] UNIQUE NONCLUSTERED (Name)
+	CONSTRAINT [IX_ShowProperties_Name] UNIQUE NONCLUSTERED (ShowId, Name)
 )
 GO
 

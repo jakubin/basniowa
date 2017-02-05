@@ -1,4 +1,6 @@
-﻿namespace Website.Api.Shows
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Website.Api.Shows
 {
     /// <summary>
     /// Model for deleting show.
@@ -6,8 +8,9 @@
     public class DeleteShowModel
     {
         /// <summary>
-        /// Gets the show identifier.
+        /// Identifier of show to delete
         /// </summary>
+        [Required]
         public long ShowId { get; set; }
     }
 }

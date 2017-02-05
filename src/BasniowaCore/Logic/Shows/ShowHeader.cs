@@ -8,7 +8,7 @@
         /// <summary>
         /// Unique ID of the show.
         /// </summary>
-        public long Id { get; set; }
+        public long ShowId { get; set; }
 
         /// <summary>
         /// Show title.
