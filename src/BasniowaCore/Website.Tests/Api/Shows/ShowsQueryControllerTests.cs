@@ -12,30 +12,30 @@ using Xunit;
 
 namespace Tests.Api.Shows
 {
-    public class ShowsControllerTests
+    public class ShowsQueryControllerTests
     {
         public IShowsReader ShowsReader { get; set; }
 
         public IMapper Mapper { get; set; }
 
-        public ShowsControllerTests()
+        public ShowsQueryControllerTests()
         {
-            var config = new MapperConfiguration(cfg => ShowsController.ConfigureMapper(cfg));
+            var config = new MapperConfiguration(ShowsCommandController.ConfigureMapper);
             Mapper = new Mapper(config);
 
             ShowsReader = Mock.Of<IShowsReader>();
         }
 
-        public ShowsController Create()
+        public ShowsQueryController Create()
         {
-            return new ShowsController
+            return new ShowsQueryController
             {
                 ShowsReader = ShowsReader,
                 Mapper = Mapper
             };
         }
 
-        [Fact(DisplayName = nameof(ShowsController) + ": GetAllShows should return correct list of shows.")]
+        [Fact(DisplayName = nameof(ShowsCommandController) + ": GetAllShows should return correct list of shows.")]
         public void GetAllShowsSuccessful()
         {
             // arrange
@@ -55,7 +55,7 @@ namespace Tests.Api.Shows
                 shows.Select(x => new { x.Id, x.Title, x.Subtitle }));
         }
 
-        [Fact(DisplayName = nameof(ShowsController) + ": GetById should return an existing show.")]
+        [Fact(DisplayName = nameof(ShowsCommandController) + ": GetById should return an existing show.")]
         public void GetByIdExisting()
         {
             // arrange
@@ -85,7 +85,7 @@ namespace Tests.Api.Shows
             actual.Properties.ShouldBeEquivalentTo(show.Properties);
         }
 
-        [Fact(DisplayName = nameof(ShowsController) + ": GetById should throw when the show doesn't exist.")]
+        [Fact(DisplayName = nameof(ShowsCommandController) + ": GetById should throw when the show doesn't exist.")]
         public void GetByIdNonExisting()
         {
             // arrange

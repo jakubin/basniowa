@@ -5,7 +5,7 @@ namespace Logic.Shows
     /// <summary>
     /// Command to mark show as deleted.
     /// </summary>
-    public sealed class DeleteShowCommand : IMessage
+    public sealed class DeleteShowCommand : ICommand
     {
         /// <summary>
         /// Gets the show identifier.
