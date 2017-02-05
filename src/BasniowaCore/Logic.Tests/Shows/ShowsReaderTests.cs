@@ -1,89 +1,59 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DataAccess;
 using DataAccess.Shows;
 using FluentAssertions;
 using Logic.Common;
 using Logic.Shows;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
+using Logic.Tests.Helpers;
 using Xunit;
 
 namespace Logic.Tests.Shows
 {
-    public class ShowsReaderTests
+    public class ShowsReaderTests : IDisposable
     {
-        private readonly DbContextOptions<TheaterDb> _options;
+        #region Preparation
+
+        private readonly InMemoryDb _inMemoryDb;
 
         public ShowsReaderTests()
         {
-            var serviceProvider = new ServiceCollection()
-                .AddEntityFrameworkInMemoryDatabase()
-                .BuildServiceProvider();
-
-            var optionsBuilder = new DbContextOptionsBuilder<TheaterDb>()
-                .UseInMemoryDatabase()
-                .UseInternalServiceProvider(serviceProvider);
-
-            _options = optionsBuilder.Options;
+            _inMemoryDb = new InMemoryDb();
         }
 
         private TheaterDb GetDbContext()
         {
-            return new TheaterDb(_options);
+            return _inMemoryDb.Create();
         }
 
-        [Fact(DisplayName = nameof(ShowsReader) + ": GetAllShows() returns correctly empty list")]
-        public void GetAllShowsEmpty()
+        private ShowsReader Create()
         {
-            using (var db = GetDbContext())
+            return new ShowsReader
             {
-                var provider = new ShowsReader(db);
-
-                var all = provider.GetAllShows();
-                all.Should().HaveCount(0);
-            }
+                DbFactory = _inMemoryDb
+            };
         }
 
-        [Fact(DisplayName = nameof(ShowsReader) + ": GetAllShows() returns correctly more shows.")]
-        public void GetShowsHasData()
+        public void Dispose()
         {
-            using (var db = GetDbContext())
-            {
-                db.Shows.Add(new Show
-                {
-                    Id = 1,
-                    Title = "Show",
-                    Description = "Description1",
-                    Subtitle = "Subtitle"
-                });
-                db.ShowProperties.Add(new ShowProperty
-                {
-                    Id = 100,
-                    ShowId = 1,
-                    Name = "Prop1",
-                    Value = "Value1"
-                });
-
-                db.SaveChanges();
-            }
-
-            using (var db = GetDbContext())
-            {
-                var provider = new ShowsReader(db);
-
-                var all = provider.GetAllShows();
-                all.Should().HaveCount(1);
-                all.Select(x => new { x.Id, x.Title, x.Subtitle })
-                    .Should().BeEquivalentTo(new[]
-                    {
-                        new { Id = 1L, Title = "Show", Subtitle = "Subtitle" }
-                    });
-            }
+            _inMemoryDb.Dispose();
         }
 
-        [Fact(DisplayName = nameof(ShowsReader) + ": GetShowById() should throw when no show was not found.")]
-        public void GetShowByIdNotFound()
+        #endregion
+
+        #region GetAllShows tests
+
+        [Fact]
+        public void GetAllShows_Empty()
+        {
+            var reader = Create();
+            var all = reader.GetAllShows();
+            all.Should().HaveCount(0);
+        }
+
+        [Fact]
+        public void GetAllShows_ReturnsShows()
         {
             using (var db = GetDbContext())
             {
@@ -105,21 +75,83 @@ namespace Logic.Tests.Shows
                 db.SaveChanges();
             }
 
-            using (var db = GetDbContext())
-            {
-                var provider = new ShowsReader(db);
+            var reader = Create();
 
-                var ex = Assert.Throws<EntityNotFoundException<ShowWithDetails>>(() =>
-                {
-                    provider.GetShowById(2);
-                });
-
-                ex.EntityKey.Should().Be("Id=2");
-            }
+            var all = reader.GetAllShows();
+            all.Should().HaveCount(1);
+            all.Select(x => new { x.Id, x.Title, x.Subtitle })
+                .Should().BeEquivalentTo(new { Id = 1L, Title = "Show", Subtitle = "Subtitle" });
         }
 
-        [Fact(DisplayName = nameof(ShowsReader) + ": GetShowById() should correctly return an existing show.")]
-        public void GetShowByIdCorrect()
+        [Fact]
+        public void GetAllShows_SkipsDeleted()
+        {
+            using (var db = GetDbContext())
+            {
+                db.Shows.Add(new Show
+                {
+                    Id = 1,
+                    Title = "Show",
+                    Description = "Description1",
+                    Subtitle = "Subtitle",
+                    IsDeleted = true
+                });
+                db.ShowProperties.Add(new ShowProperty
+                {
+                    Id = 100,
+                    ShowId = 1,
+                    Name = "Prop1",
+                    Value = "Value1"
+                });
+
+                db.SaveChanges();
+            }
+
+            var reader = Create();
+
+            var all = reader.GetAllShows();
+            all.Should().HaveCount(0);
+        }
+
+        #endregion
+
+        #region GetShowById tests
+
+        [Fact]
+        public void GetShowById_NotFound()
+        {
+            using (var db = GetDbContext())
+            {
+                db.Shows.Add(new Show
+                {
+                    Id = 1,
+                    Title = "Show",
+                    Description = "Description1",
+                    Subtitle = "Subtitle"
+                });
+                db.ShowProperties.Add(new ShowProperty
+                {
+                    Id = 100,
+                    ShowId = 1,
+                    Name = "Prop1",
+                    Value = "Value1"
+                });
+
+                db.SaveChanges();
+            }
+
+            var reader = Create();
+
+            var ex = Assert.Throws<EntityNotFoundException<ShowWithDetails>>(() =>
+            {
+                reader.GetShowById(2);
+            });
+
+            ex.EntityKey.Should().Be("Id=2");
+        }
+
+        [Fact]
+        public void GetShowById_Existing()
         {
             using (var db = GetDbContext())
             {
@@ -156,17 +188,43 @@ namespace Logic.Tests.Shows
                 db.SaveChanges();
             }
 
+            var reader = Create();
+
+            var actual = reader.GetShowById(1);
+
+            new { actual.Id, actual.Title, actual.Subtitle, actual.Description }.Should()
+                .Be(new { Id = 1L, Title = "Show1", Subtitle = "Subtitle1", Description = "Description1" });
+
+            actual.Properties.ShouldBeEquivalentTo(new Dictionary<string, string> { ["Prop1"] = "Value1" });
+        }
+
+        [Fact]
+        public void GetShowById_Deleted()
+        {
             using (var db = GetDbContext())
             {
-                var provider = new ShowsReader(db);
+                db.Shows.Add(new Show
+                {
+                    Id = 2,
+                    Title = "Show",
+                    Description = "Description1",
+                    Subtitle = "Subtitle",
+                    IsDeleted = true
+                });
 
-                var actual = provider.GetShowById(1);
-
-                new { actual.Id, actual.Title, actual.Subtitle, actual.Description }.Should()
-                    .Be(new { Id = 1L, Title = "Show1", Subtitle = "Subtitle1", Description = "Description1" });
-
-                actual.Properties.ShouldBeEquivalentTo(new Dictionary<string, string> { ["Prop1"] = "Value1" });
+                db.SaveChanges();
             }
+
+            var reader = Create();
+
+            var ex = Assert.Throws<EntityNotFoundException<ShowWithDetails>>(() =>
+            {
+                reader.GetShowById(2);
+            });
+
+            ex.EntityKey.Should().Be("Id=2");
         }
+
+        #endregion
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DataAccess;
 using Logic.Common;
+using Logic.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Logic.Shows
@@ -11,50 +11,53 @@ namespace Logic.Shows
     /// </summary>
     public class ShowsReader : IShowsReader
     {
-        private TheaterDb _db;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="ShowsReader"/> class.
+        /// Gets or sets the database context factory.
         /// </summary>
-        /// <param name="db">The database.</param>
-        public ShowsReader(TheaterDb db)
-        {
-            _db = db;
-        }
+        public IDbContextFactory DbFactory { get; set; }
 
         /// <inheritdoc/>
         public IList<ShowHeader> GetAllShows()
         {
-            var shows = _db.Shows.Select(x => new ShowHeader
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    Subtitle = x.Subtitle
-                })
-                .ToList();
+            using (var db = DbFactory.Create())
+            {
+                var shows = db.Shows
+                    .Where(x => !x.IsDeleted)
+                    .Select(x => new ShowHeader
+                    {
+                        Id = x.Id,
+                        Title = x.Title,
+                        Subtitle = x.Subtitle
+                    })
+                    .ToList();
 
-            return shows;
+                return shows;
+            }
         }
 
         /// <inheritdoc/>
         public ShowWithDetails GetShowById(long showId)
         {
-            var show = _db.Shows.Include(x => x.ShowProperties)
+            using (var db = DbFactory.Create())
+            {
+                var show = db.Shows.Include(x => x.ShowProperties)
+                .Where(x => !x.IsDeleted)
                 .FirstOrDefault(x => x.Id == showId);
 
-            if (show == null)
-            {
-                throw new EntityNotFoundException<ShowWithDetails>($"Id={showId}");
-            }
+                if (show == null)
+                {
+                    throw new EntityNotFoundException<ShowWithDetails>($"Id={showId}");
+                }
 
-            return new ShowWithDetails
-            {
-                Id = show.Id,
-                Title = show.Title,
-                Description = show.Description,
-                Subtitle = show.Subtitle,
-                Properties = show.ShowProperties.ToDictionary(p => p.Name, p => p.Value)
-            };
+                return new ShowWithDetails
+                {
+                    Id = show.Id,
+                    Title = show.Title,
+                    Description = show.Description,
+                    Subtitle = show.Subtitle,
+                    Properties = show.ShowProperties.ToDictionary(p => p.Name, p => p.Value)
+                };
+            }
         }
     }
 }

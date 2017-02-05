@@ -112,7 +112,9 @@ namespace Website
                 .As<IUniqueIdService>()
                 .SingleInstance();
             builder.RegisterType<DateTimeService>().As<IDateTimeService>().SingleInstance();
-            builder.RegisterType<ShowsReader>().As<IShowsReader>().InstancePerDependency();
+            builder.RegisterType<ShowsReader>().As<IShowsReader>()
+                .InstancePerDependency()
+                .PropertiesAutowired();
 
             builder.RegisterAssemblyTypes(Assembly.Load(new AssemblyName("Logic")))
                 .AsClosedTypesOf(typeof(IHandler<>))
