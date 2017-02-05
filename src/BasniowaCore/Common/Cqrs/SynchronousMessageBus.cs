@@ -10,13 +10,13 @@ namespace Common.Cqrs
     /// <seealso cref="IMessageBus" />
     public class SynchronousMessageBus : IMessageBus
     {
-        private IHandlerResolver _handlerResolver;
+        private readonly IHandlerResolver _handlerResolver;
 
-        private MessageProcessingChain _commandHandlerChain = new MessageProcessingChain();
+        private readonly MessageProcessingChain _commandHandlerChain = new MessageProcessingChain();
 
-        private MessageProcessingChain _eventPublicationChain = new MessageProcessingChain();
+        private readonly MessageProcessingChain _eventPublicationChain = new MessageProcessingChain();
 
-        private MessageProcessingChain _eventHandlerChain = new MessageProcessingChain();
+        private readonly MessageProcessingChain _eventHandlerChain = new MessageProcessingChain();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SynchronousMessageBus"/> class.
