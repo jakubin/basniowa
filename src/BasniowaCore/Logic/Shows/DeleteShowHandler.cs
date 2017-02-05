@@ -46,7 +46,12 @@ namespace Logic.Shows
                 await db.SaveChangesAsync();
             }
 
-            var @event = new ShowDeleted { ShowId = message.ShowId };
+            await PublishShowDeleted(message.ShowId);
+        }
+
+        private async Task PublishShowDeleted(long showId)
+        {
+            var @event = new ShowDeleted {ShowId = showId};
             await EventPublisher.Publish(@event);
         }
     }
