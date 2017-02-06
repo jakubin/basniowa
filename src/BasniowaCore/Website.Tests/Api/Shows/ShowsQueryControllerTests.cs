@@ -11,7 +11,7 @@ using Website.Api.Shows;
 using Website.Infrastructure.ErrorHandling;
 using Xunit;
 
-namespace Tests.Api.Shows
+namespace Website.Tests.Api.Shows
 {
     public class ShowsQueryControllerTests
     {

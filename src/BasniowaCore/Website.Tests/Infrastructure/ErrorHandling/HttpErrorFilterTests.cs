@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Routing;
 using Website.Infrastructure.ErrorHandling;
 using Xunit;
 
-namespace Tests.Infrastructure.ErrorHandling
+namespace Website.Tests.Infrastructure.ErrorHandling
 {
     public class HttpErrorFilterTests
     {

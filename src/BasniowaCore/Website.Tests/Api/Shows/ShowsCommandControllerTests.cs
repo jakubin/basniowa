@@ -12,9 +12,10 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Website.Api.Shows;
 using Website.Infrastructure.ErrorHandling;
+using Website.Tests.Helpers;
 using Xunit;
 
-namespace Tests.Api.Shows
+namespace Website.Tests.Api.Shows
 {
     public class ShowsCommandControllerTests
     {
@@ -26,6 +27,8 @@ namespace Tests.Api.Shows
 
         public ICommandSender CommandSender { get; set; }
 
+        public TestUniqueIdService UniqueIdService { get; set; }
+
         public ShowsCommandControllerTests()
         {
             UserName = "user";
@@ -34,6 +37,8 @@ namespace Tests.Api.Shows
             Mapper = new Mapper(config);
 
             CommandSender = Mock.Of<ICommandSender>();
+
+            UniqueIdService = new TestUniqueIdService();
         }
 
         public ShowsCommandController Create()
@@ -42,6 +47,7 @@ namespace Tests.Api.Shows
             {
                 Mapper = Mapper,
                 CommandSender = CommandSender,
+                IdService = UniqueIdService,
                 ControllerContext = new ControllerContext
                 {
                     HttpContext = new DefaultHttpContext
@@ -52,6 +58,58 @@ namespace Tests.Api.Shows
             };
 
             return controller;
+        }
+
+        #endregion
+
+        #region Add tests
+
+        [Fact]
+        public async Task Add_Successful()
+        {
+            var model = new AddShowModel
+            {
+                Title = "1",
+                Subtitle = "2",
+                Description = "3",
+                Properties = new Dictionary<string, string>
+                {
+                    ["P1"] = "V1"
+                }
+            };
+            UniqueIdService.NextId = 10;
+            var controller = Create();
+            AddShowCommand command = null;
+            Mock.Get(CommandSender)
+                .Setup(x => x.Send(It.IsAny<AddShowCommand>()))
+                .Callback<AddShowCommand>(c => { command = c; })
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            var actualResult = await controller.Add(model);
+
+            actualResult.ShowId.Should().Be(10L);
+            Mock.Get(CommandSender).Verify();
+            command.Should().NotBeNull();
+            command.ShowId.Should().Be(10L);
+            command.UserName.Should().Be(UserName);
+            command.Title.Should().Be(model.Title);
+            command.Subtitle.Should().Be(model.Subtitle);
+            command.Description.Should().Be(model.Description);
+            command.Properties.ShouldBeEquivalentTo(model.Properties);
+        }
+
+        [Fact]
+        public async Task Add_BadModel()
+        {
+            var model = new AddShowModel();
+            var controller = Create();
+            controller.ModelState.AddModelError("key", "error");
+
+            var exception = await Assert.ThrowsAsync<HttpErrorException>(
+                () => controller.Add(model));
+
+            exception.ActionResult.Should().BeOfType<BadRequestObjectResult>();
         }
 
         #endregion
