@@ -10,7 +10,7 @@ namespace Website.Api.Users
     /// API controller for user account management and authentication.
     /// </summary>
     /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
-    [Route("api/[controller]")]
+    [Route("api/users")]
     [Produces(ContentTypes.ApplicationJson)]
     public class UsersController : Controller
     {
