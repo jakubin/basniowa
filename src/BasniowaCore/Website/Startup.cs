@@ -77,6 +77,7 @@ namespace Website
                 options.DescribeAllEnumsAsStrings();
 
                 options.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
+                options.OperationFilter<FormFileOperationFilter>();
             });
 
             services.AddJwtBearerAuthentication(Configuration);
