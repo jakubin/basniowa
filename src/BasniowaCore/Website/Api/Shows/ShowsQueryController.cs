@@ -16,7 +16,6 @@ namespace Website.Api.Shows
     /// <seealso cref="Controller" />
     [Route("api/shows")]
     [Produces(ContentTypes.ApplicationJson)]
-    [ApiExplorerSettings(GroupName = "Shows")]
     public class ShowsQueryController : Controller
     {
         private const string GroupName = "Shows";
@@ -39,7 +38,6 @@ namespace Website.Api.Shows
         /// <returns>List of all shows with details.</returns>
         /// <response code="200">Returns all shows main information.</response>
         [HttpGet]
-        [ApiExplorerSettings(GroupName = GroupName)]
         public ShowHeaderModel[] GetAll()
         {
             var details = ShowsReader.GetAllShows();
@@ -56,7 +54,6 @@ namespace Website.Api.Shows
         /// <response code="404">When show of specified ID doesn't exist.</response>
         [HttpGet]
         [Route("{showId}")]
-        [ApiExplorerSettings(GroupName = GroupName)]
         public ShowWithDetailsModel GetById(long showId)
         {
             try

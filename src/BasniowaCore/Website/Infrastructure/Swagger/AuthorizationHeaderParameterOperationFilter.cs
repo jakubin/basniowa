@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Swashbuckle.Swagger.Model;
-using Swashbuckle.SwaggerGen.Generator;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Website.Infrastructure.Swagger
 {
@@ -10,7 +10,7 @@ namespace Website.Infrastructure.Swagger
     /// Swashbuckle operation filter that adds information that Authorization header is required
     /// for methods that require authorization.
     /// </summary>
-    /// <seealso cref="Swashbuckle.SwaggerGen.Generator.IOperationFilter" />
+    /// <seealso cref="IOperationFilter" />
     public class AuthorizationHeaderParameterOperationFilter : IOperationFilter
     {
         /// <inheritdoc/>

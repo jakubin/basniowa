@@ -7,6 +7,7 @@ using Logic.Common;
 using Logic.Services;
 using Logic.Shows;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Website.Infrastructure;
 using Website.Infrastructure.ErrorHandling;
@@ -51,7 +52,6 @@ namespace Website.Api.Shows
         [HttpPost]
         [Route("commands/add")]
         [Authorize]
-        [ApiExplorerSettings(GroupName = GroupName)]
         public async Task<ShowAddedModel> Add([FromBody]AddShowModel commandModel)
         {
             if (!ModelState.IsValid)
@@ -85,7 +85,6 @@ namespace Website.Api.Shows
         [HttpPost]
         [Route("commands/update")]
         [Authorize]
-        [ApiExplorerSettings(GroupName = GroupName)]
         public async Task Update([FromBody]UpdateShowModel commandModel)
         {
             if (!ModelState.IsValid)
@@ -117,7 +116,6 @@ namespace Website.Api.Shows
         [HttpPost]
         [Route("commands/delete")]
         [Authorize]
-        [ApiExplorerSettings(GroupName = GroupName)]
         public async Task Delete([FromBody]DeleteShowModel commandModel)
         {
             if (!ModelState.IsValid)

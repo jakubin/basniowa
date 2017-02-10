@@ -13,12 +13,15 @@ using Logic.Services;
 using Logic.Shows;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using Website.Infrastructure;
 using Website.Infrastructure.ErrorHandling;
 using Website.Infrastructure.Jwt;
@@ -70,11 +73,14 @@ namespace Website
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(options =>
             {
+                options.SwaggerDoc("v1", new Info {Title = "Basniowa API", Version = "v1"});
                 var currentAssemblyPath = typeof(Startup).GetTypeInfo().Assembly.Location;
                 var xmlCommentsPath = Path.ChangeExtension(currentAssemblyPath, "xml");
                 
                 options.IncludeXmlComments(xmlCommentsPath);
                 options.DescribeAllEnumsAsStrings();
+
+                options.TagActionsByNamespaceEnding();
 
                 options.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
                 options.OperationFilter<FormFileOperationFilter>();
@@ -186,7 +192,10 @@ namespace Website
             if (env.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUi();
+                app.UseSwaggerUi(options =>
+                {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                });
             }
         }
     }
