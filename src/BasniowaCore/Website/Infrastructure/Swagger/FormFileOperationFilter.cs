@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Reflection;
 using Microsoft.AspNetCore.Http;
-using Swashbuckle.Swagger.Model;
-using Swashbuckle.SwaggerGen.Generator;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Website.Infrastructure.Swagger
 {
@@ -11,7 +11,6 @@ namespace Website.Infrastructure.Swagger
     /// Operation filter that generates correct Swagger documentation
     /// for operations with <see cref="IFormFile"/>.
     /// </summary>
-    /// <seealso cref="Swashbuckle.SwaggerGen.Generator.IOperationFilter" />
     public class FormFileOperationFilter : IOperationFilter
     {
         private const string FormDataMimeType = "multipart/form-data";
