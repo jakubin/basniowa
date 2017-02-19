@@ -5,6 +5,7 @@
     "Microsoft.Extensions.DependencyModel": "1.1.0",
     "NETStandard.Library": "1.6.1",
     "System.ComponentModel": "4.3.0",
+    "System.Globalization.Extensions": "4.3.0",
     "System.Runtime": "4.3.0"
   },
   "frameworks": {
