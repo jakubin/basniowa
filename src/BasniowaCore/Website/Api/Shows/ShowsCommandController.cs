@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using Common.Cqrs;
 using Common.Startup;
@@ -7,7 +6,6 @@ using Logic.Common;
 using Logic.Services;
 using Logic.Shows;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Website.Infrastructure;
 using Website.Infrastructure.ErrorHandling;
@@ -18,7 +16,7 @@ namespace Website.Api.Shows
     /// API controller for managing shows.
     /// </summary>
     /// <seealso cref="Controller" />
-    [Route("api/shows")]
+    [Route("api/shows/commands")]
     [Produces(ContentTypes.ApplicationJson)]
     public class ShowsCommandController : Controller
     {
@@ -50,7 +48,7 @@ namespace Website.Api.Shows
         /// <response code="200">Information about created show.</response>
         /// <response code="400">When the provided information are invalid.</response>
         [HttpPost]
-        [Route("commands/add")]
+        [Route("add")]
         [Authorize]
         public async Task<ShowAddedModel> Add([FromBody]AddShowModel commandModel)
         {
@@ -83,7 +81,7 @@ namespace Website.Api.Shows
         /// <response code="400">Request is invalid or doesn't pass validation.</response>
         /// <response code="404">Show of provided ID doesn't exist or has been deleted.</response>
         [HttpPost]
-        [Route("commands/update")]
+        [Route("update")]
         [Authorize]
         public async Task Update([FromBody]UpdateShowModel commandModel)
         {
@@ -114,7 +112,7 @@ namespace Website.Api.Shows
         /// <response code="400">Request is invalid or doesn't pass validation.</response>
         /// <response code="404">Show of provided ID doesn't exist.</response>
         [HttpPost]
-        [Route("commands/delete")]
+        [Route("delete")]
         [Authorize]
         public async Task Delete([FromBody]DeleteShowModel commandModel)
         {
@@ -139,6 +137,48 @@ namespace Website.Api.Shows
         }
 
         /// <summary>
+        /// Adds a new picture to the show.
+        /// </summary>
+        /// <param name="request">Contains information about the picture to add.</param>
+        /// <response code="200">Picture was added.</response>
+        /// <response code="400">Request is malformed or invalid.</response>
+        /// <response code="404">Show of provided ID doesn't exist.</response>
+        [HttpPost]
+        [Route("add-picture")]
+        [Authorize]
+        [Consumes(ContentTypes.MultipartFormData, ContentTypes.ApplicationXWwwFormUrlEncoded)]
+        public async Task<ShowPictureAddedModel> AddPicture([FromForm] AddShowPictureModel request)
+        {
+            if (!ModelState.IsValid)
+            {
+                throw new HttpErrorException(BadRequest(ModelState));
+            }
+
+            var command = new AddShowPictureCommand();
+            Mapper.Map(request, command);
+
+            command.FileName = request.Picture.FileName;
+            command.ShowPictureId = await IdService.GenerateId();
+            command.UserName = User.Identity.Name;
+
+            try
+            {
+                using (var stream = request.Picture.OpenReadStream())
+                {
+                    command.FileStream = stream;
+                    await CommandSender.Send(command);
+                }
+
+                var result = new ShowPictureAddedModel { ShowPictureId = command.ShowPictureId };
+                return result;
+            }
+            catch (EntityNotFoundException<DataAccess.Shows.Show>)
+            {
+                throw new HttpErrorException(NotFound());
+            }
+        }
+
+        /// <summary>
         /// Configures the mapper for entities owned by this controller.
         /// </summary>
         /// <param name="cfg">The mapper configuration builder.</param>
@@ -148,6 +188,7 @@ namespace Website.Api.Shows
             cfg.CreateMap<AddShowModel, AddShowCommand>();
             cfg.CreateMap<UpdateShowModel, UpdateShowCommand>();
             cfg.CreateMap<DeleteShowModel, DeleteShowCommand>();
+            cfg.CreateMap<AddShowPictureModel, AddShowPictureCommand>();
         }
     }
 }
