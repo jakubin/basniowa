@@ -1,0 +1,61 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/Description/@EntryValue">CQRS command handler</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/Field/=Command/InitialRange/@EntryValue">1</s:Int64>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/Text/@EntryValue">using System.Threading.Tasks;&#xD;
+using Common.Cqrs;&#xD;
+using Logic.Services;&#xD;
+&#xD;
+namespace Logic.Shows&#xD;
+{&#xD;
+    /// &lt;summary&gt;&#xD;
+    /// Handles &lt;see cref="$Command$"/&gt;.&#xD;
+    /// &lt;/summary&gt;&#xD;
+    public class $ClassName$ : IHandler&lt;$Command$&gt;&#xD;
+    {&#xD;
+		#region Services&#xD;
+&#xD;
+        /// &lt;summary&gt;&#xD;
+        /// Gets or sets the database.&#xD;
+        /// &lt;/summary&gt;&#xD;
+        public IDbContextFactory DbFactory { get; set; }&#xD;
+&#xD;
+        /// &lt;summary&gt;&#xD;
+        /// Gets or sets the event publisher.&#xD;
+        /// &lt;/summary&gt;&#xD;
+        public IEventPublisher EventPublisher { get; set; }&#xD;
+&#xD;
+        /// &lt;summary&gt;&#xD;
+        /// Gets or sets the date time service.&#xD;
+        /// &lt;/summary&gt;&#xD;
+        public IDateTimeService DateTimeService { get; set; }&#xD;
+&#xD;
+        /// &lt;summary&gt;&#xD;
+        /// Gets or sets the unique identifier service.&#xD;
+        /// &lt;/summary&gt;&#xD;
+        public IUniqueIdService IdService { get; set; }&#xD;
+&#xD;
+		#endregion&#xD;
+&#xD;
+        /// &lt;inheritdoc/&gt;&#xD;
+        public async Task Handle($Command$ message)&#xD;
+        {&#xD;
+            throw new System.NotImplementedException();{$END$}&#xD;
+        }&#xD;
+    }&#xD;
+}</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/Reformat/@EntryValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/ShortenQualifiedReferences/@EntryValue">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/CustomProperties/=FileName/@EntryIndexedValue">Handler</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/CustomProperties/=Extension/@EntryIndexedValue">cs</s:String>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/CustomProperties/=ValidateFileName/@EntryIndexedValue">False</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/Applicability/=File/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/Scope/=E8F0594528C33E45BBFEC6CFE851095D/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/Scope/=E8F0594528C33E45BBFEC6CFE851095D/Type/@EntryValue">InCSharpProjectFile</s:String>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/Field/=ClassName/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/Field/=ClassName/Expression/@EntryValue">getFileNameWithoutExtension()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/Field/=ClassName/InitialRange/@EntryValue">-1</s:Int64>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/Field/=ClassName/Order/@EntryValue">0</s:Int64>
+	<s:Boolean x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/Field/=Command/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/Field/=Command/Expression/@EntryValue">context()</s:String>
+	<s:Int64 x:Key="/Default/PatternsAndTemplates/LiveTemplates/Template/=552EF9ECEFE282449BA835411980A7DC/Field/=Command/Order/@EntryValue">1</s:Int64></wpf:ResourceDictionary>
