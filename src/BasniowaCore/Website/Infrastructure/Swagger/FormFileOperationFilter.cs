@@ -27,13 +27,6 @@ namespace Website.Infrastructure.Swagger
             {
                 return;
             }
-            foreach (var parameter in operation.Parameters)
-            {
-                if (parameter.In == "form")
-                {
-                    parameter.In = "formData";
-                }
-            }
 
             var formFileParameterNames = new SortedSet<string>(
                 context.ApiDescription.ParameterDescriptions
@@ -58,7 +51,6 @@ namespace Website.Infrastructure.Swagger
                     var newParameter = new NonBodyParameter
                     {
                         In = "formData",
-                        Description = "The file to upload.",
                         Required = true,
                         Type = "file"
                     };
