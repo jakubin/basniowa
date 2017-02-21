@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using System.Net;
 using AutoMapper;
 using Common.Startup;
+using DataAccess.Database.Shows;
 using Logic.Common;
 using Logic.Shows;
 using Microsoft.AspNetCore.Mvc;
@@ -61,7 +61,7 @@ namespace Website.Api.Shows
                 var show = ShowsReader.GetShowById(showId);
                 return Mapper.Map<ShowWithDetailsModel>(show);
             }
-            catch (EntityNotFoundException<DataAccess.Shows.Show>)
+            catch (EntityNotFoundException<Show>)
             {
                 throw new HttpErrorException(NotFound());
             }

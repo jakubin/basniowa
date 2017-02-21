@@ -1,6 +1,6 @@
 ﻿using System;
 using Common;
-using DataAccess;
+using DataAccess.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 

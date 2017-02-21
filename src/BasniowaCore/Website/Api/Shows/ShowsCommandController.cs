@@ -2,6 +2,7 @@
 using AutoMapper;
 using Common.Cqrs;
 using Common.Startup;
+using DataAccess.Database.Shows;
 using Logic.Common;
 using Logic.Services;
 using Logic.Shows;
@@ -98,7 +99,7 @@ namespace Website.Api.Shows
             {
                 await CommandSender.Send(command);
             }
-            catch (EntityNotFoundException<DataAccess.Shows.Show>)
+            catch (EntityNotFoundException<Show>)
             {
                 throw new HttpErrorException(NotFound());
             }
@@ -130,7 +131,7 @@ namespace Website.Api.Shows
             {
                 await CommandSender.Send(command);
             }
-            catch (EntityNotFoundException<DataAccess.Shows.Show>)
+            catch (EntityNotFoundException<Show>)
             {
                 throw new HttpErrorException(NotFound());
             }
@@ -172,7 +173,7 @@ namespace Website.Api.Shows
                 var result = new ShowPictureAddedModel { ShowPictureId = command.ShowPictureId };
                 return result;
             }
-            catch (EntityNotFoundException<DataAccess.Shows.Show>)
+            catch (EntityNotFoundException<Show>)
             {
                 throw new HttpErrorException(NotFound());
             }

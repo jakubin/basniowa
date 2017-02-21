@@ -1,4 +1,4 @@
-﻿using DataAccess;
+﻿using DataAccess.Database;
 
 namespace Logic.Services
 {

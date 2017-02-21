@@ -1,5 +1,5 @@
 ﻿using System;
-using DataAccess;
+using DataAccess.Database;
 using Logic.Services;
 using Microsoft.EntityFrameworkCore;
 

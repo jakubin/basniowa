@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Common.Cqrs;
-using DataAccess.Shows;
+using DataAccess.Database.Shows;
 using Logic.Services;
 
 namespace Logic.Shows

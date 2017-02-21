@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using DataAccess.Shows;
+using DataAccess.Database.Shows;
 using FluentAssertions;
 using Logic.Common;
 using Logic.Shows;

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataAccess.Database.Shows;
 using FluentAssertions;
 using Logic.Common;
 using Logic.Shows;
@@ -133,7 +134,7 @@ namespace Logic.Tests.Shows
             var handler = CreateHandler();
 
             // act
-            await Assert.ThrowsAsync<EntityNotFoundException<DataAccess.Shows.Show>>(
+            await Assert.ThrowsAsync<EntityNotFoundException<Show>>(
                 () => handler.Handle(command));
 
             EventPublisher.PublishedEvents.OfType<ShowUpdated>().Should().BeEmpty();
@@ -162,7 +163,7 @@ namespace Logic.Tests.Shows
             var handler = CreateHandler();
 
             // act
-            await Assert.ThrowsAsync<EntityNotFoundException<DataAccess.Shows.Show>>(
+            await Assert.ThrowsAsync<EntityNotFoundException<Show>>(
                 () => handler.Handle(command));
 
             // assert

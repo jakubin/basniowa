@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using DataAccess.UniqueId;
+using Common.UniqueId;
 using FluentAssertions;
 using Logic.Services;
 using Moq;

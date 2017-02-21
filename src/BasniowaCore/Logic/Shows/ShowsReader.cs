@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DataAccess;
+using DataAccess.Database;
 using Logic.Common;
 using Logic.Services;
 using Microsoft.EntityFrameworkCore;

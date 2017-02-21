@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using DataAccess;
-using DataAccess.Shows;
+using DataAccess.Database;
+using DataAccess.Database.Shows;
 using FluentAssertions;
 using Logic.Common;
 using Logic.Shows;

@@ -3,7 +3,7 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using AutoMapper;
 using Common.Cqrs;
-using DataAccess.Shows;
+using DataAccess.Database.Shows;
 using FluentAssertions;
 using Logic.Common;
 using Logic.Shows;

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using DataAccess.Shows;
+using DataAccess.Database.Shows;
 
 namespace Logic.Tests.Helpers
 {
