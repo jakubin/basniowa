@@ -56,7 +56,7 @@ namespace DataAccess.Disk
 
                 return Task.FromResult(containerPaths);
             }
-            catch (IOException exception)
+            catch (Exception exception)
             {
                 throw new FileContainerException(
                     "An error occured while accessing files within the container. See inner exception for details.",
@@ -68,19 +68,15 @@ namespace DataAccess.Disk
         public Task<Stream> ReadFile(string path)
         {
             Guard.NotNull(path, nameof(path));
+            ValidateContainerPath(path, nameof(path));
 
-            if (!FileContainerPath.IsValid(path))
-            {
-                throw new ArgumentException(
-                    $"Path ({path}) is not valid for file container.");
-            }
+            var physicalPath = GetPhysicalPath(path);
 
             try
             {
-                var physicalPath = GetPhysicalPath(path);
                 return Task.FromResult<Stream>(File.OpenRead(physicalPath));
             }
-            catch (IOException ex)
+            catch (Exception ex)
             {
                 throw new FileContainerException(
                     $"An error occured while reading file in the container under path \"{path}\". See inner exception for details.",
@@ -93,40 +89,26 @@ namespace DataAccess.Disk
         {
             Guard.NotNull(path, nameof(path));
             Guard.NotNull(contentStream, nameof(contentStream));
-
-            if (!FileContainerPath.IsValid(path))
-            {
-                throw new ArgumentException(
-                    $"Path ({path}) is not valid for file container.");
-            }
+            ValidateContainerPath(path, nameof(path));
 
             var physicalPath = GetPhysicalPath(path);
-            
-            // ensure directory exist
-            var physicalDirectoryPath = Path.GetDirectoryName(physicalPath);
-            Directory.CreateDirectory(physicalDirectoryPath);
 
             try
             {
+                // ensure directory exist
+                var physicalDirectoryPath = Path.GetDirectoryName(physicalPath);
+                Directory.CreateDirectory(physicalDirectoryPath);
+
                 using (FileStream fileStream = File.Open(physicalPath, FileMode.CreateNew, FileAccess.Write))
                 {
                     await contentStream.CopyToAsync(fileStream);
                 }
             }
-            catch (FileNotFoundException ex)
+            catch (Exception ex)
             {
-                throw new FileNotFoundInContainerException(path, ex);
-            }
-            catch (IOException ex)
-            {
-                TryDeleteFile(physicalPath);
                 throw new FileContainerException(
                     $"An error occured while creating file within the container under path \"{path}\". See inner exception for details.",
                     ex);
-            }
-            catch (Exception)
-            {
-                TryDeleteFile(physicalPath);
             }
         }
 
@@ -134,12 +116,7 @@ namespace DataAccess.Disk
         public Task RemoveFile(string path)
         {
             Guard.NotNull(path, nameof(path));
-
-            if (!FileContainerPath.IsValid(path))
-            {
-                throw new ArgumentException(
-                    $"Path ({path}) is not valid for file container.");
-            }
+            ValidateContainerPath(path, nameof(path));
 
             var physicalPath = GetPhysicalPath(path);
 
@@ -161,6 +138,16 @@ namespace DataAccess.Disk
             return Task.CompletedTask;
         }
 
+        private static void ValidateContainerPath(string path, string paramName)
+        {
+            if (!FileContainerPath.IsValid(path))
+            {
+                throw new ArgumentException(
+                    $"Path ({path}) is not valid for file container.",
+                    paramName);
+            }
+        }
+
         private string GetPhysicalPath(string path)
         {
             var parts = path.Split(new[] {FileContainerPath.PathSeparator}, StringSplitOptions.RemoveEmptyEntries);
@@ -179,18 +166,6 @@ namespace DataAccess.Disk
             return FileContainerPath.IsValid(containerPath)
                 ? containerPath
                 : null;
-        }
-
-        private static void TryDeleteFile(string physicalPath)
-        {
-            try
-            {
-                File.Delete(physicalPath);
-            }
-            catch
-            {
-                // ignore
-            }
         }
     }
 }

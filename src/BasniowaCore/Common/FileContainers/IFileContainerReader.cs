@@ -20,7 +20,7 @@ namespace Common.FileContainers
         /// Opens specified file within the container for reading.
         /// </summary>
         /// <param name="path">The path to the file in the container.</param>
-        /// <returns>The tream</returns>
+        /// <returns>The stream with file content. It is the caller responsibility to dispose the stream.</returns>
         /// <exception cref="ArgumentNullException">When <paramref name="path"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">When <paramref name="path"/> is invalid.</exception>
         /// <exception cref="FileNotFoundInContainerException">When specified file is not present in the container.</exception>
