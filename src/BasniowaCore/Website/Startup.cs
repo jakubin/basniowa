@@ -7,7 +7,6 @@ using Autofac.Features.ResolveAnything;
 using AutoMapper;
 using Common.Cqrs;
 using Common.Startup;
-using Common.UniqueId;
 using DataAccess.Database;
 using DataAccess.Database.UniqueId;
 using Logic.Services;

@@ -5,7 +5,6 @@ using System.Data.SqlClient;
 using System.Threading.Tasks;
 using Common;
 using Common.CodeAnalysis;
-using Common.UniqueId;
 
 namespace DataAccess.Database.UniqueId
 {

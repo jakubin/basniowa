@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Common.UniqueId
+namespace DataAccess.Database.UniqueId
 {
     /// <summary>
     /// Provides unique identifiers from data source.
