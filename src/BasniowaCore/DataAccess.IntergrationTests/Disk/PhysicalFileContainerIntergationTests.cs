@@ -9,6 +9,7 @@ using Xunit;
 
 namespace Common.Tests.Disk
 {
+    [Trait("Category", "Integration tests")]
     public class PhysicalFileContainerIntergationTests : IDisposable
     {
         #region Setup
