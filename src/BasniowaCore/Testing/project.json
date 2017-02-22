@@ -6,7 +6,7 @@
     "Microsoft.Extensions.Logging.Abstractions": "1.1.0",
     "NETStandard.Library": "1.6.1",
     "System.Runtime": "4.3.0",
-    "xunit": "2.2.0-beta5-build3474"
+    "xunit": "2.2.0"
   },
   "frameworks": {
     "netstandard1.6": {

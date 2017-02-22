@@ -45,6 +45,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution files", "Solution 
 		Settings.StyleCop = Settings.StyleCop
 	EndProjectSection
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "DataAccess.IntegrationTests", "DataAccess.IntergrationTests\DataAccess.IntegrationTests.xproj", "{2FC9D150-50C9-4F49-A8EE-CD03B556909A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{7CEDB613-7C34-4C09-AA4F-159D13AFB542}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CEDB613-7C34-4C09-AA4F-159D13AFB542}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CEDB613-7C34-4C09-AA4F-159D13AFB542}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FC9D150-50C9-4F49-A8EE-CD03B556909A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FC9D150-50C9-4F49-A8EE-CD03B556909A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FC9D150-50C9-4F49-A8EE-CD03B556909A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FC9D150-50C9-4F49-A8EE-CD03B556909A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

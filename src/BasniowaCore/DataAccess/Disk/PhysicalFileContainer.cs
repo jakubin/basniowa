@@ -25,6 +25,7 @@ namespace DataAccess.Disk
         /// it will be created with first file added.
         /// </remarks>
         /// <param name="rootPath">The root path for the container.</param>
+        /// <exception cref="ArgumentNullException">When <paramref name="rootPath"/> is <c>null</c>.</exception>
         public PhysicalFileContainer(string rootPath)
         {
             Guard.NotNull(rootPath, nameof(rootPath));
@@ -70,11 +71,18 @@ namespace DataAccess.Disk
             Guard.NotNull(path, nameof(path));
             ValidateContainerPath(path, nameof(path));
 
-            var physicalPath = GetPhysicalPath(path);
-
             try
             {
+                var physicalPath = GetPhysicalPath(path);
                 return Task.FromResult<Stream>(File.OpenRead(physicalPath));
+            }
+            catch (FileNotFoundException ex)
+            {
+                throw new FileNotFoundInContainerException(path, ex);
+            }
+            catch (DirectoryNotFoundException ex)
+            {
+                throw new FileNotFoundInContainerException(path, ex);
             }
             catch (Exception ex)
             {
@@ -91,10 +99,10 @@ namespace DataAccess.Disk
             Guard.NotNull(contentStream, nameof(contentStream));
             ValidateContainerPath(path, nameof(path));
 
-            var physicalPath = GetPhysicalPath(path);
-
             try
             {
+                var physicalPath = GetPhysicalPath(path);
+
                 // ensure directory exist
                 var physicalDirectoryPath = Path.GetDirectoryName(physicalPath);
                 Directory.CreateDirectory(physicalDirectoryPath);
@@ -118,10 +126,10 @@ namespace DataAccess.Disk
             Guard.NotNull(path, nameof(path));
             ValidateContainerPath(path, nameof(path));
 
-            var physicalPath = GetPhysicalPath(path);
-
             try
             {
+                var physicalPath = GetPhysicalPath(path);
+
                 File.Delete(physicalPath);
             }
             catch (FileNotFoundException ex)
