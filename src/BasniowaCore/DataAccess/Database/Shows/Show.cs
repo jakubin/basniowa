@@ -29,6 +29,11 @@ namespace DataAccess.Database.Shows
         public string Subtitle { get; set; }
 
         /// <summary>
+        /// Gets or sets the ID of the main picture for the show.
+        /// </summary>
+        public long? MainShowPictureId { get; set; }
+
+        /// <summary>
         /// Gets or sets the created UTC.
         /// </summary>
         public DateTimeOffset CreatedUtc { get; set; }
@@ -56,6 +61,16 @@ namespace DataAccess.Database.Shows
         /// <summary>
         /// Gets or sets the show properties.
         /// </summary>
-        public virtual ICollection<ShowProperty> ShowProperties { get; set; } = new HashSet<ShowProperty>();
+        public virtual ICollection<ShowProperty> ShowProperties { get; set; } = new List<ShowProperty>();
+
+        /// <summary>
+        /// Gets or sets the show pictures.
+        /// </summary>
+        public virtual ICollection<ShowPicture> ShowPictures { get; set; } = new List<ShowPicture>();
+
+        /// <summary>
+        /// Gets or sets the main show picture.
+        /// </summary>
+        public virtual ShowProperty MainShowPicture { get; set; }
     }
 }

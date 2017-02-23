@@ -35,11 +35,6 @@ namespace Logic.Shows
         public Stream FileStream { get; set; }
 
         /// <summary>
-        /// Gets or sets if the piture should be the default for the show.
-        /// </summary>
-        public bool IsDefault { get; set; }
-
-        /// <summary>
         /// Gets or sets short title/description for the picture.
         /// </summary>
         public string Title { get; set; }

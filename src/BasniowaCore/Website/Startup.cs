@@ -6,9 +6,11 @@ using Autofac.Extensions.DependencyInjection;
 using Autofac.Features.ResolveAnything;
 using AutoMapper;
 using Common.Cqrs;
+using Common.FileContainers;
 using Common.Startup;
 using DataAccess.Database;
 using DataAccess.Database.UniqueId;
+using DataAccess.Disk;
 using Logic.Services;
 using Logic.Shows;
 using Microsoft.AspNetCore.Builder;
@@ -120,6 +122,13 @@ namespace Website
             builder.RegisterType<ShowsReader>().As<IShowsReader>()
                 .InstancePerDependency()
                 .PropertiesAutowired();
+
+            // TODO change
+            builder.Register(ctx => new PhysicalFileContainer(
+                    Path.Combine(ctx.Resolve<IHostingEnvironment>().ContentRootPath, "show-pictures")))
+                .As<IFileContainer>()
+                .As<IFileContainerReader>()
+                .SingleInstance();
 
             builder.RegisterAssemblyTypes(Assembly.Load(new AssemblyName("Logic")))
                 .AsClosedTypesOf(typeof(IHandler<>))

@@ -96,6 +96,23 @@ CREATE TABLE [shows].[ShowProperties](
 )
 GO
 
+CREATE TABLE [shows].[ShowPictures](
+	[Id] bigint NOT NULL,
+	[ShowId] bigint NOT NULL,
+	[Title] nvarchar(200) NULL,
+	[ImagePath] nvarchar(250) NOT NULL,
+	[ThumbPath] nvarchar(250) NOT NULL,
+	[CreatedUtc] datetimeoffset NOT NULL,
+	[CreatedBy] nvarchar(50) NOT NULL,
+	[IsDeleted] [bit] NOT NULL,
+	CONSTRAINT [PK_ShowPictures] PRIMARY KEY CLUSTERED ([Id] ASC),
+	CONSTRAINT [FK_ShowPictures_Shows] FOREIGN KEY([ShowId]) REFERENCES [shows].[Shows] ([Id]),
+)
+
+ALTER TABLE [shows].[Shows] ADD 
+	[MainShowPictureId] bigint NULL,
+	CONSTRAINT [FK_Shows_ShowPictures] FOREIGN KEY([MainShowPictureId]) REFERENCES [shows].[ShowPictures] ([Id])
+
 
 COMMIT
 

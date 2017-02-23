@@ -1,14 +1,12 @@
-﻿using Logic.Common.BusinessRules;
-
-namespace Logic.Shows
+﻿namespace Logic.Common.BusinessRules
 {
     /// <summary>
-    /// Business rule ensuring that provided file must be an image.
+    /// Business rule ensuring that provided file must have a file extension image.
     /// </summary>
-    public sealed class FileMustBeImageRule : IBusinessRule
+    public sealed class FileMustHaveImageExtensionRule : IBusinessRule
     {
         /// <inheritdoc/>
-        public string RuleId => "FileMustBeImage";
+        public string RuleId => "Common.FileMustHaveImageExtension";
 
         /// <summary>
         /// Gets the file provided by the user extension.
@@ -21,11 +19,11 @@ namespace Logic.Shows
         public string[] AllowedFileExtensions { get; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FileMustBeImageRule"/> class.
+        /// Initializes a new instance of the <see cref="FileMustHaveImageExtensionRule"/> class.
         /// </summary>
         /// <param name="fileExtension">The file extension.</param>
         /// <param name="allowedFileExtensions">The allowed file extensions.</param>
-        public FileMustBeImageRule(string fileExtension, string[] allowedFileExtensions)
+        public FileMustHaveImageExtensionRule(string fileExtension, string[] allowedFileExtensions)
         {
             FileExtension = fileExtension;
             AllowedFileExtensions = allowedFileExtensions;
@@ -33,6 +31,6 @@ namespace Logic.Shows
 
         /// <inheritdoc/>
         public string GetUserMessage() =>
-            $"File must be an image. Allowed extensions are: {string.Join(", ", AllowedFileExtensions)}.";
+            $"File extension \"{FileExtension}\" is not an image. Allowed extensions are: {string.Join(", ", AllowedFileExtensions)}.";
     }
 }

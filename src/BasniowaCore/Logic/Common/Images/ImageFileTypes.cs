@@ -11,32 +11,32 @@ namespace Logic.Common.Images
         /// <summary>
         /// "jpeg" file extension.
         /// </summary>
-        public static readonly string Jpeg = "jpeg";
+        public static readonly string Jpeg = ".jpeg";
 
         /// <summary>
         /// "jpg" file extension.
         /// </summary>
-        public static readonly string Jpg = "jpg";
+        public static readonly string Jpg = ".jpg";
 
         /// <summary>
         /// "png" file extension.
         /// </summary>
-        public static readonly string Png = "png";
+        public static readonly string Png = ".png";
 
         /// <summary>
         /// "gif" file extension.
         /// </summary>
-        public static readonly string Gif = "gif";
+        public static readonly string Gif = ".gif";
 
         /// <summary>
         /// "bmp" file extension.
         /// </summary>
-        public static readonly string Bmp = "bmp";
+        public static readonly string Bmp = ".bmp";
 
         /// <summary>
         /// "tiff" file extension.
         /// </summary>
-        public static readonly string Tiff = "tiff";
+        public static readonly string Tiff = ".tiff";
 
         /// <summary>
         /// Initializes the <see cref="ImageFileTypes"/> class.
@@ -52,11 +52,11 @@ namespace Logic.Common.Images
         /// <summary>
         /// Gets the file extensions representing an image type.
         /// </summary>
-        public static ImmutableSortedSet<string> ImageFileExtensions { get; }
+        public static IImmutableSet<string> ImageFileExtensions { get; }
 
         /// <summary>
         /// Gets the file extensions representing a compressed image type.
         /// </summary>
-        public static ImmutableSortedSet<string> CompressedImageFileExtensions { get; }
+        public static IImmutableSet<string> CompressedImageFileExtensions { get; }
     }
 }

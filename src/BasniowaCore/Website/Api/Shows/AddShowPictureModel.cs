@@ -22,12 +22,6 @@ namespace Website.Api.Shows
         public IFormFile Picture { get; set; }
 
         /// <summary>
-        /// If the piture should be the default for the show.
-        /// </summary>
-        [Required]
-        public bool IsDefault { get; set; }
-
-        /// <summary>
         /// Short title/description for the picture.
         /// </summary>
         public string Title { get; set; }
