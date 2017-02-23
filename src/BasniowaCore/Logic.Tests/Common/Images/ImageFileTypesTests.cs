@@ -24,13 +24,13 @@ namespace Logic.Tests.Common.Images
         }
 
         [Theory]
-        [InlineData("jpg")]
-        [InlineData("JPG")]
-        [InlineData("jpeg")]
-        [InlineData("png")]
-        [InlineData("gif")]
-        [InlineData("bmp")]
-        [InlineData("tiff")]
+        [InlineData(".jpg")]
+        [InlineData(".JPG")]
+        [InlineData(".jpeg")]
+        [InlineData(".png")]
+        [InlineData(".gif")]
+        [InlineData(".bmp")]
+        [InlineData(".tiff")]
         public void IsImageFileExtension_True(string extension)
         {
             var actual = ImageFileTypes.ImageFileExtensions.Contains(extension);
@@ -38,8 +38,8 @@ namespace Logic.Tests.Common.Images
         }
 
         [Theory]
-        [InlineData("docx")]
-        [InlineData("txt")]
+        [InlineData(".docx")]
+        [InlineData(".txt")]
         public void IsImageFileExtension_False(string extension)
         {
             var actual = ImageFileTypes.ImageFileExtensions.Contains(extension);
@@ -47,11 +47,11 @@ namespace Logic.Tests.Common.Images
         }
 
         [Theory]
-        [InlineData("jpg")]
-        [InlineData("JPG")]
-        [InlineData("jpeg")]
-        [InlineData("png")]
-        [InlineData("gif")]
+        [InlineData(".jpg")]
+        [InlineData(".JPG")]
+        [InlineData(".jpeg")]
+        [InlineData(".png")]
+        [InlineData(".gif")]
         public void IsCompressedImageFileExtension_True(string extension)
         {
             var actual = ImageFileTypes.CompressedImageFileExtensions.Contains(extension);
@@ -59,9 +59,9 @@ namespace Logic.Tests.Common.Images
         }
 
         [Theory]
-        [InlineData("bmp")]
-        [InlineData("tiff")]
-        [InlineData("txt")]
+        [InlineData(".bmp")]
+        [InlineData(".tiff")]
+        [InlineData(".txt")]
         public void IsCompressedImageFileExtension_False(string extension)
         {
             var actual = ImageFileTypes.CompressedImageFileExtensions.Contains(extension);
