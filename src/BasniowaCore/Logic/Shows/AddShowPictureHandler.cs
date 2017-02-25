@@ -99,6 +99,7 @@ namespace Logic.Shows
                         IsDeleted = false
                     };
                     db.ShowPictures.Add(showPicture);
+                    await db.SaveChangesAsync();
 
                     transaction.Commit();
                 }
