@@ -2,14 +2,12 @@
 using AutoMapper;
 using Common.Cqrs;
 using Common.Startup;
-using DataAccess.Database.Shows;
-using Logic.Common;
 using Logic.Services;
 using Logic.Shows;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Infrastructure;
-using Website.Infrastructure.ErrorHandling;
+using Website.Infrastructure.Helpers;
 
 namespace Website.Api.Shows
 {
@@ -21,8 +19,6 @@ namespace Website.Api.Shows
     [Produces(ContentTypes.ApplicationJson)]
     public class ShowsCommandController : Controller
     {
-        private const string GroupName = "Shows";
-
         /// <summary>
         /// Gets or sets the identifier service.
         /// </summary>
@@ -53,10 +49,7 @@ namespace Website.Api.Shows
         [Authorize]
         public async Task<ShowAddedModel> Add([FromBody]AddShowModel commandModel)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new HttpErrorException(BadRequest(ModelState));
-            }
+            ModelState.ThrowIfNotValid();
 
             var command = new AddShowCommand();
             Mapper.Map(commandModel, command);
@@ -86,23 +79,13 @@ namespace Website.Api.Shows
         [Authorize]
         public async Task Update([FromBody]UpdateShowModel commandModel)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new HttpErrorException(BadRequest(ModelState));
-            }
+            ModelState.ThrowIfNotValid();
 
             var command = new UpdateShowCommand();
             Mapper.Map(commandModel, command);
             command.UserName = User.Identity.Name;
 
-            try
-            {
-                await CommandSender.Send(command);
-            }
-            catch (EntityNotFoundException<Show>)
-            {
-                throw new HttpErrorException(NotFound());
-            }
+            await CommandSender.Send(command);
         }
 
         /// <summary>
@@ -117,24 +100,14 @@ namespace Website.Api.Shows
         [Authorize]
         public async Task Delete([FromBody]DeleteShowModel commandModel)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new HttpErrorException(BadRequest(ModelState));
-            }
+            ModelState.ThrowIfNotValid();
 
             var command = new DeleteShowCommand();
             Mapper.Map(commandModel, command);
 
             command.UserName = User.Identity.Name;
 
-            try
-            {
-                await CommandSender.Send(command);
-            }
-            catch (EntityNotFoundException<Show>)
-            {
-                throw new HttpErrorException(NotFound());
-            }
+            await CommandSender.Send(command);
         }
 
         /// <summary>
@@ -150,10 +123,7 @@ namespace Website.Api.Shows
         [Consumes(ContentTypes.MultipartFormData, ContentTypes.ApplicationXWwwFormUrlEncoded)]
         public async Task<ShowPictureAddedModel> AddPicture([FromForm] AddShowPictureModel request)
         {
-            if (!ModelState.IsValid)
-            {
-                throw new HttpErrorException(BadRequest(ModelState));
-            }
+            ModelState.ThrowIfNotValid();
 
             var command = new AddShowPictureCommand();
             Mapper.Map(request, command);
@@ -162,21 +132,14 @@ namespace Website.Api.Shows
             command.ShowPictureId = await IdService.GenerateId();
             command.UserName = User.Identity.Name;
 
-            try
+            using (var stream = request.Picture.OpenReadStream())
             {
-                using (var stream = request.Picture.OpenReadStream())
-                {
-                    command.FileStream = stream;
-                    await CommandSender.Send(command);
-                }
+                command.FileStream = stream;
+                await CommandSender.Send(command);
+            }
 
-                var result = new ShowPictureAddedModel { ShowPictureId = command.ShowPictureId };
-                return result;
-            }
-            catch (EntityNotFoundException<Show>)
-            {
-                throw new HttpErrorException(NotFound());
-            }
+            var result = new ShowPictureAddedModel {ShowPictureId = command.ShowPictureId};
+            return result;
         }
 
         /// <summary>

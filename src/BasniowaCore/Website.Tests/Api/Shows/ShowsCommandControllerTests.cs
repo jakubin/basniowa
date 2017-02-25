@@ -3,9 +3,7 @@ using System.Security.Principal;
 using System.Threading.Tasks;
 using AutoMapper;
 using Common.Cqrs;
-using DataAccess.Database.Shows;
 using FluentAssertions;
-using Logic.Common;
 using Logic.Shows;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -149,24 +147,6 @@ namespace Website.Tests.Api.Shows
             exception.ActionResult.Should().BeOfType<BadRequestObjectResult>();
         }
 
-        [Fact]
-        public async Task Delete_NotFound()
-        {
-            var model = new DeleteShowModel { ShowId = 10 };
-            var controller = Create();
-            var exception = new EntityNotFoundException<Show>("10");
-            Mock.Get(CommandSender)
-                .Setup(x => x.Send(It.IsAny<DeleteShowCommand>()))
-                .Returns(Task.FromException(exception));
-
-            var actualException =
-                await Assert.ThrowsAsync<HttpErrorException>(
-                    () => controller.Delete(model));
-
-            actualException.ActionResult.Should().BeOfType<NotFoundResult>();
-        }
-
-
         #endregion
 
         #region Update tests
@@ -216,33 +196,6 @@ namespace Website.Tests.Api.Shows
                 () => controller.Update(model));
 
             exception.ActionResult.Should().BeOfType<BadRequestObjectResult>();
-        }
-
-        [Fact]
-        public async Task Update_NotFound()
-        {
-            var model = new UpdateShowModel
-            {
-                ShowId = 10,
-                Title = "1",
-                Subtitle = "2",
-                Description = "3",
-                Properties = new Dictionary<string, string>
-                {
-                    ["P1"] = "V1"
-                }
-            };
-            var controller = Create();
-            var exception = new EntityNotFoundException<Show>("10");
-            Mock.Get(CommandSender)
-                .Setup(x => x.Send(It.IsAny<UpdateShowCommand>()))
-                .Returns(Task.FromException(exception));
-
-            var actualException =
-                await Assert.ThrowsAsync<HttpErrorException>(
-                    () => controller.Update(model));
-
-            actualException.ActionResult.Should().BeOfType<NotFoundResult>();
         }
 
         #endregion

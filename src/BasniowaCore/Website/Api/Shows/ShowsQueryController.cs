@@ -1,12 +1,9 @@
 ﻿using System.Linq;
 using AutoMapper;
 using Common.Startup;
-using DataAccess.Database.Shows;
-using Logic.Common;
 using Logic.Shows;
 using Microsoft.AspNetCore.Mvc;
 using Website.Infrastructure;
-using Website.Infrastructure.ErrorHandling;
 
 namespace Website.Api.Shows
 {
@@ -56,15 +53,8 @@ namespace Website.Api.Shows
         [Route("{showId}")]
         public ShowWithDetailsModel GetById(long showId)
         {
-            try
-            {
-                var show = ShowsReader.GetShowById(showId);
-                return Mapper.Map<ShowWithDetailsModel>(show);
-            }
-            catch (EntityNotFoundException<Show>)
-            {
-                throw new HttpErrorException(NotFound());
-            }
+            var show = ShowsReader.GetShowById(showId);
+            return Mapper.Map<ShowWithDetailsModel>(show);
         }
 
         /// <summary>

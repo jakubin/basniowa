@@ -69,6 +69,8 @@ namespace Website
             services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(HttpErrorFilter));
+                options.Filters.Add(typeof(BusinessRuleExceptionFilter));
+                options.Filters.Add(typeof(EntityNotFoundExceptionFilter));
             });
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(options =>

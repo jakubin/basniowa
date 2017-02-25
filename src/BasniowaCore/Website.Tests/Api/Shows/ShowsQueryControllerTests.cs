@@ -1,14 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using DataAccess.Database.Shows;
 using FluentAssertions;
-using Logic.Common;
 using Logic.Shows;
-using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Website.Api.Shows;
-using Website.Infrastructure.ErrorHandling;
 using Xunit;
 
 namespace Website.Tests.Api.Shows
@@ -84,20 +80,6 @@ namespace Website.Tests.Api.Shows
             actual.Subtitle.Should().Be(show.Subtitle);
             actual.Description.Should().Be(show.Description);
             actual.Properties.ShouldBeEquivalentTo(show.Properties);
-        }
-
-        [Fact(DisplayName = nameof(ShowsCommandControllerTests) + ": GetById should throw when the show doesn't exist.")]
-        public void GetByIdNonExisting()
-        {
-            // arrange
-            long id = 123;
-            Mock.Get(ShowsReader).Setup(x => x.GetShowById(id)).Throws(new EntityNotFoundException<Show>(id.ToString()));
-            var controller = Create();
-
-            // act
-            var actualException = Assert.Throws<HttpErrorException>(() => controller.GetById(id));
-
-            actualException.ActionResult.Should().BeOfType<NotFoundResult>();
         }
     }
 }
