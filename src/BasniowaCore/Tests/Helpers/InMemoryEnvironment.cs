@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using DataAccess;
+using DataAccess.Database;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
