@@ -63,6 +63,10 @@ namespace Logic.Shows
         /// </summary>
         public static readonly string FullDirectory = "full";
 
+        private string _fullImagePath;
+
+        private string _thumbImagePath;
+
         /// <inheritdoc/>
         public async Task Handle(AddShowPictureCommand command)
         {
@@ -73,9 +77,7 @@ namespace Logic.Shows
                     new FileMustHaveImageExtensionRule(extension, ImageFileTypes.ImageFileExtensions.ToArray()));
             }
 
-            var fullImagePath = GenerateContainerPath(command.ShowId, command.ShowPictureId, command.FileName, false);
-            var thumbImagePath = GenerateContainerPath(command.ShowId, command.ShowPictureId, command.FileName, true);
-            await ProcessImage(command, fullImagePath, thumbImagePath);
+            await ProcessImage(command);
 
             using (var db = DbFactory.Create())
             using (var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead))
@@ -87,8 +89,8 @@ namespace Logic.Shows
                 {
                     Id = command.ShowPictureId,
                     ShowId = command.ShowId,
-                    ImagePath = fullImagePath,
-                    ThumbPath = thumbImagePath,
+                    ImagePath = _fullImagePath,
+                    ThumbPath = _thumbImagePath,
                     Title = command.Title,
                     CreatedBy = command.UserName,
                     CreatedUtc = DateTimeService.UtcNow,
@@ -103,10 +105,19 @@ namespace Logic.Shows
             await EventPublisher.Publish(@event);
         }
 
-        private async Task ProcessImage(AddShowPictureCommand command, string fullImagePath, string thumbImagePath)
+        private async Task ProcessImage(AddShowPictureCommand command)
         {
-            var extension = Path.GetExtension(command.FileName);
+            var fileName = command.FileName;
+            var extension = Path.GetExtension(fileName);
             bool compressed = ImageFileTypes.CompressedImageFileExtensions.Contains(extension);
+
+            if (!compressed)
+            {
+                fileName = Path.GetFileNameWithoutExtension(fileName) + ImageFileTypes.Jpg;
+            }
+
+            _fullImagePath = GenerateContainerPath(command.ShowId, command.ShowPictureId, fileName, false);
+            _thumbImagePath = GenerateContainerPath(command.ShowId, command.ShowPictureId, fileName, true);
 
             using (var image = new MagickImage(command.FileStream))
             {
@@ -117,7 +128,7 @@ namespace Logic.Shows
                 {
                     image.Write(memoryStream, compressed ? image.Format : MagickFormat.Jpg);
                     memoryStream.Seek(0, SeekOrigin.Begin);
-                    await FileContainer.AddFile(fullImagePath, memoryStream);
+                    await FileContainer.AddFile(_fullImagePath, memoryStream);
                 }
 
                 // process thumbnail
@@ -127,7 +138,7 @@ namespace Logic.Shows
                 {
                     image.Write(memoryStream, compressed ? image.Format : MagickFormat.Jpg);
                     memoryStream.Seek(0, SeekOrigin.Begin);
-                    await FileContainer.AddFile(thumbImagePath, memoryStream);
+                    await FileContainer.AddFile(_thumbImagePath, memoryStream);
                 }
             }
         }
