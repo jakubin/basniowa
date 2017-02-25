@@ -13,7 +13,7 @@ namespace DataAccess.Disk
     /// All files are stored within provided root directory.
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class PhysicalFileContainer : IFileContainer
+    public class PhysicalFileContainer : IFileContainer, IPhysicalFileContainerReader
     {
         private readonly string _rootPath;
 
@@ -163,6 +163,15 @@ namespace DataAccess.Disk
             }
 
             return Task.CompletedTask;
+        }
+
+        /// <inheritdoc/>
+        public string GetFilePhysicalPath(string path)
+        {
+            Guard.NotNull(path, nameof(path));
+            ValidateContainerPath(path, nameof(path));
+
+            return GetPhysicalPath(path);
         }
 
         private static void ValidateContainerPath(string path, string paramName)

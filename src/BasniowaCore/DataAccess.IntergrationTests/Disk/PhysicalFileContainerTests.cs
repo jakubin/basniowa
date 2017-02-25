@@ -2,6 +2,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using DataAccess.Disk;
+using FluentAssertions;
 using Xunit;
 
 namespace Common.Tests.Disk
@@ -50,6 +51,37 @@ namespace Common.Tests.Disk
             var container = Create();
 
             await Assert.ThrowsAsync<ArgumentException>(() => container.ReadFile("%:*"));
+        }
+
+        #endregion
+
+        #region GetFilePhysicalPath tests
+
+        [Fact]
+        public void GetFilePhysicalPath_ThrowsOnNullPath()
+        {
+            var container = Create();
+
+            Assert.Throws<ArgumentNullException>(() => container.GetFilePhysicalPath(null));
+        }
+
+        [Fact]
+        public void GetFilePhysicalPath_ThrowsOnInvalidPath()
+        {
+            var container = Create();
+
+            Assert.Throws<ArgumentException>(() => container.GetFilePhysicalPath("%:*"));
+        }
+
+        [Fact]
+        public void GetFilePhysicalPath_MapsCorrectly()
+        {
+            var container = Create();
+            var expected = Path.Combine(_rootPath, "path", "to", "resource.txt");
+
+            var actualPath = container.GetFilePhysicalPath("path/to/resource.txt");
+
+            actualPath.Should().Be(expected);
         }
 
         #endregion
