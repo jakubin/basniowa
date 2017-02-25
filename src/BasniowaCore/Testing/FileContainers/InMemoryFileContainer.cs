@@ -41,6 +41,15 @@ namespace Testing.FileContainers
         }
 
         /// <inheritdoc/>
+        public Task<bool> Exists(string path)
+        {
+            Guard.NotNull(path, nameof(path));
+            ValidateContainerPath(path, nameof(path));
+
+            return Task.FromResult(_files.ContainsKey(path));
+        }
+
+        /// <inheritdoc/>
         public virtual async Task AddFile(string path, Stream contentStream)
         {
             Guard.NotNull(path, nameof(path));

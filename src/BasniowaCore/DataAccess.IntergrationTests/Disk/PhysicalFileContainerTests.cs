@@ -54,6 +54,26 @@ namespace Common.Tests.Disk
 
         #endregion
 
+        #region Exists test
+
+        [Fact]
+        public async Task Exists_ThrowsOnNullPath()
+        {
+            var container = Create();
+
+            await Assert.ThrowsAsync<ArgumentNullException>(() => container.Exists(null));
+        }
+
+        [Fact]
+        public async Task Exists_ThrowsOnInvalidPath()
+        {
+            var container = Create();
+
+            await Assert.ThrowsAsync<ArgumentException>(() => container.Exists("%:*"));
+        }
+
+        #endregion
+
         #region AddFile tests
 
         [Fact]

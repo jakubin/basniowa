@@ -93,6 +93,25 @@ namespace DataAccess.Disk
         }
 
         /// <inheritdoc/>
+        public Task<bool> Exists(string path)
+        {
+            Guard.NotNull(path, nameof(path));
+            ValidateContainerPath(path, nameof(path));
+
+            try
+            {
+                var physicalPath = GetPhysicalPath(path);
+                return Task.FromResult(File.Exists(physicalPath));
+            }
+            catch (Exception ex)
+            {
+                throw new FileContainerException(
+                    $"An error occured while checking for file existance in the container under path \"{path}\". See inner exception for details.",
+                    ex);
+            }
+        }
+
+        /// <inheritdoc/>
         public async Task AddFile(string path, Stream contentStream)
         {
             Guard.NotNull(path, nameof(path));

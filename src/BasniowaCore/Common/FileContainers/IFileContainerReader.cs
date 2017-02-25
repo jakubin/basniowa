@@ -26,5 +26,15 @@ namespace Common.FileContainers
         /// <exception cref="FileNotFoundInContainerException">When specified file is not present in the container.</exception>
         /// <exception cref="FileContainerException">If any other problem occured while reading the file.</exception>
         Task<Stream> ReadFile(string path);
+
+        /// <summary>
+        /// Checks if the file under specified <paramref name="path"/> exists in container.
+        /// </summary>
+        /// <param name="path">The path to the file in the container.</param>
+        /// <returns>If file at specified path exists.</returns>
+        /// <exception cref="ArgumentNullException">When <paramref name="path"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException">When <paramref name="path"/> is invalid.</exception>
+        /// <exception cref="FileContainerException">If any other problem occured while reading the file.</exception>
+        Task<bool> Exists(string path);
     }
 }

@@ -51,14 +51,18 @@ namespace Common.Tests.Disk
             var allFiles = await container.GetAllFiles();
             allFiles.Should().BeEmpty();
 
+            var actualExists = await container.Exists("notfound.exe");
+            actualExists.Should().BeFalse();
+
             await Assert.ThrowsAsync<FileNotFoundInContainerException>(
                 async () => await container.ReadAllText("notfound.txt"));
         }
 
-        [Fact]
-        public async Task SingleFileScenario()
+        [Theory]
+        [InlineData("file.text")]
+        [InlineData("master/sub/file.txt")]
+        public async Task SingleFileScenario(string path)
         {
-            const string path = "file.txt";
             const string fileText = "some dummy text";
 
             var container = Create();
@@ -68,29 +72,8 @@ namespace Common.Tests.Disk
             var allFiles = await container.GetAllFiles();
             allFiles.Should().BeEquivalentTo(path);
 
-            var fileContent = await container.ReadAllText(path);
-            fileContent.Should().Be(fileText);
-
-            await container.RemoveFile(path);
-            allFiles = await container.GetAllFiles();
-            allFiles.Should().BeEmpty();
-
-            await Assert.ThrowsAsync<FileNotFoundInContainerException>(
-                async () => await container.ReadAllText(path));
-        }
-
-        [Fact]
-        public async Task SingleFileInFolderScenario()
-        {
-            const string path = "master/sub/file.txt";
-            const string fileText = "some dummy text";
-
-            var container = Create();
-
-            await container.AddFile(path, fileText);
-
-            var allFiles = await container.GetAllFiles();
-            allFiles.Should().BeEquivalentTo(path);
+            var actualExists = await container.Exists(path);
+            actualExists.Should().BeTrue();
 
             var fileContent = await container.ReadAllText(path);
             fileContent.Should().Be(fileText);
@@ -98,6 +81,9 @@ namespace Common.Tests.Disk
             await container.RemoveFile(path);
             allFiles = await container.GetAllFiles();
             allFiles.Should().BeEmpty();
+
+            actualExists = await container.Exists(path);
+            actualExists.Should().BeFalse();
 
             await Assert.ThrowsAsync<FileNotFoundInContainerException>(
                 async () => await container.ReadAllText(path));
@@ -128,6 +114,9 @@ namespace Common.Tests.Disk
             {
                 var fileContent = await container.ReadAllText(file.Path);
                 fileContent.Should().Be(file.Text);
+
+                var actualExists = await container.Exists(file.Path);
+                actualExists.Should().BeTrue();
             }
 
             var expectedFiles = files.Select(x => x.Path).ToList();
@@ -138,7 +127,23 @@ namespace Common.Tests.Disk
 
                 allFiles = await container.GetAllFiles();
                 allFiles.Should().BeEquivalentTo(expectedFiles);
+
+                var actualExists = await container.Exists(file.Path);
+                actualExists.Should().BeFalse();
             }
+        }
+
+        [Fact]
+        public async Task ExistsForFolderShouldReturnFalse()
+        {
+            const string fileText = "some dummy text";
+
+            var container = Create();
+
+            await container.AddFile("master/sub/file.txt", fileText);
+
+            var actualExists = await container.Exists("master");
+            actualExists.Should().BeFalse();
         }
 
         [Fact]
