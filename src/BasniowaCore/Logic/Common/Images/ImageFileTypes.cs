@@ -39,11 +39,16 @@ namespace Logic.Common.Images
         public static readonly string Tiff = ".tiff";
 
         /// <summary>
+        /// "tif" file extension.
+        /// </summary>
+        public static readonly string Tif = ".tif";
+
+        /// <summary>
         /// Initializes the <see cref="ImageFileTypes"/> class.
         /// </summary>
         static ImageFileTypes()
         {
-            ImageFileExtensions = new[] {Jpeg, Jpg, Png, Gif, Bmp, Tiff}
+            ImageFileExtensions = new[] {Jpeg, Jpg, Png, Gif, Bmp, Tiff, Tif}
                 .ToImmutableSortedSet(StringComparer.OrdinalIgnoreCase);
             CompressedImageFileExtensions = new[] {Jpeg, Jpg, Png, Gif}
                 .ToImmutableSortedSet(StringComparer.OrdinalIgnoreCase);

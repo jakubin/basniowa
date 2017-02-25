@@ -31,6 +31,7 @@ namespace Logic.Tests.Common.Images
         [InlineData(".gif")]
         [InlineData(".bmp")]
         [InlineData(".tiff")]
+        [InlineData(".tif")]
         public void IsImageFileExtension_True(string extension)
         {
             var actual = ImageFileTypes.ImageFileExtensions.Contains(extension);
@@ -61,6 +62,7 @@ namespace Logic.Tests.Common.Images
         [Theory]
         [InlineData(".bmp")]
         [InlineData(".tiff")]
+        [InlineData(".tif")]
         [InlineData(".txt")]
         public void IsCompressedImageFileExtension_False(string extension)
         {
