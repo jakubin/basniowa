@@ -6,13 +6,10 @@ using Autofac.Extensions.DependencyInjection;
 using Autofac.Features.ResolveAnything;
 using AutoMapper;
 using Common.Cqrs;
-using Common.FileContainers;
 using Common.Startup;
 using DataAccess.Database;
 using DataAccess.Database.UniqueId;
-using DataAccess.Disk;
 using Logic.Services;
-using Logic.Shows;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +23,7 @@ using Website.Infrastructure;
 using Website.Infrastructure.ErrorHandling;
 using Website.Infrastructure.Jwt;
 using Website.Infrastructure.Swagger;
+using Website.Setup.Shows;
 
 namespace Website
 {
@@ -95,6 +93,8 @@ namespace Website
             services.AddSingleton(GetDbOptions);
             services.AddTransient<TheaterDb>();
 
+            services.ConfigureShows(Configuration.GetSection("Shows"));
+
             var builder = new ContainerBuilder();
             builder.Populate(services);
 
@@ -121,16 +121,8 @@ namespace Website
                 .As<IUniqueIdService>()
                 .SingleInstance();
             builder.RegisterType<DateTimeService>().As<IDateTimeService>().SingleInstance();
-            builder.RegisterType<ShowsReader>().As<IShowsReader>()
-                .InstancePerDependency()
-                .PropertiesAutowired();
 
-            // TODO change
-            builder.Register(ctx => new PhysicalFileContainer(
-                    Path.Combine(ctx.Resolve<IHostingEnvironment>().ContentRootPath, "show-pictures")))
-                .As<IFileContainer>()
-                .As<IFileContainerReader>()
-                .SingleInstance();
+            builder.ConfigureShows();
 
             builder.RegisterAssemblyTypes(Assembly.Load(new AssemblyName("Logic")))
                 .AsClosedTypesOf(typeof(IHandler<>))

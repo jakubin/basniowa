@@ -44,7 +44,7 @@ namespace Logic.Shows
         /// <summary>
         /// Gets or sets the file container for show pictures.
         /// </summary>
-        public IFileContainer FileContainer { get; set; }
+        public ShowPicturesFileContainer ShowPictures { get; set; }
 
         #endregion
 
@@ -139,7 +139,7 @@ namespace Logic.Shows
                     {
                         image.Write(memoryStream, compressed ? image.Format : MagickFormat.Jpg);
                         memoryStream.Seek(0, SeekOrigin.Begin);
-                        await FileContainer.AddFile(_fullImagePath, memoryStream);
+                        await ShowPictures.FileContainer.AddFile(_fullImagePath, memoryStream);
                     }
 
                     // process thumbnail
@@ -149,7 +149,7 @@ namespace Logic.Shows
                     {
                         image.Write(memoryStream, compressed ? image.Format : MagickFormat.Jpg);
                         memoryStream.Seek(0, SeekOrigin.Begin);
-                        await FileContainer.AddFile(_thumbImagePath, memoryStream);
+                        await ShowPictures.FileContainer.AddFile(_thumbImagePath, memoryStream);
                     }
                 }
             }
@@ -168,7 +168,7 @@ namespace Logic.Shows
             {
                 try
                 {
-                    await FileContainer.RemoveFile(filePath);
+                    await ShowPictures.FileContainer.RemoveFile(filePath);
                 }
                 catch
                 {
