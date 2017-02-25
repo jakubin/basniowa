@@ -77,28 +77,36 @@ namespace Logic.Shows
                     new FileMustHaveImageExtensionRule(extension, ImageFileTypes.ImageFileExtensions.ToArray()));
             }
 
-            await ProcessImage(command);
-
-            using (var db = DbFactory.Create())
-            using (var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead))
+            try
             {
-                var show = await db.Shows.FirstOrDefaultAsync(x => x.Id == command.ShowId);
-                show.ThrowIfNull(command.ShowId.ToString());
+                await ProcessImage(command);
 
-                var showPicture = new DataAccess.Database.Shows.ShowPicture
+                using (var db = DbFactory.Create())
+                using (var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead))
                 {
-                    Id = command.ShowPictureId,
-                    ShowId = command.ShowId,
-                    ImagePath = _fullImagePath,
-                    ThumbPath = _thumbImagePath,
-                    Title = command.Title,
-                    CreatedBy = command.UserName,
-                    CreatedUtc = DateTimeService.UtcNow,
-                    IsDeleted = false
-                };
-                db.ShowPictures.Add(showPicture);
+                    var show = await db.Shows.FirstOrDefaultAsync(x => x.Id == command.ShowId);
+                    show.ThrowIfNull(command.ShowId.ToString());
 
-                transaction.Commit();
+                    var showPicture = new DataAccess.Database.Shows.ShowPicture
+                    {
+                        Id = command.ShowPictureId,
+                        ShowId = command.ShowId,
+                        ImagePath = _fullImagePath,
+                        ThumbPath = _thumbImagePath,
+                        Title = command.Title,
+                        CreatedBy = command.UserName,
+                        CreatedUtc = DateTimeService.UtcNow,
+                        IsDeleted = false
+                    };
+                    db.ShowPictures.Add(showPicture);
+
+                    transaction.Commit();
+                }
+            }
+            catch
+            {
+                await TryCleanup();
+                throw;
             }
 
             var @event = new ShowPictureAdded {ShowId = command.ShowId, ShowPictureId = command.ShowPictureId};
@@ -119,26 +127,50 @@ namespace Logic.Shows
             _fullImagePath = GenerateContainerPath(command.ShowId, command.ShowPictureId, fileName, false);
             _thumbImagePath = GenerateContainerPath(command.ShowId, command.ShowPictureId, fileName, true);
 
-            using (var image = new MagickImage(command.FileStream))
+            try
             {
-                image.Strip();
-
-                // process full-size image
-                using (var memoryStream = new MemoryStream())
+                using (var image = new MagickImage(command.FileStream))
                 {
-                    image.Write(memoryStream, compressed ? image.Format : MagickFormat.Jpg);
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-                    await FileContainer.AddFile(_fullImagePath, memoryStream);
+                    image.Strip();
+
+                    // process full-size image
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        image.Write(memoryStream, compressed ? image.Format : MagickFormat.Jpg);
+                        memoryStream.Seek(0, SeekOrigin.Begin);
+                        await FileContainer.AddFile(_fullImagePath, memoryStream);
+                    }
+
+                    // process thumbnail
+                    var resizeFactor = (double)ThumbSize / Math.Max(image.Width, image.Height);
+                    image.Resize(new Percentage(resizeFactor * 100));
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        image.Write(memoryStream, compressed ? image.Format : MagickFormat.Jpg);
+                        memoryStream.Seek(0, SeekOrigin.Begin);
+                        await FileContainer.AddFile(_thumbImagePath, memoryStream);
+                    }
                 }
+            }
+            catch (MagickException ex)
+            {
+                var businessRule = new FileMustBeImageRule();
+                throw new BusinessRuleException<FileMustBeImageRule>(businessRule, ex);
+            }
+        }
 
-                // process thumbnail
-                var resizeFactor = (double) ThumbSize / Math.Max(image.Width, image.Height);
-                image.Resize(new Percentage(resizeFactor * 100));
-                using (var memoryStream = new MemoryStream())
+        private async Task TryCleanup()
+        {
+            var files = new[] {_fullImagePath, _thumbImagePath};
+
+            foreach (var filePath in files.Where(x => x != null))
+            {
+                try
                 {
-                    image.Write(memoryStream, compressed ? image.Format : MagickFormat.Jpg);
-                    memoryStream.Seek(0, SeekOrigin.Begin);
-                    await FileContainer.AddFile(_thumbImagePath, memoryStream);
+                    await FileContainer.RemoveFile(filePath);
+                }
+                catch
+                {
                 }
             }
         }

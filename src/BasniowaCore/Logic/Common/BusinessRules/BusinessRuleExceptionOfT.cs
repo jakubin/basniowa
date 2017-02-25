@@ -21,7 +21,18 @@ namespace Logic.Common.BusinessRules
         /// <param name="businessRule">The business rule.</param>
         /// <exception cref="ArgumentNullException">When <paramref name="businessRule"/> is <c>null</c>.</exception>
         public BusinessRuleException(T businessRule) 
-            : this(businessRule, $"Business rule of type {typeof(T).FullName} was violated.")
+            : this(businessRule, GetDefaultMessage())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BusinessRuleException{T}"/> class.
+        /// </summary>
+        /// <param name="businessRule">The business rule.</param>
+        /// <param name="inner">The inner exception.</param>
+        /// <exception cref="ArgumentNullException">When <paramref name="businessRule"/> is <c>null</c>.</exception>
+        public BusinessRuleException(T businessRule, Exception inner)
+            : this(businessRule, GetDefaultMessage(), inner)
         {
         }
 
@@ -60,5 +71,7 @@ namespace Logic.Common.BusinessRules
         {
             return BusinessRule;
         }
+
+        private static string GetDefaultMessage() => $"Business rule of type {typeof(T).FullName} was violated.";
     }
 }
