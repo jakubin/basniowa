@@ -2,6 +2,12 @@
   "version": "1.0.0-*",
   "testRunner": "xunit",
 
+  "buildOptions": {
+    "embed": [
+      "Resources/**"
+    ]
+  },
+
   "dependencies": {
     "xunit": "2.2.0",
     "Logic": "1.0.0-*",

@@ -1,5 +1,8 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 using DataAccess.Database.Shows;
 
 namespace Logic.Tests.Helpers
@@ -24,6 +27,17 @@ namespace Logic.Tests.Helpers
                     .Select(x => new ShowProperty {Id = x, Name = $"Name{x}", Value = $"Value{x}", IsDeleted = false})
                     .ToList()
             };
+        }
+
+        internal static byte[] GetResourceFileBytes(string relativeName)
+        {
+            var assembly = typeof(TestData).GetTypeInfo().Assembly;
+            using (var memoryStream = new MemoryStream())
+            using (var resourceStream = assembly.GetManifestResourceStream($"Logic.Tests.Resources.{relativeName}"))
+            {
+                resourceStream.CopyTo(memoryStream);
+                return memoryStream.ToArray();
+            }
         }
     }
 }

@@ -2,6 +2,7 @@
 using DataAccess.Database;
 using Logic.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace Logic.Tests.Helpers
 {
@@ -40,7 +41,8 @@ namespace Logic.Tests.Helpers
             _wasCreated = true;
 
             var builder = new DbContextOptionsBuilder<TheaterDb>()
-                .UseInMemoryDatabase(DbName);
+                .UseInMemoryDatabase(DbName)
+                .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning));
 
             var context = new TheaterDb(builder.Options);
             context.ChangeTracker.QueryTrackingBehavior =

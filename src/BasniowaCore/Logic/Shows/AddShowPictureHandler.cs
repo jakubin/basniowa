@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Common.Cqrs;
 using Common.FileContainers;
+using DataAccess.Database.Shows;
 using ImageMagick;
 using Logic.Common;
 using Logic.Common.BusinessRules;
@@ -19,7 +20,7 @@ namespace Logic.Shows
     /// </summary>
     public class AddShowPictureHandler : IHandler<AddShowPictureCommand>
     {
-        #region Services
+        #region Injected dependencies
 
         /// <summary>
         /// Gets or sets the database.
@@ -79,34 +80,13 @@ namespace Logic.Shows
 
             try
             {
-                await ProcessImage(command);
+                await ProcessAndSaveImage(command);
 
-                using (var db = DbFactory.Create())
-                using (var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead))
-                {
-                    var show = await db.Shows.FirstOrDefaultAsync(x => x.Id == command.ShowId);
-                    show.ThrowIfNull(command.ShowId.ToString());
-
-                    var showPicture = new DataAccess.Database.Shows.ShowPicture
-                    {
-                        Id = command.ShowPictureId,
-                        ShowId = command.ShowId,
-                        ImagePath = _fullImagePath,
-                        ThumbPath = _thumbImagePath,
-                        Title = command.Title,
-                        CreatedBy = command.UserName,
-                        CreatedUtc = DateTimeService.UtcNow,
-                        IsDeleted = false
-                    };
-                    db.ShowPictures.Add(showPicture);
-                    await db.SaveChangesAsync();
-
-                    transaction.Commit();
-                }
+                await AddShowPictureToDatabase(command);
             }
             catch
             {
-                await TryCleanup();
+                await RemoveImages();
                 throw;
             }
 
@@ -114,7 +94,7 @@ namespace Logic.Shows
             await EventPublisher.Publish(@event);
         }
 
-        private async Task ProcessImage(AddShowPictureCommand command)
+        private async Task ProcessAndSaveImage(AddShowPictureCommand command)
         {
             var fileName = command.FileName;
             var extension = Path.GetExtension(fileName);
@@ -160,7 +140,40 @@ namespace Logic.Shows
             }
         }
 
-        private async Task TryCleanup()
+        private async Task AddShowPictureToDatabase(AddShowPictureCommand command)
+        {
+            using (var db = DbFactory.Create())
+            using (var transaction = await db.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead))
+            {
+                var show = await db.Shows.FirstOrDefaultAsync(x => x.Id == command.ShowId);
+                if (show == null || show.IsDeleted)
+                {
+                    throw new EntityNotFoundException<Show>(command.ShowId.ToString());
+                }
+
+                var now = DateTimeService.UtcNow;
+
+                var showPicture = new ShowPicture
+                {
+                    Id = command.ShowPictureId,
+                    ShowId = command.ShowId,
+                    ImagePath = _fullImagePath,
+                    ThumbPath = _thumbImagePath,
+                    Title = command.Title,
+                    CreatedBy = command.UserName,
+                    CreatedUtc = now,
+                    ModifiedBy = command.UserName,
+                    ModifiedUtc = now,
+                    IsDeleted = false
+                };
+                db.ShowPictures.Add(showPicture);
+                await db.SaveChangesAsync();
+
+                transaction.Commit();
+            }
+        }
+
+        private async Task RemoveImages()
         {
             var files = new[] {_fullImagePath, _thumbImagePath};
 

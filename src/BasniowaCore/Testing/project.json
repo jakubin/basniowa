@@ -2,6 +2,8 @@
   "version": "1.0.0-*",
   "dependencies": {
     "Common": "1.0.0-*",
+    "FluentAssertions": "4.19.0",
+    "Magick.NET.Core-Q8": "7.0.4.701",
     "Microsoft.Extensions.DependencyModel": "1.1.0",
     "Microsoft.Extensions.Logging.Abstractions": "1.1.0",
     "NETStandard.Library": "1.6.1",
