@@ -43,6 +43,16 @@ namespace DataAccess.Database.Shows
         public string CreatedBy { get; set; }
 
         /// <summary>
+        /// Gets or sets the modified UTC.
+        /// </summary>
+        public DateTimeOffset ModifiedUtc { get; set; }
+
+        /// <summary>
+        /// Gets or sets the modified by.
+        /// </summary>
+        public string ModifiedBy { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether this instance is deleted.
         /// </summary>
         public bool IsDeleted { get; set; }

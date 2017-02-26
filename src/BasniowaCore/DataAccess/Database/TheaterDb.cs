@@ -77,6 +77,8 @@ namespace DataAccess.Database
 
                 entity.Property(e => e.CreatedUtc).IsRequired();
                 entity.Property(e => e.CreatedBy).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.ModifiedUtc).IsRequired();
+                entity.Property(e => e.ModifiedBy).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.IsDeleted).IsRequired();
 
                 entity.HasOne(d => d.Show)

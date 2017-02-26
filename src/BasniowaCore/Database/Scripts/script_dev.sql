@@ -104,6 +104,8 @@ CREATE TABLE [shows].[ShowPictures](
 	[ThumbPath] nvarchar(250) NOT NULL,
 	[CreatedUtc] datetimeoffset NOT NULL,
 	[CreatedBy] nvarchar(50) NOT NULL,
+	[ModifiedUtc] datetimeoffset NOT NULL,
+	[ModifiedBy] nvarchar(50) NOT NULL,
 	[IsDeleted] [bit] NOT NULL,
 	CONSTRAINT [PK_ShowPictures] PRIMARY KEY CLUSTERED ([Id] ASC),
 	CONSTRAINT [FK_ShowPictures_Shows] FOREIGN KEY([ShowId]) REFERENCES [shows].[Shows] ([Id]),
