@@ -85,7 +85,7 @@ namespace Logic.Tests.Shows
                 .ShouldAllBeEquivalentTo(false);
 
             var actualEvent = EventPublisher.PublishedEvents
-                .Cast<ShowDeleted>()
+                .Cast<ShowDeletedEvent>()
                 .Single();
             actualEvent.ShowId.Should().Be(showId);
         }

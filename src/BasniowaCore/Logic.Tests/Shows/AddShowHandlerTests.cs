@@ -97,7 +97,7 @@ namespace Logic.Tests.Shows
                 .Should().HaveSameCount(actualProperties, "Show property IDs should be unique.")
                 .And.Should().NotBe(command.ShowId);
 
-            var actualEvent = EventPublisher.PublishedEvents.Cast<ShowAdded>().Single();
+            var actualEvent = EventPublisher.PublishedEvents.Cast<ShowAddedEvent>().Single();
             actualEvent.ShowId.Should().Be(command.ShowId);
         }
     }

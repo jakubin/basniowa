@@ -111,7 +111,7 @@ namespace Logic.Tests.Shows
                     );
             }
 
-            var actualEvent = EventPublisher.PublishedEvents.Cast<ShowUpdated>().Single();
+            var actualEvent = EventPublisher.PublishedEvents.Cast<ShowUpdatedEvent>().Single();
             actualEvent.ShowId.Should().Be(command.ShowId);
         }
 
@@ -137,7 +137,7 @@ namespace Logic.Tests.Shows
             await Assert.ThrowsAsync<EntityNotFoundException<Show>>(
                 () => handler.Handle(command));
 
-            EventPublisher.PublishedEvents.OfType<ShowUpdated>().Should().BeEmpty();
+            EventPublisher.PublishedEvents.OfType<ShowUpdatedEvent>().Should().BeEmpty();
         }
 
         [Fact]
@@ -188,7 +188,7 @@ namespace Logic.Tests.Shows
                     .Should().BeEquivalentTo(expectedProperties);
             }
 
-            EventPublisher.PublishedEvents.OfType<ShowUpdated>().Should().BeEmpty();
+            EventPublisher.PublishedEvents.OfType<ShowUpdatedEvent>().Should().BeEmpty();
         }
     }
 }

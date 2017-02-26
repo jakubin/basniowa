@@ -68,7 +68,7 @@ namespace Logic.Shows
                 await db.SaveChangesAsync();
             }
 
-            await EventPublisher.Publish(new ShowAdded { ShowId = show.Id });
+            await EventPublisher.Publish(new ShowAddedEvent { ShowId = show.Id });
         }
     }
 }

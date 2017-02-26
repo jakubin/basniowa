@@ -3,12 +3,12 @@
 namespace Logic.Shows
 {
     /// <summary>
-    /// Event raised after a show has been added.
+    /// Event raised after a show has been updated.
     /// </summary>
-    public class ShowAdded : IEvent
+    public class ShowUpdatedEvent : IEvent
     {
         /// <summary>
-        /// Gets or sets the identifier of new show.
+        /// Gets or sets the identifier of updated show.
         /// </summary>
         public long ShowId { get; set; }
     }

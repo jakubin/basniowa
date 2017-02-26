@@ -110,7 +110,7 @@ namespace Logic.Shows
                 throw;
             }
 
-            var @event = new ShowPictureAdded {ShowId = command.ShowId, ShowPictureId = command.ShowPictureId};
+            var @event = new ShowPictureAddedEvent {ShowId = command.ShowId, ShowPictureId = command.ShowPictureId};
             await EventPublisher.Publish(@event);
         }
 

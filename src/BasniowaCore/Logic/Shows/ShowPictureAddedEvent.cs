@@ -5,7 +5,7 @@ namespace Logic.Shows
     /// <summary>
     /// Event raised after a show picture has been added.
     /// </summary>
-    public class ShowPictureAdded : IEvent
+    public class ShowPictureAddedEvent : IEvent
     {
         /// <summary>
         /// Gets or sets the identifier of new show picture.

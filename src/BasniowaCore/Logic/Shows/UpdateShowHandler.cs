@@ -60,7 +60,7 @@ namespace Logic.Shows
                 await db.SaveChangesAsync();
             }
 
-            await EventPublisher.Publish(new ShowUpdated {ShowId = message.ShowId});
+            await EventPublisher.Publish(new ShowUpdatedEvent {ShowId = message.ShowId});
         }
 
         private async Task UpdateProperties(UpdateShowCommand message, Show show)

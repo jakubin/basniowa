@@ -51,7 +51,7 @@ namespace Logic.Shows
 
         private async Task PublishShowDeleted(long showId)
         {
-            var @event = new ShowDeleted {ShowId = showId};
+            var @event = new ShowDeletedEvent {ShowId = showId};
             await EventPublisher.Publish(@event);
         }
     }
