@@ -71,6 +71,6 @@ namespace DataAccess.Database.Shows
         /// <summary>
         /// Gets or sets the main show picture.
         /// </summary>
-        public virtual ShowProperty MainShowPicture { get; set; }
+        public virtual ShowPicture MainShowPicture { get; set; }
     }
 }
