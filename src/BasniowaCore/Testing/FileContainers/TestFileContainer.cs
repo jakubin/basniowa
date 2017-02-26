@@ -9,10 +9,9 @@ using Common.FileContainers;
 namespace Testing.FileContainers
 {
     /// <summary>
-    /// In memory implementation of <see cref="IFileContainer"/>
-    /// mainly for unit testing purposes.
+    /// In memory implementation of <see cref="IFileContainer"/> mainly for unit testing purposes.
     /// </summary>
-    public class InMemoryFileContainer : IFileContainer
+    public class TestFileContainer : IFileContainer
     {
         private readonly ConcurrentDictionary<string, byte[]> _files
             = new ConcurrentDictionary<string, byte[]>();
