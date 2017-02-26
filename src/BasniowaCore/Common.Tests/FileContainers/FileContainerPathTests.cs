@@ -118,5 +118,31 @@ namespace Common.Tests.FileContainers
         }
 
         #endregion
+
+        #region GetExtension
+
+        [Theory]
+        [InlineData("file.jpg", ".jpg")]
+        [InlineData("file.new.jpg", ".jpg")]
+        [InlineData("parent/sub/file.jpg", ".jpg")]
+        [InlineData("file", "")]
+        [InlineData(".jpg", ".jpg")]
+        [InlineData("parent.sth/file.new.jpg", ".jpg")]
+        [InlineData("parent.sth/file", "")]
+        [InlineData("parent.sth/.jpg", ".jpg")]
+        public void GetExtensionTests(string input, string expected)
+        {
+            var actual = FileContainerPath.GetExtension(input);
+            actual.Should().Be(expected);
+        }
+
+        [Fact]
+        public void GetExtension_ShouldThrowOnNull()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => FileContainerPath.GetExtension(null));
+        }
+
+        #endregion
     }
 }

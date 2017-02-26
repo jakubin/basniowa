@@ -83,5 +83,26 @@ namespace Common.FileContainers
 
             return part;
         }
+
+        /// <summary>
+        /// Gets the file extension for provided path.
+        /// Provided <paramref name="path"/> is not validated to be a valid container path.
+        /// </summary>
+        /// <param name="path">The file container path.</param>
+        /// <returns>File extension.</returns>
+        public static string GetExtension(string path)
+        {
+            Guard.NotNull(path, nameof(path));
+
+            var fileName = path.Split(new[] {PathSeparator}, StringSplitOptions.None).Last();
+
+            var extensionSeparatorIndex = fileName.LastIndexOf('.');
+            if (extensionSeparatorIndex == -1)
+            {
+                return string.Empty;
+            }
+
+            return fileName.Substring(extensionSeparatorIndex);
+        }
     }
 }
