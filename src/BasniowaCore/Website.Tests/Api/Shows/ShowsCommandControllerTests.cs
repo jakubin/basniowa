@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -104,10 +105,7 @@ namespace Website.Tests.Api.Shows
             var controller = Create();
             controller.ModelState.AddModelError("key", "error");
 
-            var exception = await Assert.ThrowsAsync<HttpErrorException>(
-                () => controller.Add(model));
-
-            exception.ActionResult.Should().BeOfType<BadRequestObjectResult>();
+            await AssertBadRequest(() => controller.Add(model));
         }
 
         #endregion
@@ -141,10 +139,7 @@ namespace Website.Tests.Api.Shows
             var controller = Create();
             controller.ModelState.AddModelError("key", "error");
 
-            var exception = await Assert.ThrowsAsync<HttpErrorException>(
-                () => controller.Delete(model));
-
-            exception.ActionResult.Should().BeOfType<BadRequestObjectResult>();
+            await AssertBadRequest(() => controller.Delete(model));
         }
 
         #endregion
@@ -192,10 +187,7 @@ namespace Website.Tests.Api.Shows
             var controller = Create();
             controller.ModelState.AddModelError("key", "error");
 
-            var exception = await Assert.ThrowsAsync<HttpErrorException>(
-                () => controller.Update(model));
-
-            exception.ActionResult.Should().BeOfType<BadRequestObjectResult>();
+            await AssertBadRequest(() => controller.Update(model));
         }
 
         #endregion
@@ -230,9 +222,16 @@ namespace Website.Tests.Api.Shows
             var controller = Create();
             controller.ModelState.AddModelError("key", "error");
 
-            var exception = await Assert.ThrowsAsync<HttpErrorException>(
-                 () => controller.SetMainPicture(model));
+            await AssertBadRequest(() => controller.SetMainPicture(model));
+        }
 
+        #endregion
+
+        #region Helpers
+
+        private async Task AssertBadRequest(Func<Task> controllerActionCall)
+        {
+            var exception = await Assert.ThrowsAsync<HttpErrorException>(controllerActionCall);
             exception.ActionResult.Should().BeOfType<BadRequestObjectResult>();
         }
 
