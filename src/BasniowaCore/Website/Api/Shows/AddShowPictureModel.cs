@@ -12,7 +12,7 @@ namespace Website.Api.Shows
         /// Show ID.
         /// </summary>
         [Required]
-        public long ShowId { get; set; }
+        public long? ShowId { get; set; }
 
         /// <summary>
         /// File with show's picture.
