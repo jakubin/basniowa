@@ -230,13 +230,6 @@ namespace Website.Tests.Api.Shows
             var controller = Create();
             controller.ModelState.AddModelError("key", "error");
 
-            SetShowMainPictureCommand command = null;
-            Mock.Get(CommandSender)
-                .Setup(x => x.Send(It.IsAny<SetShowMainPictureCommand>()))
-                .Callback<SetShowMainPictureCommand>(c => { command = c; })
-                .Returns(Task.CompletedTask)
-                .Verifiable();
-
             var exception = await Assert.ThrowsAsync<HttpErrorException>(
                  () => controller.SetMainPicture(model));
 
