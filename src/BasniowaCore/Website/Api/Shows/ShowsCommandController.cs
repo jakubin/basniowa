@@ -143,6 +143,27 @@ namespace Website.Api.Shows
         }
 
         /// <summary>
+        /// Sets or clears show main picture.
+        /// </summary>
+        /// <param name="commandModel">Contains information about the show and show picture to set as main.</param>
+        /// <response code="200">Show main picture has been updated.</response>
+        /// <response code="400">Request is invalid or doesn't pass validation.</response>
+        /// <response code="422">Operation failed due to invalid input (business rule violation or missing entity).</response>
+        [HttpPost]
+        [Route("set-main-picture")]
+        [Authorize]
+        public async Task SetMainPicture([FromBody]SetShowMainPictureModel commandModel)
+        {
+            ModelState.ThrowIfNotValid();
+
+            var command = new SetShowMainPictureCommand();
+            Mapper.Map(commandModel, command);
+            command.UserName = User.Identity.Name;
+
+            await CommandSender.Send(command);
+        }
+
+        /// <summary>
         /// Configures the mapper for entities owned by this controller.
         /// </summary>
         /// <param name="cfg">The mapper configuration builder.</param>
@@ -153,6 +174,7 @@ namespace Website.Api.Shows
             cfg.CreateMap<UpdateShowModel, UpdateShowCommand>();
             cfg.CreateMap<DeleteShowModel, DeleteShowCommand>();
             cfg.CreateMap<AddShowPictureModel, AddShowPictureCommand>();
+            cfg.CreateMap<SetShowMainPictureModel, SetShowMainPictureCommand>();
         }
     }
 }

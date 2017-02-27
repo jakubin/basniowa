@@ -3,7 +3,7 @@
 namespace Logic.Shows
 {
     /// <summary>
-    /// Command to set a show picture as a show default's picture.
+    /// Command to set a show picture as a show's main picture.
     /// </summary>
     public class SetShowMainPictureCommand : ICommand
     {

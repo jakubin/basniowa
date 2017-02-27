@@ -199,5 +199,50 @@ namespace Website.Tests.Api.Shows
         }
 
         #endregion
+
+        #region SetMainPicture
+
+        [Fact]
+        public async Task SetMainPicture_Success()
+        {
+            var model = new SetShowMainPictureModel {ShowId = 10, ShowPictureId = 11};
+            var controller = Create();
+
+            SetShowMainPictureCommand command = null;
+            Mock.Get(CommandSender)
+                .Setup(x => x.Send(It.IsAny<SetShowMainPictureCommand>()))
+                .Callback<SetShowMainPictureCommand>(c => { command = c; })
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            await controller.SetMainPicture(model);
+
+            Mock.Get(CommandSender).Verify();
+            command.ShowId.Should().Be(10);
+            command.ShowPictureId.Should().Be(11);
+            command.UserName.Should().Be(UserName);
+        }
+
+        [Fact]
+        public async Task SetMainPicture_BadModel()
+        {
+            var model = new SetShowMainPictureModel { ShowId = null, ShowPictureId = 11 };
+            var controller = Create();
+            controller.ModelState.AddModelError("key", "error");
+
+            SetShowMainPictureCommand command = null;
+            Mock.Get(CommandSender)
+                .Setup(x => x.Send(It.IsAny<SetShowMainPictureCommand>()))
+                .Callback<SetShowMainPictureCommand>(c => { command = c; })
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            var exception = await Assert.ThrowsAsync<HttpErrorException>(
+                 () => controller.SetMainPicture(model));
+
+            exception.ActionResult.Should().BeOfType<BadRequestObjectResult>();
+        }
+
+        #endregion
     }
 }
