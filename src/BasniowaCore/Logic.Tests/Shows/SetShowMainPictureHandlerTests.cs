@@ -317,7 +317,7 @@ namespace Logic.Tests.Shows
 
             db.Shows.Add(show);
 
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return show;
         }
@@ -328,7 +328,7 @@ namespace Logic.Tests.Shows
 
             db.Shows.Update(show);
 
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
         private async Task PrepareShowPicture(long showPictureId, long showId, Action<ShowPicture> customActions = null)
@@ -339,7 +339,7 @@ namespace Logic.Tests.Shows
 
             db.ShowPictures.Add(showPicture);
 
-            db.SaveChanges();
+            await db.SaveChangesAsync();
         }
 
         private Show GetShowById(long showId)
