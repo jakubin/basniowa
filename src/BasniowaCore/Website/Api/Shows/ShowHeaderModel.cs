@@ -23,5 +23,15 @@ namespace Website.Api.Shows
         /// Show subtitle (usually author or inspiration)
         /// </summary>
         public string Subtitle { get; set; }
+
+        /// <summary>
+        /// The URL of the main show picture.
+        /// </summary>
+        public string MainShowPictureUrl { get; set; }
+
+        /// <summary>
+        /// The URL of the main show picture thumbnail.
+        /// </summary>
+        public string MainShowPictureThumbUrl { get; set; }
     }
 }

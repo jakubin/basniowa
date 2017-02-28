@@ -1,8 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using AutoMapper;
 using Common.Startup;
 using Logic.Shows;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Website.Infrastructure;
 
 namespace Website.Api.Shows
@@ -15,8 +16,6 @@ namespace Website.Api.Shows
     [Produces(ContentTypes.ApplicationJson)]
     public class ShowsQueryController : Controller
     {
-        private const string GroupName = "Shows";
-
         /// <summary>
         /// Gets or sets the shows reader.
         /// </summary>
@@ -30,15 +29,40 @@ namespace Website.Api.Shows
         public IMapper Mapper { get; set; }
 
         /// <summary>
+        /// Gets or sets the show pictures URL proviver.
+        /// </summary>
+        [InjectService]
+        public ShowPictureUrlProvider ShowPictures { get; set; }
+
+        /// <summary>
+        /// Gets or sets the content type provider.
+        /// </summary>
+        [InjectService]
+        public IContentTypeProvider ContentTypeProvider { get; set; }
+
+        /// <summary>
         /// Gets all shows.
         /// </summary>
         /// <returns>List of all shows with details.</returns>
         /// <response code="200">Returns all shows main information.</response>
         [HttpGet]
-        public ShowHeaderModel[] GetAll()
+        public IList<ShowHeaderModel> GetAll()
         {
             var details = ShowsReader.GetAllShows();
-            var result = details.Select(Mapper.Map<ShowHeaderModel>).ToArray();
+            var result = new List<ShowHeaderModel>();
+            foreach (var showHeader in details)
+            {
+                var model = Mapper.Map<ShowHeaderModel>(showHeader);
+                model.MainShowPictureUrl = showHeader.MainShowPicturePath != null
+                    ? ShowPictures.UrlProvider.GetDownloadUrl(showHeader.MainShowPicturePath)
+                    : null;
+                model.MainShowPictureThumbUrl = showHeader.MainShowPictureThumbPath != null
+                    ? ShowPictures.UrlProvider.GetDownloadUrl(showHeader.MainShowPictureThumbPath)
+                    : null;
+
+                result.Add(model);
+            }
+
             return result;
         }
 

@@ -19,5 +19,15 @@
         /// Show subtitle (usually author or inspiration)
         /// </summary>
         public string Subtitle { get; set; }
+
+        /// <summary>
+        /// The path in picture container of the main show picture.
+        /// </summary>
+        public string MainShowPicturePath { get; set; }
+
+        /// <summary>
+        /// The path in picture container of the main show picture thumbnail.
+        /// </summary>
+        public string MainShowPictureThumbPath { get; set; }
     }
 }

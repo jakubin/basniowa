@@ -3,10 +3,15 @@ using Autofac;
 using Common.FileContainers;
 using DataAccess.Disk;
 using Logic.Shows;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
+using Website.Api.Shows;
+using Website.Infrastructure.FileContainers;
 
 namespace Website.Setup.Shows
 {
@@ -37,20 +42,47 @@ namespace Website.Setup.Shows
                 .InstancePerDependency()
                 .PropertiesAutowired();
 
-            builder.Register(ctx => new PhysicalFileContainer(ResolveShowPictureContainerRootPath(ctx)))
+            builder.Register(ctx => new PhysicalFileContainer(
+                ResolveShowPictureContainerRootPath(
+                    ctx.Resolve<IHostingEnvironment>(),
+                    ctx.Resolve<IOptions<ShowsOptions>>())))
                 .Named<IFileContainer>(ShowPicturesContainerKey)
                 .Named<IFileContainerReader>(ShowPicturesContainerKey)
                 .SingleInstance();
 
+            builder.Register(ctx => new PhysicalStaticFileContainerUrlProvider("/files/shows/pictures"))
+                .Named<IFileContainerUrlProvider>(ShowPicturesContainerKey)
+                .SingleInstance();
+
             builder.Register(
                 ctx => new ShowPicturesFileContainer(ctx.ResolveNamed<IFileContainer>(ShowPicturesContainerKey)));
+            builder.Register(
+                ctx =>
+                    new ShowPicturesFileContainerReader(ctx.ResolveNamed<IFileContainerReader>(ShowPicturesContainerKey)));
+            builder.Register(
+                ctx => new ShowPictureUrlProvider(ctx.ResolveNamed<IFileContainerUrlProvider>(ShowPicturesContainerKey)));
+        }
+
+        /// <summary>
+        /// Configures the shows module in the application.
+        /// </summary>
+        /// <param name="app">The application.</param>
+        public static void UseShowsModule(this IApplicationBuilder app)
+        {
+            var showsPicturesRootPath = ResolveShowPictureContainerRootPath(
+                app.ApplicationServices.GetRequiredService<IHostingEnvironment>(),
+                app.ApplicationServices.GetRequiredService<IOptions<ShowsOptions>>());
+            
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(showsPicturesRootPath),
+                RequestPath = new PathString("/files/shows/pictures")
+            });
         }
 
         private static string ResolveShowPictureContainerRootPath(
-            IComponentContext ctx)
+            IHostingEnvironment hostingEnvironment, IOptions<ShowsOptions> options)
         {
-            var hostingEnvironment = ctx.Resolve<IHostingEnvironment>();
-            var options = ctx.Resolve<IOptions<ShowsOptions>>();
             var path = Path.IsPathRooted(options.Value.ShowPictureContainerRoot)
                 ? options.Value.ShowPictureContainerRoot
                 : Path.Combine(hostingEnvironment.ContentRootPath, options.Value.ShowPictureContainerRoot);

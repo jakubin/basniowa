@@ -30,11 +30,15 @@ namespace Logic.Shows
                 var shows = db.Shows
                     .AsNoTracking()
                     .Where(x => !x.IsDeleted)
+                    .Include(x => x.MainShowPicture)
+                    .ToList()
                     .Select(x => new ShowHeader
                     {
                         ShowId = x.Id,
                         Title = x.Title,
-                        Subtitle = x.Subtitle
+                        Subtitle = x.Subtitle,
+                        MainShowPicturePath = x.MainShowPicture?.ImagePath,
+                        MainShowPictureThumbPath = x.MainShowPicture?.ThumbPath
                     })
                     .ToList();
 

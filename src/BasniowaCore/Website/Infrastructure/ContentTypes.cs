@@ -19,5 +19,10 @@
         /// "application/x-www-form-urlencoded" content type
         /// </summary>
         public const string ApplicationXWwwFormUrlEncoded = "application/x-www-form-urlencoded";
+
+        /// <summary>
+        /// "application/octet-stream" content type
+        /// </summary>
+        public const string ApplicationOctetStream = "application/octet-stream";
     }
 }

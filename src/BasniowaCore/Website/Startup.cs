@@ -12,10 +12,12 @@ using DataAccess.Database.UniqueId;
 using Logic.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
@@ -70,6 +72,7 @@ namespace Website
                 options.Filters.Add(typeof(BusinessRuleExceptionFilter));
                 options.Filters.Add(typeof(EntityNotFoundExceptionFilter));
             });
+            services.AddTransient<IContentTypeProvider, FileExtensionContentTypeProvider>();
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(options =>
             {
@@ -189,6 +192,7 @@ namespace Website
             app.UseMvc();
             app.UseDefaultFiles(new DefaultFilesOptions { DefaultFileNames = new[] { "index.htm" } });
             app.UseStaticFiles();
+            app.UseShowsModule();
             
             if (env.IsDevelopment())
             {
