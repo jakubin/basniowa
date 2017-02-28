@@ -227,6 +227,40 @@ namespace Website.Tests.Api.Shows
 
         #endregion
 
+        #region DeleteShowPicture
+
+        [Fact]
+        public async Task DeleteShowPicture_Success()
+        {
+            var model = new DeleteShowPictureModel { ShowPictureId = 11 };
+            var controller = Create();
+
+            DeleteShowPictureCommand command = null;
+            Mock.Get(CommandSender)
+                .Setup(x => x.Send(It.IsAny<DeleteShowPictureCommand>()))
+                .Callback<DeleteShowPictureCommand>(c => { command = c; })
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            await controller.DeletePicture(model);
+
+            Mock.Get(CommandSender).Verify();
+            command.ShowPictureId.Should().Be(11);
+            command.UserName.Should().Be(UserName);
+        }
+
+        [Fact]
+        public async Task DeleteShowPicture_BadModel()
+        {
+            var model = new DeleteShowPictureModel { ShowPictureId = null };
+            var controller = Create();
+            controller.ModelState.AddModelError("key", "error");
+
+            await AssertBadRequest(() => controller.DeletePicture(model));
+        }
+
+        #endregion
+
         #region Helpers
 
         private async Task AssertBadRequest(Func<Task> controllerActionCall)

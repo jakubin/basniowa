@@ -164,6 +164,27 @@ namespace Website.Api.Shows
         }
 
         /// <summary>
+        /// Deletes show picture
+        /// </summary>
+        /// <param name="commandModel">Contains information about the show picture to delete.</param>
+        /// <response code="200">Show picture has been deleted.</response>
+        /// <response code="400">Request is invalid or doesn't pass validation.</response>
+        /// <response code="422">Operation failed due to invalid input (business rule violation or missing entity).</response>
+        [HttpPost]
+        [Route("delete-picture")]
+        [Authorize]
+        public async Task DeletePicture([FromBody]DeleteShowPictureModel commandModel)
+        {
+            ModelState.ThrowIfNotValid();
+
+            var command = new DeleteShowPictureCommand();
+            Mapper.Map(commandModel, command);
+            command.UserName = User.Identity.Name;
+
+            await CommandSender.Send(command);
+        }
+
+        /// <summary>
         /// Configures the mapper for entities owned by this controller.
         /// </summary>
         /// <param name="cfg">The mapper configuration builder.</param>
@@ -175,6 +196,7 @@ namespace Website.Api.Shows
             cfg.CreateMap<DeleteShowModel, DeleteShowCommand>();
             cfg.CreateMap<AddShowPictureModel, AddShowPictureCommand>();
             cfg.CreateMap<SetShowMainPictureModel, SetShowMainPictureCommand>();
+            cfg.CreateMap<DeleteShowPictureModel, DeleteShowPictureCommand>();
         }
     }
 }
