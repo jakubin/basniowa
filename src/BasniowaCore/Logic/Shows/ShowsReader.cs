@@ -75,7 +75,7 @@ namespace Logic.Shows
         }
 
         /// <inheritdoc/>
-        public async Task<IList<ShowPictureData>> GetShowPictures(long showId)
+        public async Task<IList<ShowPictureDetails>> GetShowPictures(long showId)
         {
             using (var db = CreateContext())
             {
@@ -87,11 +87,12 @@ namespace Logic.Shows
                 var pictures = await db.ShowPictures
                     .Where(x => x.ShowId == showId)
                     .Where(x => !x.IsDeleted)
-                    .Select(x => new ShowPictureData
+                    .Select(x => new ShowPictureDetails
                     {
                         ShowPictureId = x.Id,
                         ImagePath = x.ImagePath,
-                        ThumbPath = x.ThumbPath
+                        ThumbPath = x.ThumbPath,
+                        Title = x.Title
                     })
                     .ToListAsync();
 

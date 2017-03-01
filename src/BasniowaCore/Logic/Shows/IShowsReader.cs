@@ -29,6 +29,6 @@ namespace Logic.Shows
         /// <param name="showId">The show identifier.</param>
         /// <returns>List of show pictures</returns>
         /// <exception cref="EntityNotFoundException{Show}">When show doesn't exist.</exception>
-        Task<IList<ShowPictureData>> GetShowPictures(long showId);
+        Task<IList<ShowPictureDetails>> GetShowPictures(long showId);
     }
 }

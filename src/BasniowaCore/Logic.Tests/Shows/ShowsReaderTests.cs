@@ -167,10 +167,10 @@ namespace Logic.Tests.Shows
             var reader = Create();
             var actualPictures = await reader.GetShowPictures(1);
 
-            actualPictures.Select(x => new {x.ShowPictureId, x.ImagePath, x.ThumbPath, x.IsMainShowPicture})
+            actualPictures.Select(x => new {x.ShowPictureId, x.ImagePath, x.ThumbPath, x.Title, x.IsMainShowPicture})
                 .Should().Equal(
                     new[] {p1, p2}.Select(
-                        x => new {ShowPictureId = x.Id, x.ImagePath, x.ThumbPath, IsMainShowPicture = false}));
+                        x => new {ShowPictureId = x.Id, x.ImagePath, x.ThumbPath, x.Title, IsMainShowPicture = false}));
         }
 
         [Fact]

@@ -3,7 +3,7 @@
     /// <summary>
     /// Information about a show picture.
     /// </summary>
-    public class ShowPictureData
+    public class ShowPictureDetails
     {
         /// <summary>
         /// Gets or sets the show picture identifier.
@@ -19,6 +19,11 @@
         /// Gets or sets the image thumb path in the container.
         /// </summary>
         public string ThumbPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the title.
+        /// </summary>
+        public string Title { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this picture is the main show picture.

@@ -12,9 +12,7 @@ namespace Website.Infrastructure.FileContainers
         /// Gets the download URL for specified file.
         /// </summary>
         /// <param name="path">The file path within container.</param>
-        /// <returns>The file download URL.</returns>
-        /// <exception cref="ArgumentNullException">When <paramref name="path"/> is <c>null</c>.</exception>
-        /// <exception cref="ArgumentException">When <paramref name="path"/> is invalid.</exception>
+        /// <returns>The file download URL or <c>null</c> if <paramref name="path"/> is <c>null</c>.</returns>
         string GetDownloadUrl(string path);
     }
 }

@@ -28,12 +28,9 @@ namespace Website.Infrastructure.FileContainers
         /// <inheritdoc/>
         public string GetDownloadUrl(string path)
         {
-            Guard.NotNull(path, nameof(path));
-            if (!FileContainerPath.IsValid(path))
+            if (path == null)
             {
-                throw new ArgumentException(
-                    $"Path ({path}) is not valid for file container.",
-                    nameof(path));
+                return null;
             }
 
             return _baseUrl + path;

@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using AutoMapper;
 using Common.Startup;
 using Logic.Shows;
@@ -53,12 +55,9 @@ namespace Website.Api.Shows
             foreach (var showHeader in details)
             {
                 var model = Mapper.Map<ShowHeaderModel>(showHeader);
-                model.MainShowPictureUrl = showHeader.MainShowPicturePath != null
-                    ? ShowPictures.UrlProvider.GetDownloadUrl(showHeader.MainShowPicturePath)
-                    : null;
-                model.MainShowPictureThumbUrl = showHeader.MainShowPictureThumbPath != null
-                    ? ShowPictures.UrlProvider.GetDownloadUrl(showHeader.MainShowPictureThumbPath)
-                    : null;
+                model.MainShowPictureUrl = ShowPictures.UrlProvider.GetDownloadUrl(showHeader.MainShowPicturePath);
+                model.MainShowPictureThumbUrl =
+                    ShowPictures.UrlProvider.GetDownloadUrl(showHeader.MainShowPictureThumbPath);
 
                 result.Add(model);
             }
@@ -82,6 +81,31 @@ namespace Website.Api.Shows
         }
 
         /// <summary>
+        /// Gets the show by identifier.
+        /// </summary>
+        /// <param name="showId">The show identifier.</param>
+        /// <returns>Show with specific details</returns>
+        /// <response code="200">Returns show details.</response>
+        /// <response code="404">When show of specified ID doesn't exist.</response>
+        [HttpGet]
+        [Route("{showId}/pictures")]
+        public async Task<IList<ShowPictureDetailsModel>> GetShowPictures(long showId)
+        {
+            var pictures = await ShowsReader.GetShowPictures(showId);
+            var result = pictures
+                .Select(x =>
+                {
+                    var model = Mapper.Map<ShowPictureDetailsModel>(x);
+                    model.ImageUrl = ShowPictures.UrlProvider.GetDownloadUrl(x.ImagePath);
+                    model.ThumbUrl = ShowPictures.UrlProvider.GetDownloadUrl(x.ThumbPath);
+                    return model;
+                })
+                .ToList();
+
+            return result;
+        }
+
+        /// <summary>
         /// Configures the mapper for entities owned by this controller.
         /// </summary>
         /// <param name="cfg">The mapper configuration builder.</param>
@@ -90,6 +114,7 @@ namespace Website.Api.Shows
         {
             cfg.CreateMap<ShowHeader, ShowHeaderModel>();
             cfg.CreateMap<ShowWithDetails, ShowWithDetailsModel>();
+            cfg.CreateMap<ShowPictureDetails, ShowPictureDetailsModel>();
         }
     }
 }
