@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using DataAccess.Database;
+using DataAccess.Database.Shows;
 using Logic.Common;
 using Logic.Services;
 using Microsoft.EntityFrameworkCore;
@@ -69,6 +71,40 @@ namespace Logic.Shows
                     Subtitle = show.Subtitle,
                     Properties = properties
                 };
+            }
+        }
+
+        /// <inheritdoc/>
+        public async Task<IList<ShowPictureData>> GetShowPictures(long showId)
+        {
+            using (var db = CreateContext())
+            {
+                var show = await db.Shows
+                    .Where(x => x.Id == showId && !x.IsDeleted)
+                    .FirstOrDefaultAsync();
+                show.ThrowIfNull(showId.ToString());
+
+                var pictures = await db.ShowPictures
+                    .Where(x => x.ShowId == showId)
+                    .Where(x => !x.IsDeleted)
+                    .Select(x => new ShowPictureData
+                    {
+                        ShowPictureId = x.Id,
+                        ImagePath = x.ImagePath,
+                        ThumbPath = x.ThumbPath
+                    })
+                    .ToListAsync();
+
+
+                if (show.MainShowPictureId != null)
+                {
+                    pictures.ForEach(x =>
+                    {
+                        x.IsMainShowPicture = x.ShowPictureId == show.MainShowPictureId;
+                    });
+                }
+
+                return pictures;
             }
         }
     }

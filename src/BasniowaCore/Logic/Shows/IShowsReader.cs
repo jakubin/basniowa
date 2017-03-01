@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Logic.Common;
 
 namespace Logic.Shows
 {
@@ -18,7 +20,15 @@ namespace Logic.Shows
         /// </summary>
         /// <param name="showId">The show identifier.</param>
         /// <returns>Show with specified ID.</returns>
-        /// <exception cref="Logic.Common.EntityNotFoundException{ShowWithDetails}">When show doesn't exist.</exception>
+        /// <exception cref="EntityNotFoundException{Show}">When show doesn't exist.</exception>
         ShowWithDetails GetShowById(long showId);
+
+        /// <summary>
+        /// Gets the show pictures.
+        /// </summary>
+        /// <param name="showId">The show identifier.</param>
+        /// <returns>List of show pictures</returns>
+        /// <exception cref="EntityNotFoundException{Show}">When show doesn't exist.</exception>
+        Task<IList<ShowPictureData>> GetShowPictures(long showId);
     }
 }

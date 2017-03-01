@@ -5,7 +5,6 @@ using Common.FileContainers;
 using DataAccess.Database.Shows;
 using FluentAssertions;
 using Logic.Common;
-using Logic.Common.BusinessRules;
 using Logic.Services;
 using Logic.Shows;
 using Logic.Tests.Helpers;
