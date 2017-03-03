@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -7,6 +8,7 @@ using Common.Cqrs;
 using FluentAssertions;
 using Logic.Shows;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Website.Api.Shows;
@@ -188,6 +190,54 @@ namespace Website.Tests.Api.Shows
             controller.ModelState.AddModelError("key", "error");
 
             await AssertBadRequest(() => controller.Update(model));
+        }
+
+        #endregion
+
+        #region AddPicture
+
+        [Fact]
+        public async Task AddPicture_Success()
+        {
+            var model = new AddShowPictureModel()
+            {
+                ShowId = 10,
+                Title = "Some image",
+                Picture = new FormFile(new MemoryStream(new byte[] {1,2,3}), 0, 3, "Picture", "aaa.jpg")
+            };
+            var controller = Create();
+            UniqueIdService.NextId = 11;
+
+            AddShowPictureCommand command = null;
+            var actualFile = new MemoryStream();
+            Mock.Get(CommandSender)
+                .Setup(x => x.Send(It.IsAny<AddShowPictureCommand>()))
+                .Callback<AddShowPictureCommand>(c =>
+                {
+                    command = c;
+                    c.FileStream.CopyTo(actualFile);
+                })
+                .Returns(Task.CompletedTask)
+                .Verifiable();
+
+            await controller.AddPicture(model);
+
+            Mock.Get(CommandSender).Verify();
+            command.ShowId.Should().Be(10);
+            command.ShowPictureId.Should().Be(11);
+            command.FileName.Should().Be("aaa.jpg");
+            command.UserName.Should().Be(UserName);
+            actualFile.ToArray().Should().Equal(1, 2, 3);
+        }
+
+        [Fact]
+        public async Task AddPicture_BadModel()
+        {
+            var model = new AddShowPictureModel() { ShowId = null, Title = null, Picture = null};
+            var controller = Create();
+            controller.ModelState.AddModelError("key", "error");
+
+            await AssertBadRequest(() => controller.AddPicture(model));
         }
 
         #endregion
