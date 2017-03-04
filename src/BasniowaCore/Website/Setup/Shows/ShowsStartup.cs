@@ -27,7 +27,7 @@ namespace Website.Setup.Shows
         /// </summary>
         /// <param name="services">The services.</param>
         /// <param name="showsSection">The shows configuration section.</param>
-        public static void ConfigureShows(this IServiceCollection services, IConfigurationSection showsSection)
+        public static void AddShowsModule(this IServiceCollection services, IConfigurationSection showsSection)
         {
             services.Configure<ShowsOptions>(showsSection);
         }
@@ -36,7 +36,7 @@ namespace Website.Setup.Shows
         /// Configures the container for shows module.
         /// </summary>
         /// <param name="builder">The container builder.</param>
-        public static void ConfigureShows(this ContainerBuilder builder)
+        public static void AddShowsModule(this ContainerBuilder builder)
         {
             builder.RegisterType<ShowsReader>().As<IShowsReader>()
                 .InstancePerDependency()

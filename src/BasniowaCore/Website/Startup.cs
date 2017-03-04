@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
@@ -19,11 +18,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using Swashbuckle.AspNetCore.Swagger;
 using Website.Infrastructure;
 using Website.Infrastructure.ErrorHandling;
 using Website.Infrastructure.Jwt;
-using Website.Infrastructure.Swagger;
+using Website.Setup;
 using Website.Setup.Shows;
 
 namespace Website
@@ -72,21 +70,7 @@ namespace Website
                 options.Filters.Add(typeof(EntityNotFoundExceptionFilter));
             });
             services.AddTransient<IContentTypeProvider, FileExtensionContentTypeProvider>();
-            services.AddSwaggerGen();
-            services.ConfigureSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new Info {Title = "Basniowa API", Version = "v1"});
-                var currentAssemblyPath = typeof(Startup).GetTypeInfo().Assembly.Location;
-                var xmlCommentsPath = Path.ChangeExtension(currentAssemblyPath, "xml");
-                
-                options.IncludeXmlComments(xmlCommentsPath);
-                options.DescribeAllEnumsAsStrings();
-
-                options.TagActionsByNamespaceEnding();
-
-                options.OperationFilter<AuthorizationHeaderParameterOperationFilter>();
-                options.OperationFilter<FormFileOperationFilter>();
-            });
+            services.AddSwagger();
 
             services.AddJwtBearerAuthentication(Configuration);
 
@@ -95,7 +79,7 @@ namespace Website
             services.AddSingleton(GetDbOptions);
             services.AddTransient<TheaterDb>();
 
-            services.ConfigureShows(Configuration.GetSection("Shows"));
+            services.AddShowsModule(Configuration.GetSection("Shows"));
 
             var builder = new ContainerBuilder();
             builder.Populate(services);
@@ -124,7 +108,7 @@ namespace Website
                 .SingleInstance();
             builder.RegisterType<DateTimeService>().As<IDateTimeService>().SingleInstance();
 
-            builder.ConfigureShows();
+            builder.AddShowsModule();
 
             builder.RegisterAssemblyTypes(Assembly.Load(new AssemblyName("Logic")))
                 .AsClosedTypesOf(typeof(IHandler<>))
@@ -200,14 +184,7 @@ namespace Website
             app.UseStaticFiles();
             app.UseShowsModule();
             
-            if (env.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUi(options =>
-                {
-                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-                });
-            }
+            app.UseAppSwagger(env);
         }
     }
 }
