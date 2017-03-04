@@ -182,8 +182,15 @@ namespace Website
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             var loggerConfiguration = new LoggerConfiguration()
-                .ReadFrom.Configuration(Configuration)
-                .WriteTo.LiterateConsole();
+                .ReadFrom.Configuration(Configuration);
+            if (env.IsDevelopment())
+            {
+                loggerConfiguration = loggerConfiguration
+                    .WriteTo.LiterateConsole(
+                        outputTemplate:
+                        "{Timestamp:HH:mm:ss} [{Level}] [{SourceContext}] {Message}{NewLine}{Exception}");
+            }
+
             loggerFactory.AddSerilog(loggerConfiguration.CreateLogger());
 
             app.UseCqrsLogging();
