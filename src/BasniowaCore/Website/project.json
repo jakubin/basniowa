@@ -2,7 +2,6 @@
   "dependencies": {
     "DataAccess": "1.0.0-*",
     "Logic": "1.0.0-*",
-    "Microsoft.AspNetCore.Authentication.JwtBearer": "1.1.0",
     "Microsoft.NETCore.App": {
       "version": "1.1.0",
       "type": "platform"
@@ -10,7 +9,6 @@
     "Microsoft.AspNetCore.Mvc": "1.1.1",
     "Common": "1.0.0-*",
     "Autofac.Extensions.DependencyInjection": "4.0.0",
-    "Microsoft.AspNetCore.Identity": "1.1.0",
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.1.0-preview4-final",
     "AutoMapper": "5.2.0",
     "Serilog.Extensions.Logging": "1.4.0",
@@ -31,7 +29,9 @@
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.1",
     "Microsoft.Extensions.Configuration.FileExtensions": "1.1.1",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.1.1",
-    "Microsoft.AspNetCore.Server.Kestrel": "1.1.1"
+    "Microsoft.AspNetCore.Server.Kestrel": "1.1.1",
+    "Microsoft.AspNetCore.Authentication.JwtBearer": "1.1.1",
+    "Microsoft.AspNetCore.Identity": "1.1.1"
   },
 
   "tools": {
