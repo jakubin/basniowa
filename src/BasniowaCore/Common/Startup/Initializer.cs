@@ -23,7 +23,9 @@ namespace Common.Startup
             var name = new AssemblyName(attributeType.GetTypeInfo().Assembly.FullName).Name;
 
             var referencingLibraries = DependencyContext.Default.CompileLibraries
-                .Where(x => x.Name == name || x.Dependencies.Any(d => d.Name == name))
+                .Where(x =>
+                    string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase)
+                    || x.Dependencies.Any(d => string.Equals(d.Name, name, StringComparison.OrdinalIgnoreCase)))
                 .ToList();
 
             foreach (var library in referencingLibraries)
