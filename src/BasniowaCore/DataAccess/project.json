@@ -2,8 +2,8 @@
   "version": "1.0.0-*",
   "dependencies": {
     "Common": "1.0.0-*",
-    "Microsoft.EntityFrameworkCore.Relational": "1.1.0",
-    "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
+    "Microsoft.EntityFrameworkCore.Relational": "1.1.1",
+    "Microsoft.EntityFrameworkCore.SqlServer": "1.1.1",
     "NETStandard.Library": "1.6.1"
   },
   "frameworks": {

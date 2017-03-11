@@ -20,18 +20,18 @@
     "Microsoft.Extensions.Logging.Console": "1.1.0",
     "Microsoft.Extensions.Logging.Debug": "1.1.0",
     "Microsoft.Extensions.Options.ConfigurationExtensions": "1.1.0",
-    "Microsoft.EntityFrameworkCore": "1.1.0",
-    "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
-    "Microsoft.EntityFrameworkCore.SqlServer.Design": "1.1.0",
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.1.0-preview4-final",
-    "Microsoft.EntityFrameworkCore.Tools": "1.1.0-preview4-final",
     "AutoMapper": "5.2.0",
     "Serilog.Extensions.Logging": "1.4.0",
     "Serilog.Sinks.Literate": "2.1.0",
     "Serilog.Settings.Configuration": "2.2.0",
     "Autofac": "4.4.0",
     "Serilog.Sinks.RollingFile": "3.3.0",
-    "Swashbuckle.AspNetCore": "1.0.0-rc1"
+    "Swashbuckle.AspNetCore": "1.0.0-rc1",
+    "Microsoft.EntityFrameworkCore": "1.1.1",
+    "Microsoft.EntityFrameworkCore.SqlServer": "1.1.1",
+    "Microsoft.EntityFrameworkCore.SqlServer.Design": "1.1.1",
+    "Microsoft.EntityFrameworkCore.Tools": "1.1.0"
   },
 
   "tools": {
