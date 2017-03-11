@@ -45,7 +45,7 @@ namespace Website.Setup
             if (env.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUi(options =>
+                app.UseSwaggerUI(options =>
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 });

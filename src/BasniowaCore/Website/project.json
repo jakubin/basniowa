@@ -16,7 +16,7 @@
     "Serilog.Settings.Configuration": "2.2.0",
     "Autofac": "4.4.0",
     "Serilog.Sinks.RollingFile": "3.3.0",
-    "Swashbuckle.AspNetCore": "1.0.0-rc1",
+    "Swashbuckle.AspNetCore": "1.0.0-rc3",
     "Microsoft.EntityFrameworkCore": "1.1.1",
     "Microsoft.EntityFrameworkCore.SqlServer": "1.1.1",
     "Microsoft.EntityFrameworkCore.SqlServer.Design": "1.1.1",
