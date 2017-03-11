@@ -72,6 +72,8 @@ namespace Website.Setup.Shows
             var showsPicturesRootPath = ResolveShowPictureContainerRootPath(
                 app.ApplicationServices.GetRequiredService<IHostingEnvironment>(),
                 app.ApplicationServices.GetRequiredService<IOptions<ShowsOptions>>());
+
+            Directory.CreateDirectory(showsPicturesRootPath);
             
             app.UseStaticFiles(new StaticFileOptions
             {
