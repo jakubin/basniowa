@@ -12,8 +12,7 @@
     "xunit": "2.2.0",
     "Logic": "1.0.0-*",
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
-    "Microsoft.NETCore.App":
-    {
+    "Microsoft.NETCore.App": {
       "version": "1.1.0",
       "type": "platform"
     },

@@ -2,7 +2,7 @@
   "version": "1.0.0-*",
   "dependencies": {
     "Microsoft.Extensions.DependencyInjection.Abstractions": "1.1.0",
-    "Microsoft.Extensions.DependencyModel": "1.1.0",
+    "Microsoft.Extensions.DependencyModel": "1.1.1",
     "NETStandard.Library": "1.6.1",
     "System.ComponentModel": "4.3.0",
     "System.Globalization.Extensions": "4.3.0",
