@@ -29,7 +29,7 @@
     "Serilog.Extensions.Logging": "1.4.0",
     "Serilog.Sinks.Literate": "2.1.0",
     "Serilog.Settings.Configuration": "2.2.0",
-    "Autofac": "4.3.0",
+    "Autofac": "4.4.0",
     "Serilog.Sinks.RollingFile": "3.3.0",
     "Swashbuckle.AspNetCore": "1.0.0-rc1"
   },
