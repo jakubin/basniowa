@@ -6,7 +6,7 @@
     "xunit": "2.2.0",
     "dotnet-test-xunit": "2.2.0-preview2-build1029",
     "Common": "1.0.0-*",
-    "Moq": "4.7.0",
+    "Moq": "4.7.1",
     "Testing": "1.0.0-*",
     "Microsoft.CodeCoverage": "1.0.2",
     "Microsoft.Extensions.Logging": "1.1.0",
@@ -15,7 +15,7 @@
       "type": "platform"
     },
     "Microsoft.DotNet.InternalAbstractions": "1.0.0",
-    "FluentAssertions": "4.19.0"
+    "FluentAssertions": "4.19.2"
   },
 
   "frameworks": {
