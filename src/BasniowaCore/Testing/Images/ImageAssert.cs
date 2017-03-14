@@ -16,11 +16,9 @@ namespace Testing.Images
         /// <param name="expectedHeight">The expected height.</param>
         public static void HasSize(byte[] imageBytes, int expectedWidth, int expectedHeight)
         {
-            using (var image = new MagickImage(imageBytes))
-            {
-                image.Width.Should().Be(expectedWidth);
-                image.Height.Should().Be(expectedHeight);
-            }
+            var image = new MagickImageInfo(imageBytes);
+            image.Width.Should().Be(expectedWidth);
+            image.Height.Should().Be(expectedHeight);
         }
 
         /// <summary>
@@ -52,10 +50,8 @@ namespace Testing.Images
         public static void IsJpeg(byte[] imageBytes)
         {
             var allowedFormats = new[] {MagickFormat.Jpg, MagickFormat.Jpe, MagickFormat.Jpeg};
-            using (var image = new MagickImage(imageBytes))
-            {
-                allowedFormats.Should().Contain(image.Format);
-            }
+            var image = new MagickImageInfo(imageBytes);
+            allowedFormats.Should().Contain(image.Format);
         }
     }
 }
