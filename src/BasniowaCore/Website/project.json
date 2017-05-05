@@ -8,15 +8,11 @@
     },
     "Microsoft.AspNetCore.Mvc": "1.1.2",
     "Common": "1.0.0-*",
-    "Autofac.Extensions.DependencyInjection": "4.0.0",
     "Microsoft.AspNetCore.Server.IISIntegration.Tools": "1.1.0-preview4-final",
-    "AutoMapper": "5.2.0",
     "Serilog.Extensions.Logging": "1.4.0",
     "Serilog.Sinks.Literate": "2.1.0",
-    "Serilog.Settings.Configuration": "2.2.0",
-    "Autofac": "4.4.0",
     "Serilog.Sinks.RollingFile": "3.3.0",
-    "Swashbuckle.AspNetCore": "1.0.0-rc3",
+    "Swashbuckle.AspNetCore": "1.0.0",
     "Microsoft.EntityFrameworkCore": "1.1.1",
     "Microsoft.EntityFrameworkCore.SqlServer": "1.1.1",
     "Microsoft.EntityFrameworkCore.SqlServer.Design": "1.1.1",
@@ -31,7 +27,11 @@
     "Microsoft.AspNetCore.Server.IISIntegration": "1.1.1",
     "Microsoft.AspNetCore.Server.Kestrel": "1.1.1",
     "Microsoft.AspNetCore.Authentication.JwtBearer": "1.1.1",
-    "Microsoft.AspNetCore.Identity": "1.1.1"
+    "Microsoft.AspNetCore.Identity": "1.1.1",
+    "Serilog.Settings.Configuration": "2.3.1",
+    "Autofac": "4.5.0",
+    "Autofac.Extensions.DependencyInjection": "4.1.0",
+    "AutoMapper": "6.0.2"
   },
 
   "tools": {

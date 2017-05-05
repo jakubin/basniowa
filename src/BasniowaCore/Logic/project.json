@@ -3,7 +3,7 @@
   "dependencies": {
     "Common": "1.0.0-*",
     "DataAccess": "1.0.0-*",
-    "Magick.NET.Core-Q8": "7.0.4.701",
+    "Magick.NET.Core-Q8": "7.0.5.502",
     "Microsoft.Extensions.Logging.Abstractions": "1.1.1",
     "NETStandard.Library": "1.6.1",
     "System.Collections.Immutable": "1.3.1"
