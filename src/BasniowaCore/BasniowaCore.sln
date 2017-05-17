@@ -1,35 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Website", "Website\Website.xproj", "{B81F796E-A3D5-4940-B418-05BD58152605}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "DataAccess", "DataAccess\DataAccess.xproj", "{A190A3F9-8A44-4777-9770-B7D13EC56BA9}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E0AECE49-0FAE-4C0F-8834-162161D7F06C} = {E0AECE49-0FAE-4C0F-8834-162161D7F06C}
-	EndProjectSection
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Logic", "Logic\Logic.xproj", "{D4F1C6E0-6571-401C-82B7-42A4E46138A4}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E0AECE49-0FAE-4C0F-8834-162161D7F06C} = {E0AECE49-0FAE-4C0F-8834-162161D7F06C}
-	EndProjectSection
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Logic.Tests", "Logic.Tests\Logic.Tests.xproj", "{C26F93CF-6BB3-408E-890C-AA9B7AF53B1C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E0AECE49-0FAE-4C0F-8834-162161D7F06C} = {E0AECE49-0FAE-4C0F-8834-162161D7F06C}
-	EndProjectSection
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Tests", "Tests\Tests.xproj", "{6B75849B-8E4B-4287-95F7-4D10D8F179A9}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Website.Tests", "Website.Tests\Website.Tests.xproj", "{3F48FFDB-2184-49DF-BB8C-362C3F6E7D2C}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Common", "Common\Common.xproj", "{E0AECE49-0FAE-4C0F-8834-162161D7F06C}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Common.Tests", "Common.Tests\Common.Tests.xproj", "{6C2A8B74-636C-434F-8117-81E8F73351E9}"
-EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "Testing", "Testing\Testing.xproj", "{7CEDB613-7C34-4C09-AA4F-159D13AFB542}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{15F61FFF-6109-4477-9893-08FE719FCC83}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{2DABADB9-B022-47AB-B035-B147E595F43B}"
@@ -45,7 +18,32 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution files", "Solution 
 		Settings.StyleCop = Settings.StyleCop
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "DataAccess.IntegrationTests", "DataAccess.IntergrationTests\DataAccess.IntegrationTests.xproj", "{2FC9D150-50C9-4F49-A8EE-CD03B556909A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Website", "Website\Website.csproj", "{B81F796E-A3D5-4940-B418-05BD58152605}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{A190A3F9-8A44-4777-9770-B7D13EC56BA9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E0AECE49-0FAE-4C0F-8834-162161D7F06C} = {E0AECE49-0FAE-4C0F-8834-162161D7F06C}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic", "Logic\Logic.csproj", "{D4F1C6E0-6571-401C-82B7-42A4E46138A4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E0AECE49-0FAE-4C0F-8834-162161D7F06C} = {E0AECE49-0FAE-4C0F-8834-162161D7F06C}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logic.Tests", "Logic.Tests\Logic.Tests.csproj", "{C26F93CF-6BB3-408E-890C-AA9B7AF53B1C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E0AECE49-0FAE-4C0F-8834-162161D7F06C} = {E0AECE49-0FAE-4C0F-8834-162161D7F06C}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Website.Tests", "Website.Tests\Website.Tests.csproj", "{3F48FFDB-2184-49DF-BB8C-362C3F6E7D2C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{E0AECE49-0FAE-4C0F-8834-162161D7F06C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Tests", "Common.Tests\Common.Tests.csproj", "{6C2A8B74-636C-434F-8117-81E8F73351E9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Testing", "Testing\Testing.csproj", "{7CEDB613-7C34-4C09-AA4F-159D13AFB542}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.IntergrationTests", "DataAccess.IntergrationTests\DataAccess.IntergrationTests.csproj", "{2FC9D150-50C9-4F49-A8EE-CD03B556909A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,10 +67,6 @@ Global
 		{C26F93CF-6BB3-408E-890C-AA9B7AF53B1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C26F93CF-6BB3-408E-890C-AA9B7AF53B1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C26F93CF-6BB3-408E-890C-AA9B7AF53B1C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6B75849B-8E4B-4287-95F7-4D10D8F179A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B75849B-8E4B-4287-95F7-4D10D8F179A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B75849B-8E4B-4287-95F7-4D10D8F179A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B75849B-8E4B-4287-95F7-4D10D8F179A9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3F48FFDB-2184-49DF-BB8C-362C3F6E7D2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3F48FFDB-2184-49DF-BB8C-362C3F6E7D2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F48FFDB-2184-49DF-BB8C-362C3F6E7D2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
