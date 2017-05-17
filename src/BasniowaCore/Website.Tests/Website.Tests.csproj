@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1.1</TargetFramework>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
     <AssemblyName>Website.Tests</AssemblyName>
     <PackageId>Website.Tests</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>

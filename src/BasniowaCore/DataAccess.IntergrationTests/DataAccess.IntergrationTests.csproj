@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp1.1.1</TargetFramework>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
     <AssemblyName>DataAccess.IntergrationTests</AssemblyName>
     <PackageId>DataAccess.IntergrationTests</PackageId>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
