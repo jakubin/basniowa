@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <PackageId>Website</PackageId>
     <UserSecretsId>aspnet-Website-20160902060430</UserSecretsId>
-    <RuntimeFrameworkVersion>1.1.1</RuntimeFrameworkVersion>
+    <RuntimeFrameworkVersion>1.1.2</RuntimeFrameworkVersion>
   </PropertyGroup>
 
   <ItemGroup>
